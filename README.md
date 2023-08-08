@@ -16,6 +16,10 @@
 - Multiple invocations of this function will return the same value like `crypto/elliptic`
     - so it can be used for equality checks and switch statements.
 
+## [LICENSE](/LICENSE)
+
+- MIT License
+
 ## Curves
 
 ### [ANSI x9.62](https://neuromancer.sk/std/x962/)
@@ -108,19 +112,15 @@
 | [`sect571k1`](https://neuromancer.sk/std/secg/sect571k1) | `1.3.132.0.38` | `Binary` | `secg.Sect571k1()` | | `nist/K-571`, `x963/ansit571k1` |
 | [`sect571r1`](https://neuromancer.sk/std/secg/sect571r1) | `1.3.132.0.39` | `Binary` | `secg.Sect571r1()` | | `nist/B-571`, `x963/ansit571r1` |
 
-### [WTLS](https://neuromancer.sk/std/WTLS/)
+### [WTLS](https://neuromancer.sk/std/wtls/)
 
 - Wireless Application Protocol - Wireless Transport Layer Security (WAP-WTLS) curves: <https://www.wapforum.org/tech/documents/WAP-199-WTLS-20000218-a.pdf>
 
 | Name | OID | Field Type | Function | Tested | As known |
 |:----:|:---:|:----------:|:--------:|:------:|:--------:|
-| [`wap-wsg-idm-ecid-wtls1`](https://neuromancer.sk/std/WTLS/wap-wsg-idm-ecid-wtls1) | | `Binary` | `WTLS.WapWsgIdmEcidWtls1()` | |  |
-| [`wap-wsg-idm-ecid-wtls3`](https://neuromancer.sk/std/WTLS/wap-wsg-idm-ecid-wtls3) | `2.23.43.1.4.3` | `Binary` | `WTLS.WapWsgIdmEcidWtls3()` | | `nist/K-163`, `secg/sect163k1`, `x963/ansit163k1` |
-| [`wap-wsg-idm-ecid-wtls4`](https://neuromancer.sk/std/WTLS/wap-wsg-idm-ecid-wtls4) | `2.23.43.1.4.4` | `Binary` | `WTLS.WapWsgIdmEcidWtls4()` | | `secg/sect113r1` |
-| [`wap-wsg-idm-ecid-wtls5`](https://neuromancer.sk/std/WTLS/wap-wsg-idm-ecid-wtls5) | `2.23.43.1.4.5` | `Binary` | `WTLS.WapWsgIdmEcidWtls5()` | | `x962/c2pnb163v1` |
-| [`wap-wsg-idm-ecid-wtls10`](https://neuromancer.sk/std/WTLS/wap-wsg-idm-ecid-wtls10) | `2.23.43.1.4.10` | `Binary` | `WTLS.WapWsgIdmEcidWtls10()` | | `secg/sect233k1`, `nist/K-233`, `x963/ansit233k1` |
-| [`wap-wsg-idm-ecid-wtls11`](https://neuromancer.sk/std/WTLS/wap-wsg-idm-ecid-wtls11) | `2.23.43.1.4.11` | `Binary` | `WTLS.WapWsgIdmEcidWtls11()` | | `secg/sect233r1`, `nist/B-233`, `x963/ansit233r1` |
-
-## [LICENSE](/LICENSE)
-
-- MIT License
+| [`wap-wsg-idm-ecid-wtls1`](https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls1) | | `Binary` | `wtls.WapWsgIdmEcidWtls1()` | |  |
+| [`wap-wsg-idm-ecid-wtls3`](https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls3) | `2.23.43.1.4.3` | `Binary` | `wtls.WapWsgIdmEcidWtls3()` | | `nist/K-163`, `secg/sect163k1`, `x963/ansit163k1` |
+| [`wap-wsg-idm-ecid-wtls4`](https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls4) | `2.23.43.1.4.4` | `Binary` | `wtls.WapWsgIdmEcidWtls4()` | | `secg/sect113r1` |
+| [`wap-wsg-idm-ecid-wtls5`](https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls5) | `2.23.43.1.4.5` | `Binary` | `wtls.WapWsgIdmEcidWtls5()` | | `x962/c2pnb163v1` |
+| [`wap-wsg-idm-ecid-wtls10`](https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls10) | `2.23.43.1.4.10` | `Binary` | `wtls.WapWsgIdmEcidWtls10()` | | `secg/sect233k1`, `nist/K-233`, `x963/ansit233k1` |
+| [`wap-wsg-idm-ecid-wtls11`](https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls11) | `2.23.43.1.4.11` | `Binary` | `wtls.WapWsgIdmEcidWtls11()` | | `secg/sect233r1`, `nist/B-233`, `x963/ansit233r1` |
