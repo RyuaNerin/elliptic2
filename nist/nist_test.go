@@ -28,15 +28,25 @@ var (
 )
 
 type testCase struct {
-	Qx, Qy *big.Int
-	Fail   bool
+	D, X, Y *big.Int
+	Fail    bool
 }
 
-func testPoint(t *testing.T, testCases []testCase, curve elliptic2.Curve) {
+func testScalarBaseMult(t *testing.T, testCases []testCase, curve elliptic2.Curve) {
 	for idx, tc := range testCases {
-		ok := curve.IsOnCurve(tc.Qx, tc.Qy)
+		x, y := curve.ScalarBaseMult(tc.D.Bytes())
+		ok := tc.X.Cmp(x) == 0 && tc.Y.Cmp(y) == 0
 		if ok == tc.Fail {
 			t.Errorf("%d: Verify failed, got:%v want:%v", idx, ok, !tc.Fail)
+			return
+		}
+	}
+}
+func testIsOnCurve(t *testing.T, testCases []testCase, curve elliptic2.Curve) {
+	for idx, tc := range testCases {
+		ok := curve.IsOnCurve(tc.X, tc.Y)
+		if ok == tc.Fail {
+			t.Errorf("%d: Is failed, got:%v want:%v", idx, ok, !tc.Fail)
 			return
 		}
 	}
