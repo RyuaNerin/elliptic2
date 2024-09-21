@@ -4,14 +4,38 @@
     // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
     "version": "0.2.0",
     "configurations": [
+
+        {
+            "name":"Python 디버거: 현재 파일",
+            "type":"debugpy",
+            "request":"launch",
+            "program":"${file}",
+            "cwd": "${fileDirname}",
+            "console":"integratedTerminal",
+            "justMyCode": false
+        },
         {
             "name": "Python: Generate",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/generator/generator.py",
+            "program": "${workspaceFolder}/generators/curves/main.py",
             "console": "integratedTerminal",
-            "justMyCode": true,
-            "cwd": "${workspaceFolder}/generator"
+            "cwd": "${workspaceFolder}/generators/curves"
+        },
+        {
+            "name": "Python: binary",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/generators/testcases/main.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/generators/testcases"
+        },
+        {
+            "name": "Launch Package",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${fileDirname}"
         }
     ]
 }
