@@ -27,11 +27,11 @@ var (
 )
 
 func initAll() {
-	ansit163k1 = elliptic2.NewCurve(
+	ansit163k1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit163k1",
 			BitSize: 163,
-			F:       elliptic2.F(163, 7, 6, 3, 0),
+			F:       internal.F(163, 7, 6, 3, 0),
 			A:       internal.HI("0x000000000000000000000000000000000000000001"),
 			B:       internal.HI("0x000000000000000000000000000000000000000001"),
 			Gx:      internal.HI("0x02fe13c0537bbc11acaa07d793de4e6d5e5c94eee8"),
@@ -41,11 +41,11 @@ func initAll() {
 		},
 	)
 
-	ansit163r1 = elliptic2.NewCurve(
+	ansit163r1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit163r1",
 			BitSize: 163,
-			F:       elliptic2.F(163, 7, 6, 3, 0),
+			F:       internal.F(163, 7, 6, 3, 0),
 			A:       internal.HI("0x07b6882caaefa84f9554ff8428bd88e246d2782ae2"),
 			B:       internal.HI("0x0713612dcddcb40aab946bda29ca91f73af958afd9"),
 			Gx:      internal.HI("0x0369979697ab43897789566789567f787a7876a654"),
@@ -55,11 +55,11 @@ func initAll() {
 		},
 	)
 
-	ansit163r2 = elliptic2.NewCurve(
+	ansit163r2 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit163r2",
 			BitSize: 163,
-			F:       elliptic2.F(163, 7, 6, 3, 0),
+			F:       internal.F(163, 7, 6, 3, 0),
 			A:       internal.HI("0x000000000000000000000000000000000000000001"),
 			B:       internal.HI("0x020a601907b8c953ca1481eb10512f78744a3205fd"),
 			Gx:      internal.HI("0x03f0eba16286a2d57ea0991168d4994637e8343e36"),
@@ -69,11 +69,11 @@ func initAll() {
 		},
 	)
 
-	ansit193r1 = elliptic2.NewCurve(
+	ansit193r1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit193r1",
 			BitSize: 193,
-			F:       elliptic2.F(193, 15, 0),
+			F:       internal.F(193, 15, 0),
 			A:       internal.HI("0x0017858feb7a98975169e171f77b4087de098ac8a911df7b01"),
 			B:       internal.HI("0x00fdfb49bfe6c3a89facadaa7a1e5bbc7cc1c2e5d831478814"),
 			Gx:      internal.HI("0x01f481bc5f0ff84a74ad6cdf6fdef4bf6179625372d8c0c5e1"),
@@ -83,11 +83,11 @@ func initAll() {
 		},
 	)
 
-	ansit193r2 = elliptic2.NewCurve(
+	ansit193r2 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit193r2",
 			BitSize: 193,
-			F:       elliptic2.F(193, 15, 0),
+			F:       internal.F(193, 15, 0),
 			A:       internal.HI("0x0163f35a5137c2ce3ea6ed8667190b0bc43ecd69977702709b"),
 			B:       internal.HI("0x00c9bb9e8927d4d64c377e2ab2856a5b16e3efb7f61d4316ae"),
 			Gx:      internal.HI("0x00d9b67d192e0367c803f39e1a7e82ca14a651350aae617e8f"),
@@ -97,11 +97,11 @@ func initAll() {
 		},
 	)
 
-	ansit233k1 = elliptic2.NewCurve(
+	ansit233k1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit233k1",
 			BitSize: 233,
-			F:       elliptic2.F(233, 74, 0),
+			F:       internal.F(233, 74, 0),
 			A:       internal.HI("0x000000000000000000000000000000000000000000000000000000000000"),
 			B:       internal.HI("0x000000000000000000000000000000000000000000000000000000000001"),
 			Gx:      internal.HI("0x017232ba853a7e731af129f22ff4149563a419c26bf50a4c9d6eefad6126"),
@@ -111,11 +111,11 @@ func initAll() {
 		},
 	)
 
-	ansit233r1 = elliptic2.NewCurve(
+	ansit233r1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit233r1",
 			BitSize: 233,
-			F:       elliptic2.F(233, 74, 0),
+			F:       internal.F(233, 74, 0),
 			A:       internal.HI("0x000000000000000000000000000000000000000000000000000000000001"),
 			B:       internal.HI("0x0066647ede6c332c7f8c0923bb58213b333b20e9ce4281fe115f7d8f90ad"),
 			Gx:      internal.HI("0x00fac9dfcbac8313bb2139f1bb755fef65bc391f8b36f8f8eb7371fd558b"),
@@ -125,11 +125,11 @@ func initAll() {
 		},
 	)
 
-	ansit239k1 = elliptic2.NewCurve(
+	ansit239k1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit239k1",
 			BitSize: 239,
-			F:       elliptic2.F(239, 158, 0),
+			F:       internal.F(239, 158, 0),
 			A:       internal.HI("0x000000000000000000000000000000000000000000000000000000000000"),
 			B:       internal.HI("0x000000000000000000000000000000000000000000000000000000000001"),
 			Gx:      internal.HI("0x29a0b6a887a983e9730988a68727a8b2d126c44cc2cc7b2a6555193035dc"),
@@ -139,11 +139,11 @@ func initAll() {
 		},
 	)
 
-	ansit283k1 = elliptic2.NewCurve(
+	ansit283k1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit283k1",
 			BitSize: 283,
-			F:       elliptic2.F(283, 12, 7, 5, 0),
+			F:       internal.F(283, 12, 7, 5, 0),
 			A:       internal.HI("0x000000000000000000000000000000000000000000000000000000000000000000000000"),
 			B:       internal.HI("0x000000000000000000000000000000000000000000000000000000000000000000000001"),
 			Gx:      internal.HI("0x0503213f78ca44883f1a3b8162f188e553cd265f23c1567a16876913b0c2ac2458492836"),
@@ -153,11 +153,11 @@ func initAll() {
 		},
 	)
 
-	ansit283r1 = elliptic2.NewCurve(
+	ansit283r1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit283r1",
 			BitSize: 283,
-			F:       elliptic2.F(283, 12, 7, 5, 0),
+			F:       internal.F(283, 12, 7, 5, 0),
 			A:       internal.HI("0x000000000000000000000000000000000000000000000000000000000000000000000001"),
 			B:       internal.HI("0x027b680ac8b8596da5a4af8a19a0303fca97fd7645309fa2a581485af6263e313b79a2f5"),
 			Gx:      internal.HI("0x05f939258db7dd90e1934f8c70b0dfec2eed25b8557eac9c80e2e198f8cdbecd86b12053"),
@@ -167,11 +167,11 @@ func initAll() {
 		},
 	)
 
-	ansit409k1 = elliptic2.NewCurve(
+	ansit409k1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit409k1",
 			BitSize: 409,
-			F:       elliptic2.F(409, 87, 0),
+			F:       internal.F(409, 87, 0),
 			A:       internal.HI("0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
 			B:       internal.HI("0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"),
 			Gx:      internal.HI("0x0060f05f658f49c1ad3ab1890f7184210efd0987e307c84c27accfb8f9f67cc2c460189eb5aaaa62ee222eb1b35540cfe9023746"),
@@ -181,11 +181,11 @@ func initAll() {
 		},
 	)
 
-	ansit409r1 = elliptic2.NewCurve(
+	ansit409r1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit409r1",
 			BitSize: 409,
-			F:       elliptic2.F(409, 87, 0),
+			F:       internal.F(409, 87, 0),
 			A:       internal.HI("0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"),
 			B:       internal.HI("0x0021a5c2c8ee9feb5c4b9a753b7b476b7fd6422ef1f3dd674761fa99d6ac27c8a9a197b272822f6cd57a55aa4f50ae317b13545f"),
 			Gx:      internal.HI("0x015d4860d088ddb3496b0c6064756260441cde4af1771d4db01ffe5b34e59703dc255a868a1180515603aeab60794e54bb7996a7"),
@@ -195,11 +195,11 @@ func initAll() {
 		},
 	)
 
-	ansit571k1 = elliptic2.NewCurve(
+	ansit571k1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit571k1",
 			BitSize: 571,
-			F:       elliptic2.F(571, 10, 5, 2, 0),
+			F:       internal.F(571, 10, 5, 2, 0),
 			A:       internal.HI("0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"),
 			B:       internal.HI("0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"),
 			Gx:      internal.HI("0x026eb7a859923fbc82189631f8103fe4ac9ca2970012d5d46024804801841ca44370958493b205e647da304db4ceb08cbbd1ba39494776fb988b47174dca88c7e2945283a01c8972"),
@@ -209,11 +209,11 @@ func initAll() {
 		},
 	)
 
-	ansit571r1 = elliptic2.NewCurve(
+	ansit571r1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "ansit571r1",
 			BitSize: 571,
-			F:       elliptic2.F(571, 10, 5, 2, 0),
+			F:       internal.F(571, 10, 5, 2, 0),
 			A:       internal.HI("0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"),
 			B:       internal.HI("0x02f40e7e2221f295de297117b7f3d62f5c6a97ffcb8ceff1cd6ba8ce4a9a18ad84ffabbd8efa59332be7ad6756a66e294afd185a78ff12aa520e4de739baca0c7ffeff7f2955727a"),
 			Gx:      internal.HI("0x0303001d34b856296c16c0d40d3cd7750a93d1d2955fa80aa5f40fc8db7b2abdbde53950f4c0d293cdd711a35b67fb1499ae60038614f1394abfa3b4c850d927e1e7769c8eec2d19"),

@@ -19,11 +19,11 @@ var (
 )
 
 func initAll() {
-	wapwsgidmecidwtls1 = elliptic2.NewCurve(
+	wapwsgidmecidwtls1 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "wap-wsg-idm-ecid-wtls1",
 			BitSize: 113,
-			F:       elliptic2.F(113, 9, 0),
+			F:       internal.F(113, 9, 0),
 			A:       internal.HI("0x1"),
 			B:       internal.HI("0x1"),
 			Gx:      internal.HI("0x01667979a40ba497e5d5c270780617"),
@@ -33,11 +33,11 @@ func initAll() {
 		},
 	)
 
-	wapwsgidmecidwtls3 = elliptic2.NewCurve(
+	wapwsgidmecidwtls3 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "wap-wsg-idm-ecid-wtls3",
 			BitSize: 163,
-			F:       elliptic2.F(163, 7, 6, 3, 0),
+			F:       internal.F(163, 7, 6, 3, 0),
 			A:       internal.HI("0x1"),
 			B:       internal.HI("0x1"),
 			Gx:      internal.HI("0x02fe13c0537bbc11acaa07d793de4e6d5e5c94eee8"),
@@ -47,11 +47,11 @@ func initAll() {
 		},
 	)
 
-	wapwsgidmecidwtls4 = elliptic2.NewCurve(
+	wapwsgidmecidwtls4 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "wap-wsg-idm-ecid-wtls4",
 			BitSize: 113,
-			F:       elliptic2.F(113, 9, 0),
+			F:       internal.F(113, 9, 0),
 			A:       internal.HI("0x003088250ca6e7c7fe649ce85820f7"),
 			B:       internal.HI("0x00e8bee4d3e2260744188be0e9c723"),
 			Gx:      internal.HI("0x009d73616f35f4ab1407d73562c10f"),
@@ -61,11 +61,11 @@ func initAll() {
 		},
 	)
 
-	wapwsgidmecidwtls5 = elliptic2.NewCurve(
+	wapwsgidmecidwtls5 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "wap-wsg-idm-ecid-wtls5",
 			BitSize: 163,
-			F:       elliptic2.F(163, 8, 2, 1, 0),
+			F:       internal.F(163, 8, 2, 1, 0),
 			A:       internal.HI("0x072546b5435234a422e0789675f432c89435de5242"),
 			B:       internal.HI("0x00c9517d06d5240d3cff38c74b20b6cd4d6f9dd4d9"),
 			Gx:      internal.HI("0x07af69989546103d79329fcc3d74880f33bbe803cb"),
@@ -75,11 +75,11 @@ func initAll() {
 		},
 	)
 
-	wapwsgidmecidwtls10 = elliptic2.NewCurve(
+	wapwsgidmecidwtls10 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "wap-wsg-idm-ecid-wtls10",
 			BitSize: 233,
-			F:       elliptic2.F(233, 74, 0),
+			F:       internal.F(233, 74, 0),
 			A:       internal.HI("0x0"),
 			B:       internal.HI("0x1"),
 			Gx:      internal.HI("0x017232ba853a7e731af129f22ff4149563a419c26bf50a4c9d6eefad6126"),
@@ -89,11 +89,11 @@ func initAll() {
 		},
 	)
 
-	wapwsgidmecidwtls11 = elliptic2.NewCurve(
+	wapwsgidmecidwtls11 = internal.NewCurve(
 		&elliptic2.CurveParams{
 			Name:    "wap-wsg-idm-ecid-wtls11",
 			BitSize: 233,
-			F:       elliptic2.F(233, 74, 0),
+			F:       internal.F(233, 74, 0),
 			A:       internal.HI("0x1"),
 			B:       internal.HI("0x0066647ede6c332c7f8c0923bb58213b333b20e9ce4281fe115f7d8f90ad"),
 			Gx:      internal.HI("0x00fac9dfcbac8313bb2139f1bb755fef65bc391f8b36f8f8eb7371fd558b"),
