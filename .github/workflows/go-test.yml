@@ -17,8 +17,10 @@ jobs:
           - '1.25'
         os:
           - ubuntu-latest
-          - macos-latest-large
+          - ubuntu-24.04-arm
           - windows-latest
+          - windows-11-arm
+          - macos-latest
             
     runs-on: ${{ matrix.os }}
 
