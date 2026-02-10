@@ -6,7 +6,7 @@
 
 - Supports a wide range of curves including NIST, Brainpool, ANSSI, GOST, BLS, BN, MNT, NUMS, Oakley, Oscaa, Secg, and more (see the list below).
 
-- Supports go 1.15+.
+- Supports go 1.22+.
 
 - **⚠️ Warning: This library is not constant-time and is vulnerable to timing side-channel attacks when handling secret data.**
 
