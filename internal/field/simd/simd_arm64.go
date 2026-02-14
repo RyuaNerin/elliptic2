@@ -1,4 +1,4 @@
-//go:build gc && arm64 && !purego && go1.18
+//go:build gc && arm64 && !purego
 
 package simd
 
@@ -12,7 +12,6 @@ import (
 func _clmul(x, y uint64) (lo, hi uint64)
 
 func init() {
-	// arm64 always has NEON
 	hasPMULL := cpu.ARM64.HasPMULL
 
 	if hasPMULL {

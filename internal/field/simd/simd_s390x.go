@@ -1,4 +1,4 @@
-//go:build gc && s390x && !purego && go1.18
+//go:build gc && s390x && !purego
 
 package simd
 

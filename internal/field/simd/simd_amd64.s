@@ -1,4 +1,4 @@
-//go:build gc && amd64 && !purego && go1.18
+//go:build gc && amd64 && !purego
 
 #include "textflag.h"
 
@@ -34,8 +34,7 @@ inner_loop:
     
     MOVQ (SI)(R12*8), X0
     
-    // PCLMULQDQ $0x00, X1, X0
-    BYTE $0x66; BYTE $0x0F; BYTE $0x3A; BYTE $0x44; BYTE $0xC1; BYTE $0x00
+    PCLMULQDQ $0x00, X1, X0
     
     LEAQ (R11)(R12*1), R13
     
@@ -64,8 +63,7 @@ TEXT ·_clmul(SB), NOSPLIT, $0-32
     MOVQ AX, X0
     MOVQ BX, X1
     
-    // PCLMULQDQ $0x00, X1, X0
-    BYTE $0x66; BYTE $0x0F; BYTE $0x3A; BYTE $0x44; BYTE $0xC1; BYTE $0x00
+    PCLMULQDQ $0x00, X1, X0
     
     MOVQ X0, lo+16(FP)
     PSRLDQ $8, X0
