@@ -1,4 +1,4 @@
-//go:build gc && (amd64 || 386 || arm64 || arm || riscv64 || riscv64 || ppc64 || ppc64le || s390x) && !purego && go1.18
+//go:build gc && (amd64 || 386 || arm64 || arm || riscv64 || riscv64 || ppc64 || ppc64le || s390x) && !purego
 
 package simd
 
@@ -71,6 +71,16 @@ func TestCLMULWords(t *testing.T) {
 
 		clmulWordsGeneric(oGeneric[:oLen], xWords[:xWordsLen], yWords[:yWordsLen])
 		CLMULWords(oAsm[:oLen], xWords[:xWordsLen], yWords[:yWordsLen])
+
+		for idx := 0; idx < oLen; idx++ {
+			if oGeneric[idx] != oAsm[idx] {
+				t.Fatalf("mismatch at idx=%d:\ngot:  %016x\nwant: %016x",
+					idx,
+					oAsm[idx],
+					oGeneric[idx],
+				)
+			}
+		}
 	}
 }
 

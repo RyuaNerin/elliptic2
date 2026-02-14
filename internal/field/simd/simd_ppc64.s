@@ -1,4 +1,4 @@
-//go:build gc && (ppc64 || ppc64le) && !purego && go1.18
+//go:build gc && (ppc64 || ppc64le) && !purego
 
 #include "textflag.h"
 
@@ -12,8 +12,8 @@ TEXT ·_clmul(SB), NOSPLIT, $0-32
     MOVD R4, R5
     MTVSRD V1, R5
     
-    // vpmsumd V2, V0, V1
-    WORD $0x10400448
+    VPMSUMD V2, V0, V1
+    WORD $0x10400C48
     
     MFVSRD R5, V2
     MOVD R5, lo+16(FP)

@@ -1,4 +1,4 @@
-//go:build gc && 386 && !purego && go1.18
+//go:build gc && 386 && !purego
 
 package simd
 

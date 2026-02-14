@@ -1,4 +1,4 @@
-//go:build gc && amd64 && !purego && go1.18
+//go:build gc && amd64 && !purego
 
 package simd
 
