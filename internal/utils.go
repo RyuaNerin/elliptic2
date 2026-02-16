@@ -73,18 +73,6 @@ func HB(s string) []byte {
 	return b
 }
 
-func Equals(b1, b2 []byte) bool {
-	if len(b1) != len(b2) {
-		return false
-	}
-	for i := range b1 {
-		if b1[i] != b2[i] {
-			return false
-		}
-	}
-	return true
-}
-
 // Int returns a uniform random value in [0, max). It panics if max <= 0, and
 // returns an error if rand.Read returns one.
 func Int(rand io.Reader, max *big.Int) (n *big.Int, err error) {

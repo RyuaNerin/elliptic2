@@ -8,6 +8,7 @@ import (
 	"github.com/RyuaNerin/elliptic2"
 	"github.com/RyuaNerin/elliptic2/internal"
 	"github.com/RyuaNerin/elliptic2/internal/curve"
+	"github.com/stretchr/testify/require"
 )
 
 type Point struct {
@@ -50,8 +51,6 @@ type ScalarBaseMultTestCase struct {
 
 func TC(t *testing.T, curves []CurveTestCases, f func(*testing.T, elliptic2.Curve, CurveTestCases)) {
 	for _, curveTests := range curves {
-		curveTests := curveTests
-
 		t.Run(
 			fmt.Sprintf("%s/%s", GetCurveType(curveTests.Curve), GetName(curveTests.Curve)),
 			func(t *testing.T) {
@@ -83,8 +82,6 @@ func TcOp[
 // Test IsOnCurve
 func TcIsOnCurve(t *testing.T, curveTestCases []CurveTestCases) {
 	for _, curveTests := range curveTestCases {
-		curveTests := curveTests
-
 		t.Run(
 			fmt.Sprintf("%s/%s", GetCurveType(curveTests.Curve), GetName(curveTests.Curve)),
 			func(t *testing.T) {
@@ -97,8 +94,6 @@ func TcIsOnCurve(t *testing.T, curveTestCases []CurveTestCases) {
 // Test ComputeY
 func TcComputeY(t *testing.T, curveTestCases []CurveTestCases) {
 	for _, curveTests := range curveTestCases {
-		curveTests := curveTests
-
 		t.Run(
 			fmt.Sprintf("%s/%s", GetCurveType(curveTests.Curve), GetName(curveTests.Curve)),
 			func(t *testing.T) {
@@ -114,18 +109,11 @@ func testIsOnCurve(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases)
 
 	if G != nil {
 		pSave.Set(*G)
-		if !curve.IsOnCurve(G.X, G.Y) {
-			t.Errorf("G is not on curve\nX: %s\nY: %s", G.X.Text(16), G.Y.Text(16))
-			return
-		}
-		if pSave.X.Cmp(G.X) != 0 {
-			t.Errorf("G.X modified")
-			return
-		}
-		if pSave.Y.Cmp(G.Y) != 0 {
-			t.Errorf("G.Y modified")
-			return
-		}
+
+		require.True(t, curve.IsOnCurve(G.X, G.Y), "Generator is not on curve\nX: %s\nY: %s", G.X.Text(16), G.Y.Text(16))
+
+		require.True(t, pSave.X.Cmp(G.X) == 0, "G.X modified")
+		require.True(t, pSave.Y.Cmp(G.Y) == 0, "G.Y modified")
 	}
 
 	test := func(pointName string, p Point) bool {
@@ -135,19 +123,11 @@ func testIsOnCurve(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases)
 
 		pSave.Set(p)
 
-		if !curve.IsOnCurve(p.X, p.Y) {
-			t.Errorf("%s is not on curve\nX: %s\nY: %s", pointName, p.X.Text(16), p.Y.Text(16))
-			return false
-		}
+		require.True(t, curve.IsOnCurve(p.X, p.Y), "%s is not on curve\nX: %s\nY: %s", pointName, p.X.Text(16), p.Y.Text(16))
 
-		if pSave.X.Cmp(p.X) != 0 {
-			t.Errorf("x modified")
-			return false
-		}
-		if pSave.Y.Cmp(p.Y) != 0 {
-			t.Errorf("y modified")
-			return false
-		}
+		require.True(t, pSave.X.Cmp(p.X) == 0, "x modified")
+		require.True(t, pSave.Y.Cmp(p.Y) == 0, "y modified")
+
 		return true
 	}
 
@@ -179,19 +159,10 @@ func testIsOnCurve(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases)
 	for idx, tc := range testCase.InvalidP {
 		pSave.Set(tc)
 
-		if curve.IsOnCurve(tc.X, tc.Y) {
-			t.Errorf("InvalidP[%d] is on curve\nX: %s\nY: %s", idx, tc.X.Text(16), tc.Y.Text(16))
-			return
-		}
+		require.False(t, curve.IsOnCurve(tc.X, tc.Y), "InvalidP[%d] is on curve\nX: %s\nY: %s", idx, tc.X.Text(16), tc.Y.Text(16))
 
-		if pSave.X.Cmp(tc.X) != 0 {
-			t.Errorf("x modified")
-			return
-		}
-		if pSave.Y.Cmp(tc.Y) != 0 {
-			t.Errorf("y modified")
-			return
-		}
+		require.True(t, pSave.X.Cmp(tc.X) == 0, "x modified")
+		require.True(t, pSave.Y.Cmp(tc.Y) == 0, "y modified")
 	}
 }
 
@@ -211,49 +182,34 @@ func testComputeY(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) 
 		pSaveX.Set(p.X)
 
 		ySmall := c.ComputeY(p.X, false)
-		if ySmall == nil {
-			t.Errorf("%s: ComputeY returned nil\nX: %s", pointName, p.X.Text(16))
-			return false
-		}
+		require.NotNil(t, ySmall, "%s: ComputeY returned nil\nX: %s", pointName, p.X.Text(16))
+
 		yLarge := c.ComputeY(p.X, true)
-		if yLarge == nil {
-			t.Errorf("%s: ComputeY returned nil\nX: %s", pointName, p.X.Text(16))
-			return false
-		}
+		require.NotNil(t, yLarge, "%s: ComputeY returned nil\nX: %s", pointName, p.X.Text(16))
 
-		if !c.IsOnCurve(p.X, ySmall) {
-			t.Errorf("%s: Computed Y (small) is not on curve\nX: %s\nY: %s", pointName, p.X.Text(16), ySmall.Text(16))
-			return false
-		}
-		if !c.IsOnCurve(p.X, yLarge) {
-			t.Errorf("%s: Computed Y (large) is not on curve\nX: %s\nY: %s", pointName, p.X.Text(16), yLarge.Text(16))
-			return false
-		}
-		if ySmall.Cmp(yLarge) != 0 && ySmall.Cmp(yLarge) != -1 {
-			t.Errorf("%s: small Y is bigger than large Y\nX: %s\nY1: %s\nY2: %s",
-				pointName,
-				p.X.Text(16),
-				ySmall.Text(16),
-				yLarge.Text(16),
-			)
-			return false
-		}
+		require.True(t, c.IsOnCurve(p.X, ySmall), "%s: Computed Y (small) is not on curve\nX: %s\nY: %s", pointName, p.X.Text(16), ySmall.Text(16))
+		require.True(t, c.IsOnCurve(p.X, yLarge), "%s: Computed Y (large) is not on curve\nX: %s\nY: %s", pointName, p.X.Text(16), yLarge.Text(16))
 
-		if ySmall.Cmp(p.Y) != 0 && yLarge.Cmp(p.Y) != 0 {
-			t.Errorf("%s: Computed Y mismatch\nX:      %s\ngot Y1: %s\ngot Y2: %s\nwant Y: %s",
-				pointName,
-				p.X.Text(16),
-				ySmall.Text(16),
-				yLarge.Text(16),
-				p.Y.Text(16),
-			)
-			return false
-		}
+		require.True(t,
+			ySmall.Cmp(yLarge) <= 0,
+			"%s: small Y is bigger than large Y\nX: %s\nY1: %s\nY2: %s",
+			pointName,
+			p.X.Text(16),
+			ySmall.Text(16),
+			yLarge.Text(16),
+		)
 
-		if pSaveX.Cmp(p.X) != 0 {
-			t.Errorf("x modified")
-			return false
-		}
+		require.True(t,
+			ySmall.Cmp(p.Y) == 0 || yLarge.Cmp(p.Y) == 0,
+			"%s: Computed Y mismatch\nX:      %s\ngot Y1: %s\ngot Y2: %s\nwant Y: %s",
+			pointName,
+			p.X.Text(16),
+			ySmall.Text(16),
+			yLarge.Text(16),
+			p.Y.Text(16),
+		)
+
+		require.True(t, pSaveX.Cmp(p.X) == 0, "x modified")
 
 		return true
 	}
@@ -298,31 +254,14 @@ func TAdd(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) {
 		p2s.Set(p2)
 
 		p3x, p3y := curve.Add(p1.X, p1.Y, p2.X, p2.Y)
-		if p3x.Cmp(pWant.X) != 0 {
-			t.Errorf("Add[%d]: Add X mismatch:\ngot:  %s\nwant: %s", idx, p3x.Text(16), pWant.X.Text(16))
-			return
-		}
-		if p3y.Cmp(pWant.Y) != 0 {
-			t.Errorf("Add[%d]: Add Y mismatch:\ngot:  %s\nwant: %s", idx, p3y.Text(16), pWant.Y.Text(16))
-			return
-		}
 
-		if p1.X.Cmp(p1s.X) != 0 {
-			t.Errorf("x1 modified")
-			return
-		}
-		if p1.Y.Cmp(p1s.Y) != 0 {
-			t.Errorf("y1 modified")
-			return
-		}
-		if p2.X.Cmp(p2s.X) != 0 {
-			t.Errorf("x2 modified")
-			return
-		}
-		if p2.Y.Cmp(p2s.Y) != 0 {
-			t.Errorf("y2 modified")
-			return
-		}
+		require.True(t, p3x.Cmp(pWant.X) == 0, "Add[%d]: Add X mismatch:\ngot:  %s\nwant: %s", idx, p3x.Text(16), pWant.X.Text(16))
+		require.True(t, p3y.Cmp(pWant.Y) == 0, "Add[%d]: Add Y mismatch:\ngot:  %s\nwant: %s", idx, p3y.Text(16), pWant.Y.Text(16))
+
+		require.True(t, p1.X.Cmp(p1s.X) == 0, "x1 modified")
+		require.True(t, p1.Y.Cmp(p1s.Y) == 0, "y1 modified")
+		require.True(t, p2.X.Cmp(p2s.X) == 0, "x2 modified")
+		require.True(t, p2.Y.Cmp(p2s.Y) == 0, "y2 modified")
 
 		p1.Set(pWant)
 	}
@@ -342,23 +281,12 @@ func TDouble(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) {
 		p1Save.Set(p1)
 
 		p3x, p3y := curve.Double(p1.X, p1.Y)
-		if p3x.Cmp(pWant.X) != 0 {
-			t.Errorf("Double[%d]: X mismatch:\ngot:  %s\nwant: %s", idx, p3x.Text(16), pWant.X.Text(16))
-			return
-		}
-		if p3y.Cmp(pWant.Y) != 0 {
-			t.Errorf("Double[%d]: Y mismatch:\ngot:  %s\nwant: %s", idx, p3y.Text(16), pWant.Y.Text(16))
-			return
-		}
 
-		if p1.X.Cmp(p1Save.X) != 0 {
-			t.Errorf("x1 modified")
-			return
-		}
-		if p1.Y.Cmp(p1Save.Y) != 0 {
-			t.Errorf("y1 modified")
-			return
-		}
+		require.True(t, p3x.Cmp(pWant.X) == 0, "Double[%d]: X mismatch:\ngot:  %s\nwant: %s", idx, p3x.Text(16), pWant.X.Text(16))
+		require.True(t, p3y.Cmp(pWant.Y) == 0, "Double[%d]: Y mismatch:\ngot:  %s\nwant: %s", idx, p3y.Text(16), pWant.Y.Text(16))
+
+		require.True(t, p1.X.Cmp(p1Save.X) == 0, "x1 modified")
+		require.True(t, p1.Y.Cmp(p1Save.Y) == 0, "y1 modified")
 	}
 }
 
@@ -386,27 +314,13 @@ func TMult(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) {
 		p1Save.Set(p1)
 
 		p3x, p3y := curve.ScalarMult(p1.X, p1.Y, k)
-		if p3x.Cmp(pWant.X) != 0 {
-			t.Errorf("ScalarMult[%d]: Add X mismatch:\ngot:  %s\nwant: %s", idx, p3x.Text(16), pWant.X.Text(16))
-			return
-		}
-		if p3y.Cmp(pWant.Y) != 0 {
-			t.Errorf("ScalarMult[%d]: Add Y mismatch:\ngot:  %s\nwant: %s", idx, p3y.Text(16), pWant.Y.Text(16))
-			return
-		}
 
-		if p1.X.Cmp(p1Save.X) != 0 {
-			t.Errorf("x1 modified")
-			return
-		}
-		if p1.Y.Cmp(p1Save.Y) != 0 {
-			t.Errorf("y1 modified")
-			return
-		}
-		if !internal.Equals(k, k) {
-			t.Errorf("k modified")
-			return
-		}
+		require.True(t, p3x.Cmp(pWant.X) == 0, "ScalarMult[%d]: Add X mismatch:\ngot:  %s\nwant: %s", idx, p3x.Text(16), pWant.X.Text(16))
+		require.True(t, p3y.Cmp(pWant.Y) == 0, "ScalarMult[%d]: Add Y mismatch:\ngot:  %s\nwant: %s", idx, p3y.Text(16), pWant.Y.Text(16))
+
+		require.True(t, p1.X.Cmp(p1Save.X) == 0, "x1 modified")
+		require.True(t, p1.Y.Cmp(p1Save.Y) == 0, "y1 modified")
+		require.Equal(t, k, kSave, "k modified")
 
 		p1.X.Set(pWant.X)
 		p1.Y.Set(pWant.Y)
@@ -434,27 +348,13 @@ func TBaseMult(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) {
 		copy(kSave, k)
 
 		x, y := curve.ScalarBaseMult(k)
-		if x.Cmp(want.X) != 0 {
-			t.Errorf("ScalarBaseMult[%d]: X mismatch:\ngot:  %s\nwant: %s", idx, x.Text(16), want.X.Text(16))
-			return
-		}
-		if y.Cmp(want.Y) != 0 {
-			t.Errorf("ScalarBaseMult[%d]: Y mismatch:\ngot:  %s\nwant: %s", idx, y.Text(16), want.Y.Text(16))
-			return
-		}
 
-		if GSave.X.Cmp(G.X) != 0 {
-			t.Errorf("G.X modified")
-			return
-		}
-		if GSave.Y.Cmp(G.Y) != 0 {
-			t.Errorf("G.Y modified")
-			return
-		}
-		if !internal.Equals(k, kSave) {
-			t.Errorf("k modified")
-			return
-		}
+		require.True(t, x.Cmp(want.X) == 0, "ScalarBaseMult[%d]: X mismatch:\ngot:  %s\nwant: %s", idx, x.Text(16), want.X.Text(16))
+		require.True(t, y.Cmp(want.Y) == 0, "ScalarBaseMult[%d]: Y mismatch:\ngot:  %s\nwant: %s", idx, y.Text(16), want.Y.Text(16))
+
+		require.True(t, GSave.X.Cmp(G.X) == 0, "G.X modified")
+		require.True(t, GSave.Y.Cmp(G.Y) == 0, "G.Y modified")
+		require.Equal(t, k, kSave, "k modified")
 	}
 }
 
@@ -468,7 +368,6 @@ func TestCoordinates[
 	curves ...elliptic2.Curve,
 ) {
 	for _, c := range curves {
-		c := c
 		t.Run(
 			fmt.Sprintf("%s/%s", GetCurveType(c), GetName(c)),
 			func(t *testing.T) {
@@ -481,7 +380,7 @@ func TestCoordinates[
 
 				var gotX, gotY big.Int
 
-				for i := 0; i < 100; i++ {
+				for range 100 {
 					k := GetRandomK(c)
 					wantX, wantY := c.ScalarBaseMult(k)
 
@@ -489,13 +388,8 @@ func TestCoordinates[
 					op.ToCoordinate(&coords, wantX, wantY)
 					op.ToAffinePoint(&gotX, &gotY, &coords)
 
-					if wantX.Cmp(&gotX) != 0 || wantY.Cmp(&gotY) != 0 {
-						t.Fatalf("ConvertPoint failed:\ngot:  (%s, %s)\nwant: (%s, %s)",
-							gotX.String(), gotY.String(),
-							wantX.String(), wantY.String(),
-						)
-						return
-					}
+					require.True(t, wantX.Cmp(&gotX) == 0, "ConvertPoint X mismatch:\ngot:  %s\nwant: %s", gotX.String(), wantX.String())
+					require.True(t, wantY.Cmp(&gotY) == 0, "ConvertPoint Y mismatch:\ngot:  %s\nwant: %s", gotY.String(), wantY.String())
 				}
 			},
 		)
@@ -519,7 +413,7 @@ func TestCurveMadd(t *testing.T, curves ...curve.CurveArithmeticBase) {
 				cSimple := cSimple.(elliptic2.Curve)
 				cMadd := cMadd.(elliptic2.Curve)
 
-				for i := 0; i < 100; i++ {
+				for range 100 {
 					k := GetRandomK(cSimple)
 
 					var wantx1, wanty1 *big.Int
@@ -528,12 +422,8 @@ func TestCurveMadd(t *testing.T, curves ...curve.CurveArithmeticBase) {
 					wantx1, wanty1 = cSimple.ScalarBaseMult(k)
 					gotx1, goty1 = cMadd.ScalarBaseMult(k)
 
-					if wantx1.Cmp(gotx1) != 0 || wanty1.Cmp(goty1) != 0 {
-						t.Fatalf("ScalarBaseMult mismatch:\ngot:  (%s, %s)\nwant: (%s, %s)",
-							gotx1.Text(16), goty1.Text(16),
-							wantx1.Text(16), wanty1.Text(16),
-						)
-					}
+					require.True(t, wantx1.Cmp(gotx1) == 0, "ScalarBaseMult X mismatch:\ngot:  %s\nwant: %s", gotx1.Text(16), wantx1.Text(16))
+					require.True(t, wanty1.Cmp(goty1) == 0, "ScalarBaseMult Y mismatch:\ngot:  %s\nwant: %s", goty1.Text(16), wanty1.Text(16))
 				}
 			},
 		)
@@ -556,11 +446,9 @@ func TestMadd[
 			fmt.Sprintf("%s/%s", GetCurveType(c), GetName(c)),
 			func(t *testing.T) {
 				cb := curve.GetBase(c)
+
 				op, ok := any(newOp(cb)).(MaddOpType)
-				if !ok {
-					t.Fatalf("Curve %s does not support GFpExtendedOperator", GetName(c))
-					return
-				}
+				require.True(t, ok, "Curve %s does not support MaddOperator", GetName(c))
 
 				modulus := cb.Modulus()
 
@@ -576,7 +464,7 @@ func TestMadd[
 
 				var gotX, gotY, wantX, wantY big.Int
 
-				for i := 0; i < 100; i++ {
+				for range 100 {
 					k[1] ^= k[0]
 					k[0] += 1
 
@@ -589,13 +477,7 @@ func TestMadd[
 					op.ToAffinePoint(&gotX, &gotY, &dstAdd)
 					op.ToAffinePoint(&wantX, &wantY, &dstMadd)
 
-					if gotX.Cmp(&wantX) != 0 || gotY.Cmp(&wantY) != 0 {
-						t.Fatalf("Madd failed:\ngot:  (%s, %s)\nwant: (%s, %s)",
-							gotX.String(), gotY.String(),
-							wantX.String(), wantY.String(),
-						)
-						return
-					}
+					require.True(t, gotX.Cmp(&wantX) == 0 && gotY.Cmp(&wantY) == 0, "Madd failed:\ngot:  (%s, %s)\nwant: (%s, %s)", gotX.String(), gotY.String(), wantX.String(), wantY.String())
 				}
 			},
 		)

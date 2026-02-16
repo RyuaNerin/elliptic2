@@ -10,7 +10,6 @@ import (
 
 func B(b *testing.B, f func(*testing.B, elliptic2.Curve), curves ...elliptic.Curve) {
 	for _, c := range curves {
-		c := c
 		b.Run(GetName(c), func(b *testing.B) {
 			f(b, c)
 		})

@@ -11,6 +11,7 @@ import (
 
 	"github.com/RyuaNerin/elliptic2/internal/field"
 	"github.com/RyuaNerin/elliptic2/internal/field/simd"
+	"github.com/stretchr/testify/require"
 )
 
 func testInvValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus []*field.Modulus) {
@@ -26,7 +27,7 @@ func testInvValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus 
 		one.SetModulus(m)
 
 		for iter := 0; iter < 10; iter++ {
-			fillWords(x)
+			fillWords(t, x)
 
 			inv.Mul(x, inv.Inv(x))
 			inv.Reduce()
@@ -49,28 +50,27 @@ func testSqrValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus 
 		mul.SetModulus(m)
 		sqr.SetModulus(m)
 
-		for iter := 0; iter < 10; iter++ {
-			fillWords(x)
+		for range 10 {
+			fillWords(t, x)
 
 			mul.Mul(x, x)
 			sqr.Sqr(x)
 
-			if mul.Cmp(sqr) != 0 {
-				t.Errorf("x * x != x^2\nx:    %s\ngot:  %s\nwant: %s", x.Text(16), sqr.Text(16), mul.Text(16))
-				return
-			}
+			require.True(t, mul.Cmp(sqr) == 0, "x * x != x^2\nx:    %s\ngot:  %s\nwant: %s", x.Text(16), sqr.Text(16), mul.Text(16))
 		}
 	}
 }
 
-func fillWords[E any, EP field.GF[E]](z EP) {
+func fillWords[E any, EP field.GF[E]](t testing.TB, z EP) {
 	bitSize := z.Modulus().BitLen()
 
 	wordLen := ((bitSize + simd.WordBitSize - 1) / simd.WordBitSize)
 	buf := make([]byte, wordLen*simd.WordByteSize)
 
 	for {
-		rand.Read(buf)
+		_, err := rand.Read(buf)
+		require.NoError(t, err)
+
 		z.SetBytes(buf)
 		z.Reduce()
 
@@ -147,21 +147,20 @@ func tArg[E any, GF field.GF[E]](
 
 			fnOperation(dst, fields[:len(args)]...)
 
-			if dst.ToBigInt(&dstInt).Cmp(want) != 0 {
-				t.Errorf(
-					"TestCase[%d]/%s[%d]: invaild result\ngot:  %s\nwant: %s",
-					inputIdx,
-					testName, inputIdx,
-					dst.Text(16),
-					want.Text(16),
-				)
-			}
+			require.True(t,
+				dst.ToBigInt(&dstInt).Cmp(want) == 0,
+				"%d: %s[%d]: invalid result\ngot:  %s\nwant: %s",
+				idx, testName, inputIdx,
+				dst.Text(16),
+				want.Text(16),
+			)
 		}
 
 		for aidx := 0; aidx < 3; aidx++ {
-			if argBackup[aidx].Cmp(tc.arg[aidx]) != 0 {
-				t.Errorf("%d: arg[%d] modified", idx, aidx)
-			}
+			require.True(t,
+				argBackup[aidx].Cmp(tc.arg[aidx]) == 0,
+				"%d: arg[%d] modified", idx, aidx,
+			)
 		}
 	}
 }
@@ -182,8 +181,8 @@ func bArg[E any, GF field.GF[E]](
 			x.SetModulus(m)
 			y.SetModulus(m)
 
-			fillWords(x)
-			fillWords(y)
+			fillWords(b, x)
+			fillWords(b, y)
 
 			b.ReportAllocs()
 			b.ResetTimer()
