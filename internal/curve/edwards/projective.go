@@ -14,7 +14,7 @@ type projectiveOp struct {
 
 var _ curve.GFpOperator = (*projectiveOp)(nil)
 
-func SelectProjectiveOp(params *CurveParams) func(c *Curve) curve.GFpOperator {
+func SelectProjectiveOp(*CurveParams) func(c *Curve) curve.GFpOperator {
 	return NewProjective
 }
 

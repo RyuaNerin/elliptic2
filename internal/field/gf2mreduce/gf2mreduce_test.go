@@ -1,14 +1,12 @@
 package gf2mreduce
 
 import (
-	"bufio"
 	"fmt"
-	"hash/fnv"
 	"io"
 	"math/big"
-	"math/rand"
 	"testing"
 
+	"github.com/RyuaNerin/elliptic2/internal"
 	"github.com/RyuaNerin/elliptic2/internal/field/simd"
 	"github.com/stretchr/testify/require"
 )
@@ -19,12 +17,6 @@ func TestHash(t *testing.T) {
 
 	h := hash(input)
 	require.Equal(t, want, h, "Hash mismatch for input=%v", input)
-}
-
-func newRnd(poly []int) io.Reader {
-	h := fnv.New32a()
-	fmt.Fprintf(h, "%v", poly)
-	return bufio.NewReaderSize(rand.New(rand.NewSource(int64(h.Sum32()))), 1<<20) // BufferSize: 1 MiB
 }
 
 func fill(t testing.TB, r io.Reader, buf []byte, input []big.Word) {
@@ -59,7 +51,7 @@ func TestReduce(t *testing.T) {
 			}
 
 			testReduce(test)
-			testReduceRandom(t, poly, test)
+			testReduceRandom(t, test)
 		})
 	}
 }
@@ -102,37 +94,34 @@ func testReduce(test func(input []big.Word)) {
 	test(input[:])
 }
 
-func testReduceRandom(t *testing.T, poly []int, test func(input []big.Word)) {
+func testReduceRandom(t *testing.T, test func(input []big.Word)) {
 	var input [2 * simd.Words]big.Word
 	buf := make([]byte, len(input)*simd.WordByteSize)
 
-	rnd := newRnd(poly)
-
 	for range 1_000 {
-		fill(t, rnd, buf, input[:])
+		fill(t, internal.Random, buf, input[:])
 		test(input[:])
 	}
 }
 
 func BenchmarkReduce(b *testing.B) {
-	bench := func(poly []int, fn func(output, input []big.Word)) func(b *testing.B) {
+	bench := func(fn func(output, input []big.Word)) func(b *testing.B) {
 		return func(b *testing.B) {
 			var input [2 * simd.Words]big.Word
 			var output [simd.Words]big.Word
 			buf := make([]byte, len(input)*simd.WordByteSize)
 
-			rnd := newRnd(poly)
-			fill(b, rnd, buf, input[:])
+			fill(b, internal.Random, buf, input[:])
 
 			b.ResetTimer()
-			for i := 0; i < b.N; i++ {
+			for range b.N {
 				fn(output[:], input[:])
 			}
 		}
 	}
 
 	for _, poly := range reduces {
-		b.Run(fmt.Sprintf("Optimized/poly=%v", poly), bench(poly, GetReduceFunction(poly)))
-		b.Run(fmt.Sprintf("Generic/poly=%v", poly), bench(poly, newGenericReduce(poly)))
+		b.Run(fmt.Sprintf("Optimized/poly=%v", poly), bench(GetReduceFunction(poly)))
+		b.Run(fmt.Sprintf("Generic/poly=%v", poly), bench(newGenericReduce(poly)))
 	}
 }

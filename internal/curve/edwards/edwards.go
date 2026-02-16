@@ -56,7 +56,7 @@ func BuildOp(params *CurveParams, fnNewOp func(c *Curve) curve.GFpOperator) *Cur
 
 func (c *Curve) RawParams() any                      { return &c.CurveParams }
 func (c *Curve) Modulus() *field.Modulus             { return c.P }
-func (c *Curve) FieldType() curve.FieldType          { return curve.FieldTypeGFp }
+func (Curve) FieldType() curve.FieldType             { return curve.FieldTypeGFp }
 func (c *Curve) Generator() (x, y *big.Int, ok bool) { return c.Gx, c.Gy, c.withGenerator }
 func (c *Curve) NewOperator() curve.GFpOperator      { return c.newOperator(c) }
 

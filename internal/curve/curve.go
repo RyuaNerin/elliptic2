@@ -22,7 +22,7 @@ const (
 	5        106.1%   132.5%   145.8%   314.8%    560.8%   252.0%
 	6        114.9%   144.1%   157.9%   339.7%    567.2%   264.7%
 	*/
-	maddWindowSize = 4
+	maddWindowSize = 4 // must be >= 2
 	maddTableSize  = 1 << (maddWindowSize - 1)
 )
 
@@ -230,7 +230,7 @@ func computeWNAF(naf []int8, k []byte) []int8 {
 
 	totalBits := len(k) * 8
 
-	for i := 0; i < totalBits; i++ {
+	for i := range totalBits {
 		bytePos := i >> 3
 		bitPos := uint(i & 7)
 
@@ -242,7 +242,7 @@ func computeWNAF(naf []int8, k []byte) []int8 {
 
 		// w비트 윈도우 추출 (현재 위치부터 w비트)
 		var window int16
-		for j := 0; j < w; j++ {
+		for j := range w {
 			bp := (i + j) >> 3
 			bt := uint((i + j) & 7)
 			if bp < len(buf) {

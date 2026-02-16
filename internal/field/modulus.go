@@ -23,7 +23,7 @@ func GF2mPolynomials(f ...int) *big.Int {
 	}
 
 	ret := new(big.Int)
-	ret.SetBits(make([]big.Word, (mavP+63)/64))
+	ret.SetBits(make([]big.Word, (mavP+simd.WordBitSize-1)/simd.WordBitSize))
 	for _, v := range f {
 		ret.SetBit(ret, v, 1)
 	}
@@ -121,7 +121,7 @@ func (poly *Modulus) findGamma() *GF2m {
 	gamma.SetModulus(poly)
 
 	shifted := big.NewInt(1)
-	for i := 0; i < poly.bits; i++ {
+	for range poly.bits {
 		gamma.SetBigInt(shifted)
 		if gamma.Trace() == 1 {
 			result := new(GF2m)

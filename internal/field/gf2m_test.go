@@ -8,7 +8,7 @@ import (
 	. "github.com/RyuaNerin/elliptic2/internal/field"
 )
 
-func gf2m(m *GF2m) {}
+func gf2m(_ *GF2m) {}
 
 func TestGF2mInvValidation(t *testing.T) { testInvValidation(t, gf2m, gf2mModulus) }
 func TestGF2mSqrValidation(t *testing.T) { testSqrValidation(t, gf2m, gf2mModulus) }

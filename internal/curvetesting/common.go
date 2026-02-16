@@ -1,15 +1,13 @@
 package curvetesting
 
 import (
-	"bufio"
 	"crypto/elliptic"
+	"crypto/rand"
 	"fmt"
 	"math/big"
-	"math/rand"
 	"testing"
 
 	"github.com/RyuaNerin/elliptic2"
-	"github.com/RyuaNerin/elliptic2/internal"
 	"github.com/RyuaNerin/elliptic2/internal/curve"
 	"github.com/RyuaNerin/elliptic2/internal/curve/edwards"
 	"github.com/RyuaNerin/elliptic2/internal/curve/montgomery"
@@ -18,9 +16,6 @@ import (
 	"github.com/RyuaNerin/elliptic2/internal/curve/weierstrassprime"
 	"github.com/stretchr/testify/require"
 )
-
-// var Random = bufio.NewReaderSize(rand.Reader, 1<<15)
-var Random = bufio.NewReaderSize(rand.New(rand.NewSource(0)), 1<<15)
 
 func W[
 	TCurveArithmetic curve.CurveArithmeticBase,
@@ -88,7 +83,7 @@ func GetName(c elliptic2.Curve) string {
 	panic(fmt.Sprintf("unsupported curve: %T", c))
 }
 
-func GetRandomK(c elliptic2.Curve) []byte {
+func GetRandomK(t testing.TB, c elliptic2.Curve) []byte {
 	var n *big.Int
 
 	if base := curve.GetBase(c); base != nil {
@@ -98,37 +93,9 @@ func GetRandomK(c elliptic2.Curve) []byte {
 	if curveStd, ok := c.(elliptic.Curve); ok {
 		n = curveStd.Params().N
 	}
+	require.NotNil(t, n, "curve has no order")
 
-	if n == nil {
-		panic(fmt.Sprintf("unsupported curve: %T", c))
-	}
-
-	k, _ := internal.Int(Random, n)
+	k, err := rand.Int(rand.Reader, n)
+	require.NoError(t, err)
 	return k.Bytes()
-}
-
-func RequireIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int) bool {
-	require.True(t, curve.IsOnCurve(x, y), "point not on curve")
-	return true
-}
-
-func RequireGenerator(t testing.TB, c elliptic2.Curve) bool {
-	if base := curve.GetBase(c); base != nil {
-		_, _, ok := base.Generator()
-		if ok {
-			return true
-		}
-	}
-
-	curveStd, ok := c.(elliptic.Curve)
-	if ok {
-		p := curveStd.Params()
-		if p.Gx != nil && p.Gy != nil && p.Gx.Sign() != 0 && p.Gy.Sign() != 0 {
-			return true
-		}
-	}
-
-	t.Logf("skipping test: curve %s has no generator", GetName(c))
-	t.SkipNow()
-	return false
 }

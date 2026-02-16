@@ -1,0 +1,55 @@
+version: "2"
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+
+linters:
+  default: none
+
+  enable:
+    - bodyclose
+    - copyloopvar
+    - dogsled
+    - dupl
+    - errname
+    - errcheck
+    - errorlint
+    - gocheckcompilerdirectives
+    - goconst
+    - gocritic
+    - gocyclo
+    - prealloc
+    - godox
+    - goprintffuncname
+    - govet
+    - ineffassign
+    - intrange
+    - misspell
+    - nakedret
+    - noctx
+    - nolintlint
+    - revive
+    - staticcheck
+    - testifylint
+    - unconvert
+    - unused
+    - whitespace
+  settings:
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+  exclusions:
+    rules:
+      - path: internal/curve/curve_(.+)\.go
+        linters:
+          - dupl
+      - path: internal/curve/(.+)/(.+)_test\.go
+        linters:
+          - dupl
+
+formatters:
+  enable:
+    - gofumpt
+    - goimports

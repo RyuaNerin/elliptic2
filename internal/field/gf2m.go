@@ -35,7 +35,7 @@ func (z *GF2m) ToBigInt(x *big.Int) *big.Int { return z.toBigInt(x) }
 //////////////////////////////////////////////////
 
 func (z *GF2m) Set(x *GF2m) *GF2m {
-	z.nat.set(&x.nat)
+	z.set(&x.nat)
 	return z
 }
 
@@ -66,7 +66,7 @@ func (z *GF2m) SetBigInt(x *big.Int) *GF2m {
 
 //////////////////////////////////////////////////
 
-func (z *GF2m) Cmp(x *GF2m) int { return z.nat.cmp(&x.nat) }
+func (z *GF2m) Cmp(x *GF2m) int { return z.cmp(&x.nat) }
 
 func (z *GF2m) Sign() int {
 	if z.IsZero() {
@@ -115,18 +115,18 @@ func (z *GF2m) SetBit(x *GF2m, i int, b uint) *GF2m {
 
 //////////////////////////////////////////////////
 
-func (z *GF2m) Lsh(x *GF2m, n uint) *GF2m {
+func (GF2m) Lsh(*GF2m, uint) *GF2m {
 	panic("gf2m: Lsh is not supported")
 }
 
-func (z *GF2m) Rsh(x *GF2m, n uint) *GF2m {
+func (GF2m) Rsh(*GF2m, uint) *GF2m {
 	panic("gf2m: Rsh is not supported")
 }
 
 //////////////////////////////////////////////////
 
 func (z *GF2m) Add(x, y *GF2m) *GF2m {
-	for idx := 0; idx < z.modulus.WordLen(); idx++ {
+	for idx := range z.modulus.WordLen() {
 		z.words[idx] = x.words[idx] ^ y.words[idx]
 	}
 	return z
@@ -141,11 +141,11 @@ func (z *GF2m) Mul(x, y *GF2m) *GF2m {
 
 	var prod [2 * simd.Words]big.Word
 
-	for a := 0; a < n; a++ {
+	for a := range n {
 		if x.words[a] == 0 {
 			continue
 		}
-		for b := 0; b < n; b++ {
+		for b := range n {
 			if y.words[b] == 0 {
 				continue
 			}
@@ -165,7 +165,7 @@ func (z *GF2m) Sqr(x *GF2m) *GF2m {
 
 	var prod [2 * simd.Words]big.Word
 
-	for i := 0; i < n; i++ {
+	for i := range n {
 		lo, hi := simd.ExpandBits(x.words[i])
 		prod[2*i+0] = lo
 		prod[2*i+1] = hi
@@ -185,7 +185,7 @@ func (z *GF2m) Sqrt(x *GF2m) *GF2m {
 	}
 
 	z.Set(x)
-	for i := 0; i < z.modulus.bits-1; i++ {
+	for range z.modulus.bits - 1 {
 		z.Sqr(z)
 	}
 
@@ -200,7 +200,7 @@ func (z *GF2m) HalfTrace(a *GF2m) *GF2m {
 	tmp.Set(a)
 
 	z.Set(a)
-	for i := 0; i < m/2; i++ {
+	for range m / 2 {
 		tmp.Sqr(&tmp)
 		tmp.Sqr(&tmp)
 		z.Add(z, &tmp)
@@ -220,12 +220,12 @@ func (z *GF2m) SolveQuadraticEven(w, gamma *GF2m) *GF2m {
 	inner.setZero()
 	gammaPow.Set(gamma)
 
-	for i := 0; i < m; i++ {
+	for i := range m {
 		if i > 0 {
 			var wPow GF2m
 			wPow.SetModulus(z.modulus)
 			wPow.Set(w)
-			for j := 0; j < i-1; j++ {
+			for range i - 1 {
 				wPow.Sqr(&wPow)
 			}
 			inner.Add(inner, &wPow)
@@ -335,7 +335,7 @@ func lshXor(dst, src []big.Word, shift uint) {
 	var tmp [1 + simd.Words]big.Word
 
 	// Shift src into tmp
-	for i := 0; i < len(src); i++ {
+	for i := range src {
 		if src[i] == 0 {
 			continue
 		}

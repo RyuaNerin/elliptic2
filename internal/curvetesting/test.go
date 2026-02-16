@@ -110,10 +110,8 @@ func testIsOnCurve(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases)
 	if G != nil {
 		pSave.Set(*G)
 
-		require.True(t, curve.IsOnCurve(G.X, G.Y), "Generator is not on curve\nX: %s\nY: %s", G.X.Text(16), G.Y.Text(16))
-
-		require.True(t, pSave.X.Cmp(G.X) == 0, "G.X modified")
-		require.True(t, pSave.Y.Cmp(G.Y) == 0, "G.Y modified")
+		RequireIsOnCurve(t, curve, G.X, G.Y, "G")
+		RequireXYUnmodified(t, &pSave, G, "G")
 	}
 
 	test := func(pointName string, p Point) bool {
@@ -123,10 +121,8 @@ func testIsOnCurve(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases)
 
 		pSave.Set(p)
 
-		require.True(t, curve.IsOnCurve(p.X, p.Y), "%s is not on curve\nX: %s\nY: %s", pointName, p.X.Text(16), p.Y.Text(16))
-
-		require.True(t, pSave.X.Cmp(p.X) == 0, "x modified")
-		require.True(t, pSave.Y.Cmp(p.Y) == 0, "y modified")
+		RequireIsOnCurve(t, curve, p.X, p.Y, pointName)
+		RequireXYUnmodified(t, &pSave, &p, pointName)
 
 		return true
 	}
@@ -159,10 +155,8 @@ func testIsOnCurve(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases)
 	for idx, tc := range testCase.InvalidP {
 		pSave.Set(tc)
 
-		require.False(t, curve.IsOnCurve(tc.X, tc.Y), "InvalidP[%d] is on curve\nX: %s\nY: %s", idx, tc.X.Text(16), tc.Y.Text(16))
-
-		require.True(t, pSave.X.Cmp(tc.X) == 0, "x modified")
-		require.True(t, pSave.Y.Cmp(tc.Y) == 0, "y modified")
+		RequireNotIsOnCurve(t, curve, tc.X, tc.Y, fmt.Sprintf("InvalidP[%d]", idx))
+		RequireXYUnmodified(t, &pSave, &tc, fmt.Sprintf("InvalidP[%d]", idx))
 	}
 }
 
@@ -175,70 +169,59 @@ func testComputeY(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) 
 		return
 	}
 
-	test := func(pointName string, p Point) bool {
+	test := func(pointName string, p Point) {
 		if p.X == nil || (p.X.Sign() == 0) {
-			return true
+			return
 		}
 		pSaveX.Set(p.X)
 
 		ySmall := c.ComputeY(p.X, false)
-		require.NotNil(t, ySmall, "%s: ComputeY returned nil\nX: %s", pointName, p.X.Text(16))
+		require.NotNil(t, ySmall, "%s: ComputeY returned nil\n  X: %s", pointName, p.X.String())
 
 		yLarge := c.ComputeY(p.X, true)
-		require.NotNil(t, yLarge, "%s: ComputeY returned nil\nX: %s", pointName, p.X.Text(16))
+		require.NotNil(t, yLarge, "%s: ComputeY returned nil\n  X: %s", pointName, p.X.String())
 
-		require.True(t, c.IsOnCurve(p.X, ySmall), "%s: Computed Y (small) is not on curve\nX: %s\nY: %s", pointName, p.X.Text(16), ySmall.Text(16))
-		require.True(t, c.IsOnCurve(p.X, yLarge), "%s: Computed Y (large) is not on curve\nX: %s\nY: %s", pointName, p.X.Text(16), yLarge.Text(16))
+		RequireIsOnCurve(t, curve, p.X, ySmall, fmt.Sprintf("%s.Y (small)", pointName))
+		RequireIsOnCurve(t, curve, p.X, yLarge, fmt.Sprintf("%s.Y (large)", pointName))
 
-		require.True(t,
-			ySmall.Cmp(yLarge) <= 0,
-			"%s: small Y is bigger than large Y\nX: %s\nY1: %s\nY2: %s",
+		require.LessOrEqual(t,
+			ySmall.Cmp(yLarge), 0,
+			"%s: small Y is bigger than large Y\n  X:  %s\n  Y1: %s\n  Y2: %s",
 			pointName,
-			p.X.Text(16),
-			ySmall.Text(16),
-			yLarge.Text(16),
+			p.X.String(),
+			ySmall.String(),
+			yLarge.String(),
 		)
-
 		require.True(t,
 			ySmall.Cmp(p.Y) == 0 || yLarge.Cmp(p.Y) == 0,
-			"%s: Computed Y mismatch\nX:      %s\ngot Y1: %s\ngot Y2: %s\nwant Y: %s",
+			"%s: Computed Y mismatch\n  X:      %s\n  got Y1: %s\n  got Y2: %s\n  want Y: %s",
 			pointName,
-			p.X.Text(16),
-			ySmall.Text(16),
-			yLarge.Text(16),
-			p.Y.Text(16),
+			p.X.String(),
+			ySmall.String(),
+			yLarge.String(),
+			p.Y.String(),
 		)
 
-		require.True(t, pSaveX.Cmp(p.X) == 0, "x modified")
-
-		return true
+		RequireUnmodified(t, &pSaveX, p.X, "X")
 	}
 
 	for idx, tc := range testCase.P {
-		if !test(fmt.Sprintf("ScalarBaseMult[%d].P", idx), tc) {
-			return
-		}
+		test(fmt.Sprintf("ScalarBaseMult[%d].P", idx), tc)
 	}
 	for idx, tc := range testCase.Add {
-		if !test(fmt.Sprintf("Adds[%d]", idx), tc) {
-			return
-		}
+		test(fmt.Sprintf("Adds[%d]", idx), tc)
 	}
 	for idx, tc := range testCase.Double {
-		if !test(fmt.Sprintf("Doubles[%d]", idx), tc) {
-			return
-		}
+		test(fmt.Sprintf("Doubles[%d]", idx), tc)
 	}
 	for idx, tc := range testCase.ScalarMult {
-		if !test(fmt.Sprintf("ScalarMult[%d]", idx), tc) {
-			return
-		}
+		test(fmt.Sprintf("ScalarMult[%d]", idx), tc)
 	}
 }
 
 // TAdd
 func TAdd(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) {
-	var p1, p1s, p2s Point
+	var p1, p1Save, p2Save Point
 
 	p1.Set(testCase.P[0])
 	for idx, pWant := range testCase.Add {
@@ -250,18 +233,15 @@ func TAdd(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) {
 		*/
 		p2 := testCase.P[idx]
 
-		p1s.Set(p1)
-		p2s.Set(p2)
+		p1Save.Set(p1)
+		p2Save.Set(p2)
 
 		p3x, p3y := curve.Add(p1.X, p1.Y, p2.X, p2.Y)
 
-		require.True(t, p3x.Cmp(pWant.X) == 0, "Add[%d]: Add X mismatch:\ngot:  %s\nwant: %s", idx, p3x.Text(16), pWant.X.Text(16))
-		require.True(t, p3y.Cmp(pWant.Y) == 0, "Add[%d]: Add Y mismatch:\ngot:  %s\nwant: %s", idx, p3y.Text(16), pWant.Y.Text(16))
+		RequireXYEquals(t, &pWant, &Point{X: p3x, Y: p3y}, fmt.Sprintf("Add[%d]", idx))
 
-		require.True(t, p1.X.Cmp(p1s.X) == 0, "x1 modified")
-		require.True(t, p1.Y.Cmp(p1s.Y) == 0, "y1 modified")
-		require.True(t, p2.X.Cmp(p2s.X) == 0, "x2 modified")
-		require.True(t, p2.Y.Cmp(p2s.Y) == 0, "y2 modified")
+		RequireXYUnmodified(t, &p1Save, &p1, fmt.Sprintf("Add[%d].P1", idx))
+		RequireXYUnmodified(t, &p2Save, &p2, fmt.Sprintf("Add[%d].P2", idx))
 
 		p1.Set(pWant)
 	}
@@ -282,11 +262,8 @@ func TDouble(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) {
 
 		p3x, p3y := curve.Double(p1.X, p1.Y)
 
-		require.True(t, p3x.Cmp(pWant.X) == 0, "Double[%d]: X mismatch:\ngot:  %s\nwant: %s", idx, p3x.Text(16), pWant.X.Text(16))
-		require.True(t, p3y.Cmp(pWant.Y) == 0, "Double[%d]: Y mismatch:\ngot:  %s\nwant: %s", idx, p3y.Text(16), pWant.Y.Text(16))
-
-		require.True(t, p1.X.Cmp(p1Save.X) == 0, "x1 modified")
-		require.True(t, p1.Y.Cmp(p1Save.Y) == 0, "y1 modified")
+		RequireXYEquals(t, &pWant, &Point{X: p3x, Y: p3y}, fmt.Sprintf("Double[%d]", idx))
+		RequireXYUnmodified(t, &p1Save, &p1, fmt.Sprintf("Double[%d].P1", idx))
 	}
 }
 
@@ -315,12 +292,9 @@ func TMult(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) {
 
 		p3x, p3y := curve.ScalarMult(p1.X, p1.Y, k)
 
-		require.True(t, p3x.Cmp(pWant.X) == 0, "ScalarMult[%d]: Add X mismatch:\ngot:  %s\nwant: %s", idx, p3x.Text(16), pWant.X.Text(16))
-		require.True(t, p3y.Cmp(pWant.Y) == 0, "ScalarMult[%d]: Add Y mismatch:\ngot:  %s\nwant: %s", idx, p3y.Text(16), pWant.Y.Text(16))
-
-		require.True(t, p1.X.Cmp(p1Save.X) == 0, "x1 modified")
-		require.True(t, p1.Y.Cmp(p1Save.Y) == 0, "y1 modified")
-		require.Equal(t, k, kSave, "k modified")
+		RequireXYEquals(t, &pWant, &Point{X: p3x, Y: p3y}, fmt.Sprintf("ScalarMult[%d]", idx))
+		RequireXYUnmodified(t, &p1Save, &p1, fmt.Sprintf("ScalarMult[%d].P1", idx))
+		require.Equal(t, kSave, k, "k modified")
 
 		p1.X.Set(pWant.X)
 		p1.Y.Set(pWant.Y)
@@ -349,12 +323,9 @@ func TBaseMult(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) {
 
 		x, y := curve.ScalarBaseMult(k)
 
-		require.True(t, x.Cmp(want.X) == 0, "ScalarBaseMult[%d]: X mismatch:\ngot:  %s\nwant: %s", idx, x.Text(16), want.X.Text(16))
-		require.True(t, y.Cmp(want.Y) == 0, "ScalarBaseMult[%d]: Y mismatch:\ngot:  %s\nwant: %s", idx, y.Text(16), want.Y.Text(16))
-
-		require.True(t, GSave.X.Cmp(G.X) == 0, "G.X modified")
-		require.True(t, GSave.Y.Cmp(G.Y) == 0, "G.Y modified")
-		require.Equal(t, k, kSave, "k modified")
+		RequireXYEquals(t, &want, &Point{X: x, Y: y}, fmt.Sprintf("ScalarBaseMult[%d]", idx))
+		RequireXYUnmodified(t, &GSave, G, "G")
+		require.Equal(t, kSave, k, "k modified")
 	}
 }
 
@@ -381,15 +352,14 @@ func TestCoordinates[
 				var gotX, gotY big.Int
 
 				for range 100 {
-					k := GetRandomK(c)
+					k := GetRandomK(t, c)
 					wantX, wantY := c.ScalarBaseMult(k)
 
 					op := newOp(cb)
 					op.ToCoordinate(&coords, wantX, wantY)
 					op.ToAffinePoint(&gotX, &gotY, &coords)
 
-					require.True(t, wantX.Cmp(&gotX) == 0, "ConvertPoint X mismatch:\ngot:  %s\nwant: %s", gotX.String(), wantX.String())
-					require.True(t, wantY.Cmp(&gotY) == 0, "ConvertPoint Y mismatch:\ngot:  %s\nwant: %s", gotY.String(), wantY.String())
+					RequireXYEquals(t, &Point{X: wantX, Y: wantY}, &Point{X: &gotX, Y: &gotY}, "ConvertPoint")
 				}
 			},
 		)
@@ -409,12 +379,12 @@ func TestCurveMadd(t *testing.T, curves ...curve.CurveArithmeticBase) {
 					return
 				}
 
-				// for hide deprecated warning
+				// hide deprecated warning
 				cSimple := cSimple.(elliptic2.Curve)
 				cMadd := cMadd.(elliptic2.Curve)
 
 				for range 100 {
-					k := GetRandomK(cSimple)
+					k := GetRandomK(t, cSimple)
 
 					var wantx1, wanty1 *big.Int
 					var gotx1, goty1 *big.Int
@@ -422,8 +392,8 @@ func TestCurveMadd(t *testing.T, curves ...curve.CurveArithmeticBase) {
 					wantx1, wanty1 = cSimple.ScalarBaseMult(k)
 					gotx1, goty1 = cMadd.ScalarBaseMult(k)
 
-					require.True(t, wantx1.Cmp(gotx1) == 0, "ScalarBaseMult X mismatch:\ngot:  %s\nwant: %s", gotx1.Text(16), wantx1.Text(16))
-					require.True(t, wanty1.Cmp(goty1) == 0, "ScalarBaseMult Y mismatch:\ngot:  %s\nwant: %s", goty1.Text(16), wanty1.Text(16))
+					require.Equal(t, wantx1, gotx1, "ScalarBaseMult X mismatch")
+					require.Equal(t, wanty1, goty1, "ScalarBaseMult Y mismatch")
 				}
 			},
 		)
@@ -441,7 +411,6 @@ func TestMadd[
 	curves ...elliptic2.Curve,
 ) {
 	for _, c := range curves {
-		c := c
 		t.Run(
 			fmt.Sprintf("%s/%s", GetCurveType(c), GetName(c)),
 			func(t *testing.T) {
@@ -458,7 +427,7 @@ func TestMadd[
 				CP(&dstAdd).SetModulus(modulus)
 				CP(&dstMadd).SetModulus(modulus)
 
-				k := GetRandomK(c)
+				k := GetRandomK(t, c)
 				x1, y1 := c.ScalarBaseMult(k)
 				op.ToCoordinate(&p1, x1, y1)
 
@@ -477,7 +446,8 @@ func TestMadd[
 					op.ToAffinePoint(&gotX, &gotY, &dstAdd)
 					op.ToAffinePoint(&wantX, &wantY, &dstMadd)
 
-					require.True(t, gotX.Cmp(&wantX) == 0 && gotY.Cmp(&wantY) == 0, "Madd failed:\ngot:  (%s, %s)\nwant: (%s, %s)", gotX.String(), gotY.String(), wantX.String(), wantY.String())
+					require.Equal(t, wantX, gotX, "Add X mismatch")
+					require.Equal(t, wantY, gotY, "Add Y mismatch")
 				}
 			},
 		)

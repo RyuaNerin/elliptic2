@@ -71,18 +71,18 @@ func NewJacobianAm3(c *Curve) curve.GFpOperator {
 	return op
 }
 
-func (op *jacobianOp) SetInfinity(coords *curve.GFpCoordinate) {
+func (jacobianOp) SetInfinity(coords *curve.GFpCoordinate) {
 	// X Y Z = 0 1 0
 	coords[0].SetInt64(0) // X == 0
 	coords[1].SetInt64(1) // Y == 1
 	coords[2].SetInt64(0) // Z == 0
 }
 
-func (op *jacobianOp) IsInfinity(coords *curve.GFpCoordinate) bool {
+func (jacobianOp) IsInfinity(coords *curve.GFpCoordinate) bool {
 	return coords[2].Sign() == 0 // Z == 0
 }
 
-func (op *jacobianOp) ToCoordinate(coords *curve.GFpCoordinate, x, y *big.Int) {
+func (jacobianOp) ToCoordinate(coords *curve.GFpCoordinate, x, y *big.Int) {
 	coords[0].SetBigInt(x)
 	coords[1].SetBigInt(y)
 	coords[2].SetInt64(1)
