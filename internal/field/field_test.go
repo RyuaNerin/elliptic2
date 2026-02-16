@@ -9,6 +9,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/RyuaNerin/elliptic2/internal/curvetesting"
 	"github.com/RyuaNerin/elliptic2/internal/field"
 	"github.com/RyuaNerin/elliptic2/internal/field/simd"
 	"github.com/stretchr/testify/require"
@@ -26,16 +27,18 @@ func testInvValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus 
 		inv.SetModulus(m)
 		one.SetModulus(m)
 
-		for iter := 0; iter < 10; iter++ {
+		for range 10 {
 			fillWords(t, x)
 
 			inv.Mul(x, inv.Inv(x))
 			inv.Reduce()
 
-			if inv.Cmp(one) != 0 {
-				t.Errorf("x * x^(-1) != 1. got: %s", inv.Text(16))
-				return
-			}
+			require.Equal(t, one, inv, "x * x^(-1) != 1")
+			require.Zero(t,
+				inv.Cmp(one),
+				"x * x^(-1) != 1\n  x:   %s\n  inv: %s\n",
+				x.String(), inv.String(),
+			)
 		}
 	}
 }
@@ -56,7 +59,11 @@ func testSqrValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus 
 			mul.Mul(x, x)
 			sqr.Sqr(x)
 
-			require.True(t, mul.Cmp(sqr) == 0, "x * x != x^2\nx:    %s\ngot:  %s\nwant: %s", x.Text(16), sqr.Text(16), mul.Text(16))
+			require.Zero(t,
+				mul.Cmp(sqr),
+				"x * x != x^2, x: %s\nmul: %s\nsqr: %s",
+				x.String(), mul.String(), sqr.String(),
+			)
 		}
 	}
 }
@@ -122,7 +129,7 @@ func tArg[E any, GF field.GF[E]](
 	}
 	dst := (GF)(new(E))
 
-	var dstInt big.Int
+	var dstInt *big.Int
 
 	testName := runtime.FuncForPC(reflect.ValueOf(fnOperation).Pointer()).Name()
 	if idx := strings.LastIndex(testName, "."); idx >= 0 {
@@ -147,20 +154,16 @@ func tArg[E any, GF field.GF[E]](
 
 			fnOperation(dst, fields[:len(args)]...)
 
-			require.True(t,
-				dst.ToBigInt(&dstInt).Cmp(want) == 0,
-				"%d: %s[%d]: invalid result\ngot:  %s\nwant: %s",
+			dstInt = dst.ToBigInt(dstInt)
+			curvetesting.RequireEqual(t,
+				want, dstInt,
+				"%d: %s[%d]: invalid result",
 				idx, testName, inputIdx,
-				dst.Text(16),
-				want.Text(16),
 			)
 		}
 
-		for aidx := 0; aidx < 3; aidx++ {
-			require.True(t,
-				argBackup[aidx].Cmp(tc.arg[aidx]) == 0,
-				"%d: arg[%d] modified", idx, aidx,
-			)
+		for aidx := range 3 {
+			curvetesting.RequireUnmodified(t, &argBackup[aidx], tc.arg[aidx], "%d: arg[%d]", idx, aidx)
 		}
 	}
 }
@@ -187,7 +190,7 @@ func bArg[E any, GF field.GF[E]](
 			b.ReportAllocs()
 			b.ResetTimer()
 
-			for i := 0; i < b.N; i++ {
+			for range b.N {
 				fnOperation(dst, x, y)
 			}
 		})

@@ -35,8 +35,8 @@ func testP256() {
 		panic(err)
 	}
 	fmt.Println("Private Key D:", fmt.Sprintf("%x", privLib.D))
-	fmt.Println("Public Key X:", fmt.Sprintf("%x", privLib.PublicKey.X))
-	fmt.Println("Public Key Y:", fmt.Sprintf("%x", privLib.PublicKey.Y))
+	fmt.Println("Public Key X:", fmt.Sprintf("%x", privLib.X))
+	fmt.Println("Public Key Y:", fmt.Sprintf("%x", privLib.Y))
 	fmt.Println("Curve Name :", privLib.Curve.Params().Name)
 	fmt.Println("Curve == standard library P-256 ?", privLib.Curve == elliptic.P256())
 	fmt.Println("Curve == elliptic2/nist P-256 ?", privLib.Curve == nist.P256())
@@ -156,7 +156,7 @@ func testCustomCurve() {
 		curveWithoutGExt := curveWithoutG.(elliptic2.CurveExtended)
 
 		// Generate Random G point
-		for retry := 0; retry < 1000; retry++ {
+		for range 1000 {
 			fmt.Println("Generating random point G on the curve...")
 			var err error
 			gx, err = rand.Int(rand.Reader, p)
@@ -229,8 +229,8 @@ func testCustomCurve() {
 		panic(err)
 	}
 	fmt.Println("Private Key D:", fmt.Sprintf("%x", key.D))
-	fmt.Println("Public Key X:", fmt.Sprintf("%x", key.PublicKey.X))
-	fmt.Println("Public Key Y:", fmt.Sprintf("%x", key.PublicKey.Y))
+	fmt.Println("Public Key X:", fmt.Sprintf("%x", key.X))
+	fmt.Println("Public Key Y:", fmt.Sprintf("%x", key.Y))
 	fmt.Println("Curve Name :", key.Curve.Params().Name)
 	fmt.Println("Curve == standard library P-256 ?", key.Curve == elliptic.P256())
 	fmt.Println("Curve == elliptic2/nist P-256 ?", key.Curve == nist.P256())

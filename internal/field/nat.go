@@ -28,7 +28,7 @@ func (z *nat) toBigInt(x *big.Int) *big.Int {
 - return 1  if z > x
 */
 func (z *nat) cmp(x *nat) int {
-	for idx := 0; idx < len(z.words); idx++ {
+	for idx := range len(z.words) {
 		off := len(z.words) - 1 - idx
 		zw, xw := z.words[off], x.words[off]
 		if zw < xw {
@@ -43,7 +43,7 @@ func (z *nat) cmp(x *nat) int {
 
 func (z *nat) isZero() bool {
 	var w big.Word
-	for idx := 0; idx < len(z.words); idx++ {
+	for idx := range len(z.words) {
 		w |= z.words[idx]
 	}
 	return w == 0
@@ -80,7 +80,7 @@ func (z *nat) setWord(x big.Word) *nat {
 	return z
 }
 
-func (z *nat) setUint64(x uint64) *nat {
+func (z *nat) setUint64(x uint64) (zz *nat) {
 	// single-word value
 	if w := big.Word(x); uint64(w) == x {
 		z.setWord(w)

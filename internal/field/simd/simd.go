@@ -36,7 +36,7 @@ func clmulWordsGeneric(z, x, y []big.Word) {
 }
 
 func clmulGeneric(a, b big.Word) (lo, hi big.Word) {
-	for i := 0; i < WordBitSize; i++ {
+	for i := range WordBitSize {
 		if (b>>i)&1 != 0 {
 			lo ^= a << i
 			if i > 0 {

@@ -14,7 +14,7 @@ type affineOp struct {
 
 var _ curve.GFpOperator = (*affineOp)(nil)
 
-func SelectAffine(params *CurveParams) NewOpFunc {
+func SelectAffine(*CurveParams) NewOpFunc {
 	return NewAffine
 }
 
@@ -27,21 +27,21 @@ func NewAffine(c *Curve) curve.GFpOperator {
 	return op
 }
 
-func (op *affineOp) SetInfinity(coords *curve.GFpCoordinate) {
+func (affineOp) SetInfinity(coords *curve.GFpCoordinate) {
 	coords[0].SetInt64(0)
 	coords[1].SetInt64(1)
 }
 
-func (op *affineOp) IsInfinity(coords *curve.GFpCoordinate) bool {
+func (affineOp) IsInfinity(coords *curve.GFpCoordinate) bool {
 	return coords[0].Sign() == 0
 }
 
-func (op *affineOp) ToCoordinate(coords *curve.GFpCoordinate, x, y *big.Int) {
+func (affineOp) ToCoordinate(coords *curve.GFpCoordinate, x, y *big.Int) {
 	coords[0].SetBigInt(x)
 	coords[1].SetBigInt(y)
 }
 
-func (op *affineOp) ToAffinePoint(x, y *big.Int, coords *curve.GFpCoordinate) {
+func (affineOp) ToAffinePoint(x, y *big.Int, coords *curve.GFpCoordinate) {
 	coords[0].ToBigInt(x)
 	coords[1].ToBigInt(y)
 }

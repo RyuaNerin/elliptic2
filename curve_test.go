@@ -3,10 +3,11 @@ package elliptic2_test
 import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
+	"runtime"
 	"testing"
 
 	"github.com/RyuaNerin/elliptic2"
-	"github.com/RyuaNerin/elliptic2/internal/curvetesting"
+	"github.com/RyuaNerin/elliptic2/internal"
 	. "github.com/RyuaNerin/elliptic2/internal/curvetesting"
 	"github.com/RyuaNerin/elliptic2/nist"
 	"github.com/stretchr/testify/require"
@@ -49,96 +50,105 @@ func BenchmarkLib(b *testing.B) {
 func test(std elliptic.Curve, lib elliptic.Curve) func(t *testing.T) {
 	return func(t *testing.T) {
 		t.Run("Add", func(t *testing.T) {
+			// disable deprecation warning of ScalarBaseMult
 			std, lib := std.(elliptic2.Curve), lib.(elliptic2.Curve)
-			for i := 0; i < 100; i++ {
-				x1, y1 := std.ScalarBaseMult(GetRandomK(std))
-				x2, y2 := std.ScalarBaseMult(GetRandomK(std))
 
-				RequireIsOnCurve(t, std, x1, y1)
-				RequireIsOnCurve(t, std, x2, y2)
+			for range 100 {
+				x1, y1 := std.ScalarBaseMult(GetRandomK(t, std))
+				x2, y2 := std.ScalarBaseMult(GetRandomK(t, std))
 
-				RequireIsOnCurve(t, lib, x1, y1)
-				RequireIsOnCurve(t, lib, x2, y2)
+				RequireIsOnCurve(t, std, x1, y1, "input point 1 (std)")
+				RequireIsOnCurve(t, std, x2, y2, "input point 2 (std)")
+				RequireIsOnCurve(t, lib, x1, y1, "input point 1 (lib)")
+				RequireIsOnCurve(t, lib, x2, y2, "input point 2 (lib)")
 
 				xStd, yStd := std.Add(x1, y1, x2, y2)
 				xLib, yLib := lib.Add(x1, y1, x2, y2)
 
-				RequireIsOnCurve(t, std, xStd, yStd)
-				RequireIsOnCurve(t, std, xLib, yLib)
-				RequireIsOnCurve(t, lib, xStd, yStd)
-				RequireIsOnCurve(t, lib, xLib, yLib)
+				RequireIsOnCurve(t, std, xStd, yStd, "Add result (std on std)")
+				RequireIsOnCurve(t, std, xLib, yLib, "Add result (lib on std)")
+				RequireIsOnCurve(t, lib, xStd, yStd, "Add result (std on lib)")
+				RequireIsOnCurve(t, lib, xLib, yLib, "Add result (lib on lib)")
 
-				require.True(t, xStd.Cmp(xLib) == 0 && yStd.Cmp(yLib) == 0, "Add failed:\ngot:  (%s, %s)\nwant: (%s, %s)", xLib.String(), yLib.String(), xStd.String(), yStd.String())
+				RequireXYEquals(t, &Point{X: xStd, Y: yStd}, &Point{X: xLib, Y: yLib}, "Add result")
 			}
 		})
 		t.Run("Double", func(t *testing.T) {
+			// disable deprecation warning of ScalarBaseMult
 			std, lib := std.(elliptic2.Curve), lib.(elliptic2.Curve)
-			for i := 0; i < 100; i++ {
-				x1, y1 := std.ScalarBaseMult(GetRandomK(std))
-				RequireIsOnCurve(t, std, x1, y1)
-				RequireIsOnCurve(t, lib, x1, y1)
+
+			for range 100 {
+				x1, y1 := std.ScalarBaseMult(GetRandomK(t, std))
+
+				RequireIsOnCurve(t, std, x1, y1, "input point (std)")
+				RequireIsOnCurve(t, lib, x1, y1, "input point (lib)")
 
 				xStd, yStd := std.Double(x1, y1)
 				xLib, yLib := lib.Double(x1, y1)
 
-				RequireIsOnCurve(t, std, xStd, yStd)
-				RequireIsOnCurve(t, std, xLib, yLib)
-				RequireIsOnCurve(t, lib, xStd, yStd)
-				RequireIsOnCurve(t, lib, xLib, yLib)
+				RequireIsOnCurve(t, std, xStd, yStd, "Double result (std on std)")
+				RequireIsOnCurve(t, std, xLib, yLib, "Double result (lib on std)")
+				RequireIsOnCurve(t, lib, xStd, yStd, "Double result (std on lib)")
+				RequireIsOnCurve(t, lib, xLib, yLib, "Double result (lib on lib)")
 
-				require.True(t, xStd.Cmp(xLib) == 0 && yStd.Cmp(yLib) == 0, "Double failed:\ngot:  (%s, %s)\nwant: (%s, %s)", xLib.String(), yLib.String(), xStd.String(), yStd.String())
+				RequireXYEquals(t, &Point{X: xStd, Y: yStd}, &Point{X: xLib, Y: yLib}, "Double result")
 			}
 		})
 		t.Run("ScalarMult", func(t *testing.T) {
+			// disable deprecation warning of ScalarBaseMult
 			std, lib := std.(elliptic2.Curve), lib.(elliptic2.Curve)
-			for i := 0; i < 100; i++ {
-				k := GetRandomK(std)
-				x1, y1 := std.ScalarBaseMult(GetRandomK(std))
-				RequireIsOnCurve(t, std, x1, y1)
-				RequireIsOnCurve(t, lib, x1, y1)
+
+			for range 100 {
+				k := GetRandomK(t, std)
+				x1, y1 := std.ScalarBaseMult(GetRandomK(t, std))
+
+				RequireIsOnCurve(t, std, x1, y1, "input point (std)")
+				RequireIsOnCurve(t, lib, x1, y1, "input point (lib)")
 
 				xStd, yStd := std.ScalarMult(x1, y1, k)
 				xLib, yLib := lib.ScalarMult(x1, y1, k)
 
-				RequireIsOnCurve(t, std, xStd, yStd)
-				RequireIsOnCurve(t, std, xLib, yLib)
-				RequireIsOnCurve(t, lib, xStd, yStd)
-				RequireIsOnCurve(t, lib, xLib, yLib)
+				RequireIsOnCurve(t, std, xStd, yStd, "ScalarMult result (std on std)")
+				RequireIsOnCurve(t, std, xLib, yLib, "ScalarMult result (lib on std)")
+				RequireIsOnCurve(t, lib, xStd, yStd, "ScalarMult result (std on lib)")
+				RequireIsOnCurve(t, lib, xLib, yLib, "ScalarMult result (lib on lib)")
 
-				require.True(t, xStd.Cmp(xLib) == 0 && yStd.Cmp(yLib) == 0, "ScalarMult failed:\ngot:  (%s, %s)\nwant: (%s, %s)", xLib.String(), yLib.String(), xStd.String(), yStd.String())
+				RequireXYEquals(t, &Point{X: xStd, Y: yStd}, &Point{X: xLib, Y: yLib}, "ScalarMult result")
 			}
 		})
 		t.Run("ScalarBaseMult", func(t *testing.T) {
+			// disable deprecation warning of ScalarBaseMult
 			std, lib := std.(elliptic2.Curve), lib.(elliptic2.Curve)
-			for i := 0; i < 100; i++ {
-				k := GetRandomK(std)
+
+			for range 100 {
+				k := GetRandomK(t, std)
 
 				xStd, yStd := std.ScalarBaseMult(k)
 				xLib, yLib := lib.ScalarBaseMult(k)
 
-				RequireIsOnCurve(t, std, xStd, yStd)
-				RequireIsOnCurve(t, std, xLib, yLib)
-				RequireIsOnCurve(t, lib, xStd, yStd)
-				RequireIsOnCurve(t, lib, xLib, yLib)
+				RequireIsOnCurve(t, std, xStd, yStd, "ScalarBaseMult result (std on std)")
+				RequireIsOnCurve(t, std, xLib, yLib, "ScalarBaseMult result (lib on std)")
+				RequireIsOnCurve(t, lib, xStd, yStd, "ScalarBaseMult result (std on lib)")
+				RequireIsOnCurve(t, lib, xLib, yLib, "ScalarBaseMult result (lib on lib)")
 
-				require.True(t, xStd.Cmp(xLib) == 0 && yStd.Cmp(yLib) == 0, "ScalarBaseMult failed:\ngot:  (%s, %s)\nwant: (%s, %s)", xLib.String(), yLib.String(), xStd.String(), yStd.String())
+				RequireXYEquals(t, &Point{X: xStd, Y: yStd}, &Point{X: xLib, Y: yLib}, "ScalarBaseMult result")
 			}
 		})
 
 		t.Run("ECDSA/SignAndVerify", func(t *testing.T) {
 			data := []byte("Hello, World!")
 
-			privStd, err := ecdsa.GenerateKey(std, curvetesting.Random)
+			privStd, err := ecdsa.GenerateKey(std, internal.Random)
 			require.NoError(t, err)
 
 			privLib := *privStd
 			privLib.Curve = lib
 
-			for i := 0; i < 10; i++ {
-				sigStd, err := ecdsa.SignASN1(curvetesting.Random, privStd, data)
+			for range 10 {
+				sigStd, err := ecdsa.SignASN1(internal.Random, privStd, data)
 				require.NoError(t, err)
 
-				sigLib, err := ecdsa.SignASN1(curvetesting.Random, &privLib, data)
+				sigLib, err := ecdsa.SignASN1(internal.Random, &privLib, data)
 				require.NoError(t, err)
 
 				require.True(t, ecdsa.VerifyASN1(&privStd.PublicKey, data, sigStd), "std: verify failed")
@@ -161,21 +171,21 @@ func bench(c elliptic.Curve) func(b *testing.B) {
 		b.Run("ECDSA/GenerateKey", func(b *testing.B) {
 			b.ReportAllocs()
 			b.ResetTimer()
-			for i := 0; i < b.N; i++ {
-				_, err := ecdsa.GenerateKey(c, Random)
+			for range b.N {
+				_, err := ecdsa.GenerateKey(c, internal.Random)
 				require.NoError(b, err)
 			}
 		})
 		b.Run("ECDSA/Sign", func(b *testing.B) {
 			msg := []byte("Hello, World!")
 
-			priv, err := ecdsa.GenerateKey(c, Random)
+			priv, err := ecdsa.GenerateKey(c, internal.Random)
 			require.NoError(b, err)
 
 			b.ReportAllocs()
 			b.ResetTimer()
-			for i := 0; i < b.N; i++ {
-				sig, err := ecdsa.SignASN1(Random, priv, msg)
+			for range b.N {
+				sig, err := ecdsa.SignASN1(internal.Random, priv, msg)
 				require.NoError(b, err)
 				msg[0] = sig[0]
 			}
@@ -183,17 +193,20 @@ func bench(c elliptic.Curve) func(b *testing.B) {
 		b.Run("ECDSA/Verify", func(b *testing.B) {
 			msg := []byte("Hello, World!")
 
-			priv, err := ecdsa.GenerateKey(c, Random)
+			priv, err := ecdsa.GenerateKey(c, internal.Random)
 			require.NoError(b, err)
 
-			sig, err := ecdsa.SignASN1(Random, priv, msg)
+			sig, err := ecdsa.SignASN1(internal.Random, priv, msg)
 			require.NoError(b, err)
 
 			b.ReportAllocs()
 			b.ResetTimer()
-			for i := 0; i < b.N; i++ {
-				ecdsa.VerifyASN1(&priv.PublicKey, msg, sig)
+
+			var ok bool
+			for range b.N {
+				ok = ecdsa.VerifyASN1(&priv.PublicKey, msg, sig)
 			}
+			runtime.KeepAlive(ok)
 		})
 	}
 }

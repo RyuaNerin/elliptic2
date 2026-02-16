@@ -17,7 +17,7 @@ var (
 	_ curve.GF2mMaddOperator = (*jacobianOp)(nil)
 )
 
-func SelectJacobianOp(params *CurveParams) NewOpFunc {
+func SelectJacobianOp(*CurveParams) NewOpFunc {
 	return NewJacobian
 }
 

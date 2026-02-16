@@ -52,7 +52,7 @@ func newGenericReduce(poly []int) func(dst []big.Word, x []big.Word) {
 		m := poly[0]
 
 		var work [2 * simd.Words]big.Word
-		copy(work[:2*n], x[:])
+		copy(work[:2*n], x)
 
 		mWordIdx := m / simd.WordBitSize
 		mBitIdx := uint(m % simd.WordBitSize)
