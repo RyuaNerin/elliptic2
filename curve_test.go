@@ -9,6 +9,7 @@ import (
 	"github.com/RyuaNerin/elliptic2/internal/curvetesting"
 	. "github.com/RyuaNerin/elliptic2/internal/curvetesting"
 	"github.com/RyuaNerin/elliptic2/nist"
+	"github.com/stretchr/testify/require"
 )
 
 func TestWithStdCurves(t *testing.T) {
@@ -67,13 +68,7 @@ func test(std elliptic.Curve, lib elliptic.Curve) func(t *testing.T) {
 				RequireIsOnCurve(t, lib, xStd, yStd)
 				RequireIsOnCurve(t, lib, xLib, yLib)
 
-				if xStd.Cmp(xLib) != 0 || yStd.Cmp(yLib) != 0 {
-					t.Fatalf(
-						"Results differ\ngot:  (%s, %s)\nwant: (%s, %s)",
-						xLib.String(), yLib.String(),
-						xStd.String(), yStd.String(),
-					)
-				}
+				require.True(t, xStd.Cmp(xLib) == 0 && yStd.Cmp(yLib) == 0, "Add failed:\ngot:  (%s, %s)\nwant: (%s, %s)", xLib.String(), yLib.String(), xStd.String(), yStd.String())
 			}
 		})
 		t.Run("Double", func(t *testing.T) {
@@ -91,13 +86,7 @@ func test(std elliptic.Curve, lib elliptic.Curve) func(t *testing.T) {
 				RequireIsOnCurve(t, lib, xStd, yStd)
 				RequireIsOnCurve(t, lib, xLib, yLib)
 
-				if xStd.Cmp(xLib) != 0 || yStd.Cmp(yLib) != 0 {
-					t.Fatalf(
-						"Results differ\ngot:  (%s, %s)\nwant: (%s, %s)",
-						xLib.String(), yLib.String(),
-						xStd.String(), yStd.String(),
-					)
-				}
+				require.True(t, xStd.Cmp(xLib) == 0 && yStd.Cmp(yLib) == 0, "Double failed:\ngot:  (%s, %s)\nwant: (%s, %s)", xLib.String(), yLib.String(), xStd.String(), yStd.String())
 			}
 		})
 		t.Run("ScalarMult", func(t *testing.T) {
@@ -116,13 +105,7 @@ func test(std elliptic.Curve, lib elliptic.Curve) func(t *testing.T) {
 				RequireIsOnCurve(t, lib, xStd, yStd)
 				RequireIsOnCurve(t, lib, xLib, yLib)
 
-				if xStd.Cmp(xLib) != 0 || yStd.Cmp(yLib) != 0 {
-					t.Fatalf(
-						"Results differ\ngot:  (%s, %s)\nwant: (%s, %s)",
-						xLib.String(), yLib.String(),
-						xStd.String(), yStd.String(),
-					)
-				}
+				require.True(t, xStd.Cmp(xLib) == 0 && yStd.Cmp(yLib) == 0, "ScalarMult failed:\ngot:  (%s, %s)\nwant: (%s, %s)", xLib.String(), yLib.String(), xStd.String(), yStd.String())
 			}
 		})
 		t.Run("ScalarBaseMult", func(t *testing.T) {
@@ -138,13 +121,7 @@ func test(std elliptic.Curve, lib elliptic.Curve) func(t *testing.T) {
 				RequireIsOnCurve(t, lib, xStd, yStd)
 				RequireIsOnCurve(t, lib, xLib, yLib)
 
-				if xStd.Cmp(xLib) != 0 || yStd.Cmp(yLib) != 0 {
-					t.Fatalf(
-						"Results differ\ngot:  (%s, %s)\nwant: (%s, %s)",
-						xLib.String(), yLib.String(),
-						xStd.String(), yStd.String(),
-					)
-				}
+				require.True(t, xStd.Cmp(xLib) == 0 && yStd.Cmp(yLib) == 0, "ScalarBaseMult failed:\ngot:  (%s, %s)\nwant: (%s, %s)", xLib.String(), yLib.String(), xStd.String(), yStd.String())
 			}
 		})
 
@@ -152,30 +129,20 @@ func test(std elliptic.Curve, lib elliptic.Curve) func(t *testing.T) {
 			data := []byte("Hello, World!")
 
 			privStd, err := ecdsa.GenerateKey(std, curvetesting.Random)
-			if err != nil {
-				t.Fatal(err)
-			}
+			require.NoError(t, err)
 
 			privLib := *privStd
 			privLib.Curve = lib
 
 			for i := 0; i < 10; i++ {
 				sigStd, err := ecdsa.SignASN1(curvetesting.Random, privStd, data)
-				if err != nil {
-					t.Fatal(err)
-				}
+				require.NoError(t, err)
 
 				sigLib, err := ecdsa.SignASN1(curvetesting.Random, &privLib, data)
-				if err != nil {
-					t.Fatal(err)
-				}
+				require.NoError(t, err)
 
-				if !ecdsa.VerifyASN1(&privStd.PublicKey, data, sigStd) {
-					t.Fatal("std: verify failed")
-				}
-				if !ecdsa.VerifyASN1(&privLib.PublicKey, data, sigLib) {
-					t.Fatal("lib: verify failed")
-				}
+				require.True(t, ecdsa.VerifyASN1(&privStd.PublicKey, data, sigStd), "std: verify failed")
+				require.True(t, ecdsa.VerifyASN1(&privLib.PublicKey, data, sigLib), "lib: verify failed")
 
 				// Modify data to change the signature next iteration
 				data[0] ^= sigStd[0]
@@ -196,26 +163,20 @@ func bench(c elliptic.Curve) func(b *testing.B) {
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
 				_, err := ecdsa.GenerateKey(c, Random)
-				if err != nil {
-					b.Fatal(err)
-				}
+				require.NoError(b, err)
 			}
 		})
 		b.Run("ECDSA/Sign", func(b *testing.B) {
 			msg := []byte("Hello, World!")
 
 			priv, err := ecdsa.GenerateKey(c, Random)
-			if err != nil {
-				b.Fatal(err)
-			}
+			require.NoError(b, err)
 
 			b.ReportAllocs()
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
 				sig, err := ecdsa.SignASN1(Random, priv, msg)
-				if err != nil {
-					b.Fatal(err)
-				}
+				require.NoError(b, err)
 				msg[0] = sig[0]
 			}
 		})
@@ -223,21 +184,15 @@ func bench(c elliptic.Curve) func(b *testing.B) {
 			msg := []byte("Hello, World!")
 
 			priv, err := ecdsa.GenerateKey(c, Random)
-			if err != nil {
-				b.Fatal(err)
-			}
+			require.NoError(b, err)
 
 			sig, err := ecdsa.SignASN1(Random, priv, msg)
-			if err != nil {
-				b.Fatal(err)
-			}
+			require.NoError(b, err)
 
 			b.ReportAllocs()
 			b.ResetTimer()
 			for i := 0; i < b.N; i++ {
-				if !ecdsa.VerifyASN1(&priv.PublicKey, msg, sig) {
-					b.Fatal("verify failed")
-				}
+				ecdsa.VerifyASN1(&priv.PublicKey, msg, sig)
 			}
 		})
 	}

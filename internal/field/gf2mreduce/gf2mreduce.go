@@ -16,7 +16,7 @@ var (
 func GetReduceFunction(polyBits []int) ReduceFunc {
 	f, ok := funcMap[hash(polyBits)]
 	if !ok {
-		return newReduce(polyBits)
+		return newGenericReduce(polyBits)
 	}
 	return f
 }
@@ -44,7 +44,7 @@ func hash(polyBits []int) uint32 {
 	return h
 }
 
-func newReduce(poly []int) func(dst []big.Word, x []big.Word) {
+func newGenericReduce(poly []int) func(dst []big.Word, x []big.Word) {
 	n := (poly[0] + simd.WordBitSize - 1) / simd.WordBitSize
 	polyBits := poly[1:]
 

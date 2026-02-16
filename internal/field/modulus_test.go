@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/RyuaNerin/elliptic2/internal/field"
+	"github.com/stretchr/testify/require"
 )
 
 func TestFx(t *testing.T) {
@@ -12,14 +13,6 @@ func TestFx(t *testing.T) {
 	b := field.GF2mPolynomials(want...)
 	got := field.ParseGF2mPolynomials(b)
 
-	if len(want) != len(got) {
-		t.Fatalf("length mismatch:\ngot:  %d\n want: %d", len(got), len(want))
-		return
-	}
-	for i := range want {
-		if want[i] != got[i] {
-			t.Fatalf("mismatch at index %d:\ngot:  %d\nwant:  %d", i, got[i], want[i])
-			return
-		}
-	}
+	require.Len(t, got, len(want), "length mismatch")
+	require.Equal(t, want, got, "parsed polynomials do not match expected values")
 }

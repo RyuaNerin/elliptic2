@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"math/big"
 	"math/rand"
+	"testing"
 
 	"github.com/RyuaNerin/elliptic2"
 	"github.com/RyuaNerin/elliptic2/internal"
@@ -15,17 +16,11 @@ import (
 	"github.com/RyuaNerin/elliptic2/internal/curve/twistededwards"
 	"github.com/RyuaNerin/elliptic2/internal/curve/weierstrassbinary"
 	"github.com/RyuaNerin/elliptic2/internal/curve/weierstrassprime"
+	"github.com/stretchr/testify/require"
 )
 
 // var Random = bufio.NewReaderSize(rand.Reader, 1<<15)
 var Random = bufio.NewReaderSize(rand.New(rand.NewSource(0)), 1<<15)
-
-type TestingT interface {
-	Logf(format string, args ...interface{})
-	Errorf(format string, args ...interface{})
-	FailNow()
-	SkipNow()
-}
 
 func W[
 	TCurveArithmetic curve.CurveArithmeticBase,
@@ -112,16 +107,12 @@ func GetRandomK(c elliptic2.Curve) []byte {
 	return k.Bytes()
 }
 
-func RequireIsOnCurve(t TestingT, curve elliptic2.Curve, x, y *big.Int) bool {
-	if !curve.IsOnCurve(x, y) {
-		t.Errorf("point not on curve")
-		t.FailNow()
-		return false
-	}
+func RequireIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int) bool {
+	require.True(t, curve.IsOnCurve(x, y), "point not on curve")
 	return true
 }
 
-func RequireGenerator(t TestingT, c elliptic2.Curve) bool {
+func RequireGenerator(t testing.TB, c elliptic2.Curve) bool {
 	if base := curve.GetBase(c); base != nil {
 		_, _, ok := base.Generator()
 		if ok {

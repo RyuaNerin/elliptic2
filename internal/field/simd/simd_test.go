@@ -7,6 +7,8 @@ import (
 	"math/big"
 	"math/rand"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 var Random = bufio.NewReaderSize(rand.New(rand.NewSource(0)), 1<<15)
@@ -18,10 +20,12 @@ func initWord() (w big.Word) {
 	return w
 }
 
-func randomWord() (w big.Word) {
+func randomWord(t testing.TB) (w big.Word) {
 	var buf [WordBitSize / 8]byte
-	Random.Read(buf[:])
-	for b := 0; b < WordByteSize; b++ {
+	_, err := Random.Read(buf[:])
+	require.NoError(t, err)
+
+	for b := range WordByteSize {
 		w |= big.Word(buf[b]) << (8 * b)
 	}
 	return w
@@ -53,7 +57,7 @@ func TestCLMULWords(t *testing.T) {
 	xWords := make([]big.Word, Words)
 	yWords := make([]big.Word, Words)
 
-	for i := 0; i < 1_000; i++ {
+	for range 1_000 {
 		Random.Read(buf[:2])
 		xWordsLen := int(buf[0]) % cap(xWords)
 		yWordsLen := int(buf[1]) % cap(yWords)
@@ -72,50 +76,36 @@ func TestCLMULWords(t *testing.T) {
 		clmulWordsGeneric(oGeneric[:oLen], xWords[:xWordsLen], yWords[:yWordsLen])
 		CLMULWords(oAsm[:oLen], xWords[:xWordsLen], yWords[:yWordsLen])
 
-		for idx := 0; idx < oLen; idx++ {
+		for idx := range oLen {
 			if oGeneric[idx] != oAsm[idx] {
-				t.Fatalf("mismatch at idx=%d:\ngot:  %016x\nwant: %016x",
-					idx,
-					oAsm[idx],
-					oGeneric[idx],
-				)
+				require.Equal(t, oAsm[idx], oGeneric[idx], "CLMULWords mismatch at idx=%d", idx)
 			}
 		}
 	}
 }
 
 func TestCLMUL(t *testing.T) {
-	for i := 0; i < 10_000; i++ {
-		lo := randomWord()
-		hi := randomWord()
+	for range 10_000 {
+		lo := randomWord(t)
+		hi := randomWord(t)
 
 		wantLo, wantHi := clmulGeneric(lo, hi)
 		gotLo, gotHi := CLMUL(lo, hi)
 
-		if wantLo != gotLo || wantHi != gotHi {
-			t.Fatalf("mismatch:\ngot:  %016x %016x\nwant: %016x %016x",
-				gotLo, gotHi,
-				wantLo, wantHi,
-			)
-			return
-		}
+		require.True(t, wantLo == gotLo, "CLMUL Lo mismatch:\ngot:  %016x\nwant: %016x", gotLo, wantLo)
+		require.True(t, wantHi == gotHi, "CLMUL Hi mismatch:\ngot:  %016x\nwant: %016x", gotHi, wantHi)
 	}
 }
 
 func TestExpandBits64(t *testing.T) {
-	for i := 0; i < 10_000; i++ {
-		x := randomWord()
+	for range 10_000 {
+		x := randomWord(t)
 
 		wantLo, wantHi := expandBitsGeneric(x)
 		gotLo, gotHi := ExpandBits(x)
 
-		if wantLo != gotLo || wantHi != gotHi {
-			t.Fatalf("mismatch:\ngot: %016x %016x\nwant:  %016x %016x",
-				gotLo, gotHi,
-				wantLo, wantHi,
-			)
-			return
-		}
+		require.True(t, wantLo == gotLo, "ExpandBits Lo mismatch:\ngot:  %016x\nwant: %016x", gotLo, wantLo)
+		require.True(t, wantHi == gotHi, "ExpandBits Hi mismatch:\ngot:  %016x\nwant: %016x", gotHi, wantHi)
 	}
 }
 
