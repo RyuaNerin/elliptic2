@@ -74,6 +74,16 @@ func (c *Curve) Params() *elliptic.CurveParams {
 }
 
 func (c *Curve) Params2() *elliptic2.CurveParams {
+	var gx, gy *big.Int
+	if c.withGenerator {
+		if c.Gx != nil {
+			gx = new(big.Int).Set(c.Gx)
+		}
+		if c.Gy != nil {
+			gy = new(big.Int).Set(c.Gy)
+		}
+	}
+
 	return &elliptic2.CurveParams{
 		Type:    elliptic2.CurveTypeMontgomery,
 		Name:    strings.Clone(c.Name),
@@ -82,8 +92,8 @@ func (c *Curve) Params2() *elliptic2.CurveParams {
 		N:       c.N.ToBigInt(nil),
 		A:       c.A.ToBigInt(nil),
 		B:       c.B.ToBigInt(nil),
-		Gx:      new(big.Int).Set(c.Gx),
-		Gy:      new(big.Int).Set(c.Gy),
+		Gx:      gx,
+		Gy:      gy,
 	}
 }
 
