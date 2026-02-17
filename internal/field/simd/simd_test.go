@@ -1,132 +1,140 @@
-//go:build gc && (amd64 || 386 || arm64 || arm || riscv64 || ppc64 || ppc64le || s390x) && !purego
+//go:build gc && (386 || amd64 || arm || arm64 || ppc64 || ppc64le || s390x) && !purego
 
 package simd
 
 import (
 	"io"
 	"math/big"
+	"runtime"
 	"testing"
 
 	"github.com/RyuaNerin/elliptic2/internal"
 	"github.com/stretchr/testify/require"
 )
 
-func initWord() (w big.Word) {
-	for b := range WordByteSize {
-		w |= big.Word(b) << (8 * b)
-	}
-	return w
-}
+const preallocSize = 1024
 
-func randomWord(t testing.TB) (w big.Word) {
-	var buf [WordBitSize / 8]byte
-	_, err := io.ReadFull(internal.Random, buf[:])
+func randomWords(t testing.TB, dst []big.Word, buf []byte) []byte {
+	if cap(buf) < WordByteSize*len(dst) {
+		buf = make([]byte, WordByteSize*len(dst))
+	}
+
+	_, err := io.ReadFull(internal.Random, buf[:len(dst)*WordByteSize])
 	require.NoError(t, err)
 
-	for b := range WordByteSize {
-		w |= big.Word(buf[b]) << (8 * b)
-	}
-	return w
-}
+	clear(dst)
 
-func randomWords(t testing.TB, dst []big.Word, words int, buf []byte) []byte {
-	if cap(buf) < 8*len(dst) {
-		buf = make([]byte, 8*len(dst))
-	}
-
-	_, err := io.ReadFull(internal.Random, buf[:words*WordBitSize/8])
-	require.NoError(t, err)
-
-	idx := 0
-	for j := range words {
-		dst[j] = 0
+	idxBuf := 0
+	for idxDst := range dst {
 		for b := range WordByteSize {
-			dst[j] |= big.Word(buf[idx]) << (8 * b)
-			idx++
+			dst[idxDst] |= big.Word(buf[idxBuf]) << (8 * b)
+			idxBuf++
 		}
 	}
 
 	return buf
 }
 
-func TestCLMULWords(t *testing.T) {
-	buf := make([]byte, 128)
-
-	oGeneric := make([]big.Word, Words*2)
-	oAsm := make([]big.Word, Words*2)
-	xWords := make([]big.Word, Words)
-	yWords := make([]big.Word, Words)
-
-	for range 1_000 {
-		_, err := io.ReadFull(internal.Random, buf[:2])
-		require.NoError(t, err)
-
-		xWordsLen := int(buf[0]) % cap(xWords)
-		yWordsLen := int(buf[1]) % cap(yWords)
-		oLen := xWordsLen + yWordsLen
-
-		buf = randomWords(t, xWords, xWordsLen, buf)
-		buf = randomWords(t, yWords, yWordsLen, buf)
-
-		for idx := range oGeneric {
-			oGeneric[idx] = 0
-		}
-		for idx := range oAsm {
-			oAsm[idx] = 0
-		}
-
-		clmulWordsGeneric(oGeneric[:oLen], xWords[:xWordsLen], yWords[:yWordsLen])
-		CLMULWords(oAsm[:oLen], xWords[:xWordsLen], yWords[:yWordsLen])
-
-		for idx := range oLen {
-			if oGeneric[idx] != oAsm[idx] {
-				require.Equal(t, oGeneric[idx], oAsm[idx], "CLMULWords mismatch at idx=%d", idx)
-			}
-		}
+func FuzzCLMULAsm(f *testing.F) {
+	if !isCLMULAsmMode {
+		f.Skip("CLMULAsm not available")
 	}
-}
 
-func TestCLMUL(t *testing.T) {
-	for range 10_000 {
-		lo := randomWord(t)
-		hi := randomWord(t)
+	f.Add(uint64(0), uint64(0))
+	f.Add(uint64(WordMaxValue), uint64(WordMaxValue))
 
-		wantLo, wantHi := clmulGeneric(lo, hi)
-		gotLo, gotHi := CLMUL(lo, hi)
+	f.Fuzz(func(t *testing.T, a uint64, b uint64) {
+		wa, wb := big.Word(a), big.Word(b)
+
+		// Generic vs Asm 비교
+		wantLo, wantHi := clmulGeneric(wa, wb)
+		gotLo, gotHi := CLMUL(wa, wb)
 
 		require.Equal(t, wantLo, gotLo, "CLMUL Lo mismatch")
 		require.Equal(t, wantHi, gotHi, "CLMUL Hi mismatch")
-	}
+	})
 }
 
-func TestExpandBits64(t *testing.T) {
-	for range 10_000 {
-		x := randomWord(t)
+func FuzzCLMULWordsAsm(f *testing.F) {
+	f.Add([]byte{1}, []byte{1})
+	f.Add([]byte{0xFF, 0xFF, 0xFF, 0xFF}, []byte{0x01, 0x02})
 
-		wantLo, wantHi := expandBitsGeneric(x)
-		gotLo, gotHi := ExpandBits(x)
+	toWords := func(b []byte) []big.Word {
+		if len(b) == 0 {
+			return nil
+		}
+		n := (len(b) + WordByteSize - 1) / WordByteSize
+
+		lst := make([]big.Word, n)
+
+		for idx := range len(b) {
+			wIdx := idx / WordByteSize
+			shift := (idx % WordByteSize) * 8
+			lst[wIdx] |= big.Word(b[idx]) << shift
+		}
+		return lst
+	}
+
+	f.Fuzz(func(t *testing.T, xb []byte, yb []byte) {
+		if len(xb) == 0 || len(yb) == 0 {
+			return
+		}
+
+		x := toWords(xb)
+		y := toWords(yb)
+
+		zLen := len(x) + len(y)
+
+		zWant := make([]big.Word, zLen)
+		zGot := make([]big.Word, zLen)
+
+		clmulWordsGeneric(zWant, x, y)
+		CLMULWords(zGot, x, y)
+
+		require.Equal(t, zWant, zGot, "CLMULWords mismatch: x=%#v y=%#v", x, y)
+	})
+}
+
+func FuzzExpandBits64Asm(f *testing.F) {
+	if !isExpandBitsAsmMode {
+		f.Skip("ExpandBitsAsm not available")
+	}
+
+	f.Add(uint64(0))
+	f.Add(uint64(WordMaxValue))
+
+	f.Fuzz(func(t *testing.T, x uint64) {
+		wa := big.Word(x)
+
+		wantLo, wantHi := expandBitsGeneric(wa)
+		gotLo, gotHi := ExpandBits(wa)
 
 		require.Equal(t, wantLo, gotLo, "ExpandBits Lo mismatch")
 		require.Equal(t, wantHi, gotHi, "ExpandBits Hi mismatch")
-	}
+	})
 }
 
-func BenchmarkCLMUL(b *testing.B) {
+func BenchmarkCLMULAsm(b *testing.B) {
+	if !isCLMULAsmMode {
+		b.Skip("CLMULAsm not available")
+	}
+
 	bench := func(fn func(a, b big.Word) (big.Word, big.Word)) func(b *testing.B) {
 		return func(b *testing.B) {
-			x := initWord()
-			y := initWord()
-
-			b.SetBytes(WordBitSize / 8)
 			b.ReportAllocs()
 			b.ResetTimer()
 
-			for idx := range b.N {
-				lo, hi := fn(x, y)
-
-				x = x ^ hi ^ big.Word(idx)
-				y = y ^ lo ^ big.Word(idx)
+			x := make([]big.Word, preallocSize)
+			for idx := range x {
+				x[idx] = randomWord(b)
 			}
+
+			var lo, hi big.Word
+			for idx := range b.N {
+				lo, hi = fn(x[idx%preallocSize], x[(idx+1)%preallocSize])
+			}
+			runtime.KeepAlive(lo)
+			runtime.KeepAlive(hi)
 		}
 	}
 
@@ -134,20 +142,57 @@ func BenchmarkCLMUL(b *testing.B) {
 	b.Run("Assembly", bench(CLMUL))
 }
 
-func BenchmarkExpandBits(b *testing.B) {
-	bench := func(fn func(x big.Word) (big.Word, big.Word)) func(b *testing.B) {
-		return func(b *testing.B) {
-			x := initWord()
+func BenchmarkCLMULWordsAsm(b *testing.B) {
+	if !isCLMULWordsAsmMode {
+		b.Skip("CLMULWordsAsm not available")
+	}
 
-			b.SetBytes(8)
+	bench := func(fn func(z, x, y []big.Word)) func(b *testing.B) {
+		return func(b *testing.B) {
+			buf := make([]byte, Words*WordByteSize)
+			x := make([][]big.Word, preallocSize)
+			for idx := range x {
+				x[idx] = make([]big.Word, Words)
+				randomWords(b, x[idx], buf)
+			}
+
+			z := make([]big.Word, 2*Words)
+
 			b.ReportAllocs()
 			b.ResetTimer()
 
 			for idx := range b.N {
-				lo, hi := fn(x)
-
-				x = x ^ hi ^ lo ^ big.Word(idx)
+				fn(z, x[idx%preallocSize], x[(idx+1)%preallocSize])
 			}
+			runtime.KeepAlive(z)
+		}
+	}
+
+	b.Run("Generic", bench(clmulWordsGeneric))
+	b.Run("Assembly", bench(CLMULWords))
+}
+
+func BenchmarkExpandBitsAsm(b *testing.B) {
+	if !isExpandBitsAsmMode {
+		b.Skip("ExpandBitsAsm not available")
+	}
+
+	bench := func(fn func(x big.Word) (big.Word, big.Word)) func(b *testing.B) {
+		return func(b *testing.B) {
+			x := make([]big.Word, preallocSize)
+			for idx := range x {
+				x[idx] = randomWord(b)
+			}
+
+			b.ReportAllocs()
+			b.ResetTimer()
+
+			var lo, hi big.Word
+			for idx := range b.N {
+				lo, hi = fn(x[idx%preallocSize])
+			}
+			runtime.KeepAlive(lo)
+			runtime.KeepAlive(hi)
 		}
 	}
 

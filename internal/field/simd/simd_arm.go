@@ -8,6 +8,7 @@ import "math/big"
 func _clmul32(a, b uint32) uint64
 
 func init() {
+	isCLMULAsmMode = true
 	CLMUL = clmul32Wrapper
 }
 

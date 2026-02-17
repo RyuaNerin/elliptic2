@@ -392,8 +392,7 @@ func TestCurveMadd(t *testing.T, curves ...curve.CurveArithmeticBase) {
 					wantx1, wanty1 = cSimple.ScalarBaseMult(k)
 					gotx1, goty1 = cMadd.ScalarBaseMult(k)
 
-					require.Equal(t, wantx1, gotx1, "ScalarBaseMult X mismatch")
-					require.Equal(t, wanty1, goty1, "ScalarBaseMult Y mismatch")
+					RequireXYEquals(t, &Point{X: wantx1, Y: wanty1}, &Point{X: gotx1, Y: goty1}, "ScalarBaseMult")
 				}
 			},
 		)
@@ -446,8 +445,7 @@ func TestMadd[
 					op.ToAffinePoint(&gotX, &gotY, &dstAdd)
 					op.ToAffinePoint(&wantX, &wantY, &dstMadd)
 
-					require.Equal(t, wantX, gotX, "Add X mismatch")
-					require.Equal(t, wantY, gotY, "Add Y mismatch")
+					RequireXYEquals(t, &Point{X: &wantX, Y: &wantY}, &Point{X: &gotX, Y: &gotY}, "Madd")
 				}
 			},
 		)

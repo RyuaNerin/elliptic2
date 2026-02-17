@@ -19,5 +19,6 @@ func init() {
 			l, h := _clmul32(uint32(a), uint32(b))
 			return big.Word(l), big.Word(h)
 		}
+		isCLMULAsmMode = true
 	}
 }

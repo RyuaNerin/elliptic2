@@ -4,7 +4,9 @@ import (
 	"encoding/hex"
 	"fmt"
 	"math/big"
+	"math/bits"
 	"strings"
+	"unsafe"
 )
 
 func H(s string) (ss string, isNegative bool) {
@@ -69,4 +71,19 @@ func HB(s string) []byte {
 	}
 
 	return b
+}
+
+func Overlaps(a, b []big.Word) bool {
+	const WordByteSize = bits.UintSize / 8
+
+	if len(a) == 0 || len(b) == 0 {
+		return false
+	}
+	aStart := uintptr(unsafe.Pointer(unsafe.SliceData(a)))
+	aEnd := aStart + uintptr(len(b)*WordByteSize)
+
+	bStart := uintptr(unsafe.Pointer(unsafe.SliceData(b)))
+	bEnd := bStart + uintptr(len(b)*WordByteSize)
+
+	return aStart < bEnd && bStart < aEnd
 }
