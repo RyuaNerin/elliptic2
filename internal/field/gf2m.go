@@ -140,21 +140,7 @@ func (z *GF2m) Mul(x, y *GF2m) *GF2m {
 	n := z.modulus.WordLen()
 
 	var prod [2 * simd.Words]big.Word
-
-	for a := range n {
-		if x.words[a] == 0 {
-			continue
-		}
-		for b := range n {
-			if y.words[b] == 0 {
-				continue
-			}
-			lo, hi := simd.CLMUL(x.words[a], y.words[b])
-
-			prod[a+b] ^= lo
-			prod[a+b+1] ^= hi
-		}
-	}
+	simd.CLMULWords(prod[:], x.words[:n], y.words[:n])
 
 	z.modulus.reduce(z.words[:], prod[:2*n])
 	return z
@@ -181,7 +167,7 @@ func (z *GF2m) Neg(x *GF2m) *GF2m {
 
 func (z *GF2m) Sqrt(x *GF2m) *GF2m {
 	if x.IsZero() {
-		return z.SetUint64(1)
+		return z.SetUint64(0)
 	}
 
 	z.Set(x)

@@ -19,16 +19,22 @@ var (
 	CLMULWords func(z, x, y []big.Word)              = clmulWordsGeneric
 	CLMUL      func(a, b big.Word) (lo, hi big.Word) = clmulGeneric
 	ExpandBits func(x big.Word) (lo, hi big.Word)    = expandBitsGeneric
+
+	// for testing
+	isCLMULWordsAsmMode bool
+	isCLMULAsmMode      bool
+	isExpandBitsAsmMode bool
 )
 
 func clmulWordsGeneric(z, x, y []big.Word) {
+	clear(z)
 	for i, yw := range y {
 		for k, xw := range x {
 			lo, hi := clmulGeneric(xw, yw)
 			idx := i + k
 			z[idx] ^= lo
 			idx++
-			if idx < len(z) {
+			if idx < len(z) { // carry
 				z[idx] ^= hi
 			}
 		}

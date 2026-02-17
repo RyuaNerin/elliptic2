@@ -15,6 +15,7 @@ func init() {
 	hasPMULL := cpu.ARM64.HasPMULL
 
 	if hasPMULL {
+		isCLMULAsmMode = true
 		CLMUL = func(a, b big.Word) (lo, hi big.Word) {
 			l, h := _clmul(uint64(a), uint64(b))
 			return big.Word(l), big.Word(h)
