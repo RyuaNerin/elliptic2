@@ -170,10 +170,26 @@ func (z *GF2m) Sqrt(x *GF2m) *GF2m {
 		return z.SetUint64(0)
 	}
 
-	z.Set(x)
-	for range z.modulus.bits - 1 {
-		z.Sqr(z)
+	n := z.modulus.WordLen()
+
+	var even, odd GF2m
+	even.SetModulus(z.modulus)
+	odd.SetModulus(z.modulus)
+
+	for i := range n {
+		e, o := simd.CompressBits(x.words[i])
+
+		wordIdx := i / 2
+		shift := (i % 2) * simd.WordBitSize / 2
+
+		if wordIdx < len(even.words) {
+			even.words[wordIdx] ^= e << shift
+			odd.words[wordIdx] ^= o << shift
+		}
 	}
+
+	z.Mul(&odd, z.modulus.gf2mSqrtX)
+	z.Add(z, &even)
 
 	return z
 }
@@ -307,35 +323,15 @@ func isZeroWords(words []big.Word) bool {
 
 // lshXor computes dst ^= src << shift
 func lshXor(dst, src []big.Word, shift uint) {
-	if shift == 0 {
-		for i := range dst {
-			dst[i] ^= src[i]
-		}
-		return
-	}
-
 	wordShift := int(shift / simd.WordBitSize)
 	bitShift := shift % simd.WordBitSize
-
-	// Clear tmp
-	var tmp [1 + simd.Words]big.Word
-
-	// Shift src into tmp
-	for i := range src {
-		if src[i] == 0 {
-			continue
+	for i := len(src) - 1; i >= 0; i-- {
+		j := i + wordShift
+		if j < len(dst) {
+			dst[j] ^= src[i] << bitShift
 		}
-		targetWord := i + wordShift
-		if targetWord < len(tmp) {
-			tmp[targetWord] ^= src[i] << bitShift
+		if bitShift > 0 && j+1 < len(dst) {
+			dst[j+1] ^= src[i] >> (simd.WordBitSize - bitShift)
 		}
-		if bitShift > 0 && targetWord+1 < len(tmp) {
-			tmp[targetWord+1] ^= src[i] >> (simd.WordBitSize - bitShift)
-		}
-	}
-
-	// XOR into dst
-	for i := range dst {
-		dst[i] ^= tmp[i]
 	}
 }

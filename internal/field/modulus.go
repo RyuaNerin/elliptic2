@@ -42,9 +42,12 @@ func ParseGF2mPolynomials(f *big.Int) []int {
 
 type Modulus struct {
 	nat
-	bits      int
-	reduce    gf2mreduce.ReduceFunc
+	bits   int
+	reduce gf2mreduce.ReduceFunc
+
+	gf2mPoly  []int
 	gf2mGamma unsafe.Pointer // *GF2m
+	gf2mSqrtX *GF2m          // *GF2m, sqrt(x)
 }
 
 func NewGFpModulus(p *big.Int) *Modulus {
@@ -71,9 +74,12 @@ func NewGF2mModulus(modPoly *big.Int) *Modulus {
 	}
 
 	p := &Modulus{
-		bits:   poly[0],
-		reduce: gf2mreduce.GetReduceFunction(poly),
+		bits:     poly[0],
+		reduce:   gf2mreduce.GetReduceFunction(poly),
+		gf2mPoly: make([]int, len(poly)),
 	}
+	copy(p.gf2mPoly, poly)
+	p.precomputeSqrt()
 
 	copy(p.words[:], modPoly.Bits())
 
@@ -82,6 +88,10 @@ func NewGF2mModulus(modPoly *big.Int) *Modulus {
 
 func NewGF2mModulusFromPolynomials(f ...int) *Modulus {
 	return NewGF2mModulus(GF2mPolynomials(f...))
+}
+
+func (p *Modulus) String() string {
+	return fmt.Sprintf("Modulus{bits:%d,poly:%v}", p.bits, p.gf2mPoly)
 }
 
 func (p *Modulus) Bit(n uint) uint {
@@ -101,6 +111,17 @@ func (p *Modulus) NewGFpFromBigInt(x *big.Int) *GFp   { return p.NewGFp().SetBig
 
 // ToBigInt converts to big.Int
 func (z *Modulus) ToBigInt(x *big.Int) *big.Int { return z.toBigInt(x) }
+
+func (p *Modulus) precomputeSqrt() {
+	// sqrtX = x^{2^{m-1}} mod P
+	p.gf2mSqrtX = p.NewGF2m()
+	p.gf2mSqrtX.SetUint64(2)
+
+	// Sqrt(x) = x^{2^(m-1)}
+	for range p.bits - 1 {
+		p.gf2mSqrtX.Sqr(p.gf2mSqrtX)
+	}
+}
 
 func (poly *Modulus) FindGF2mGamma() *GF2m {
 	gamma := atomic.LoadPointer(&poly.gf2mGamma)

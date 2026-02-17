@@ -386,13 +386,13 @@ func TestCurveMadd(t *testing.T, curves ...curve.CurveArithmeticBase) {
 				for range 100 {
 					k := GetRandomK(t, cSimple)
 
-					var wantx1, wanty1 *big.Int
-					var gotx1, goty1 *big.Int
+					var xWant, yWant *big.Int
+					var xGot, yGot *big.Int
 
-					wantx1, wanty1 = cSimple.ScalarBaseMult(k)
-					gotx1, goty1 = cMadd.ScalarBaseMult(k)
+					xWant, yWant = cSimple.ScalarBaseMult(k)
+					xGot, yGot = cMadd.ScalarBaseMult(k)
 
-					RequireXYEquals(t, &Point{X: wantx1, Y: wanty1}, &Point{X: gotx1, Y: goty1}, "ScalarBaseMult")
+					RequireXYEquals(t, &Point{X: xWant, Y: yWant}, &Point{X: xGot, Y: yGot}, "ScalarBaseMult")
 				}
 			},
 		)

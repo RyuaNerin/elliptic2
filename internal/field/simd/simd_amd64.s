@@ -82,7 +82,23 @@ TEXT ·_expandBitsBMI2(SB), NOSPLIT, $0-24
     
     SHRQ $32, AX
     MOVL AX, DX
+    // PDEP BX, DX, CX
     BYTE $0xC4; BYTE $0xE2; BYTE $0xEB; BYTE $0xF5; BYTE $0xD9
     MOVQ BX, hi+16(FP)
     
+    RET
+
+TEXT ·_compressBitsBMI2(SB), NOSPLIT, $0-24
+    MOVQ x+0(FP), AX
+    MOVQ $0x5555555555555555, CX
+    
+    // PEXTQ BX, AX, CX
+    BYTE $0xC4; BYTE $0xE2; BYTE $0xFA; BYTE $0xF5; BYTE $0xD9
+    MOVQ BX, even+8(FP)
+    
+    SHRQ $1, AX    
+    // PEXTQ BX, AX, CX
+    BYTE $0xC4; BYTE $0xE2; BYTE $0xFA; BYTE $0xF5; BYTE $0xD9
+    MOVQ BX, odd+16(FP)
+
     RET
