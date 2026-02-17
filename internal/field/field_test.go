@@ -2,7 +2,6 @@ package field_test
 
 import (
 	"crypto/rand"
-	"fmt"
 	"math/big"
 	"reflect"
 	"runtime"
@@ -68,6 +67,30 @@ func testSqrValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus 
 	}
 }
 
+func testSqrtValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus []*field.Modulus) {
+	x := (GF)(new(E))
+	sqr := (GF)(new(E))
+	sqrt := (GF)(new(E))
+
+	for _, m := range modulus {
+		x.SetModulus(m)
+		sqr.SetModulus(m)
+		sqrt.SetModulus(m)
+
+		for range 10 {
+			fillWords(t, x)
+			sqr.Sqr(x)
+			sqrt.Sqrt(sqr)
+
+			require.Zero(t,
+				x.Cmp(sqrt),
+				"sqrt(x^2) != x, x: %s\nsqr: %s\nsqrt: %s",
+				x.String(), sqr.String(), sqrt.String(),
+			)
+		}
+	}
+}
+
 func fillWords[E any, EP field.GF[E]](t testing.TB, z EP) {
 	bitSize := z.Modulus().BitLen()
 
@@ -87,10 +110,11 @@ func fillWords[E any, EP field.GF[E]](t testing.TB, z EP) {
 	}
 }
 
-func addWant(tc testCase, argIdx int) *big.Int { return tc.add[argIdx] }
-func mulWant(tc testCase, argIdx int) *big.Int { return tc.mul[argIdx] }
-func sqrWant(tc testCase, argIdx int) *big.Int { return tc.sqr[argIdx] }
-func invWant(tc testCase, argIdx int) *big.Int { return tc.inv[argIdx] }
+func addWant(tc testCase, argIdx int) *big.Int  { return tc.add[argIdx] }
+func mulWant(tc testCase, argIdx int) *big.Int  { return tc.mul[argIdx] }
+func sqrWant(tc testCase, argIdx int) *big.Int  { return tc.sqr[argIdx] }
+func sqrtWant(tc testCase, argIdx int) *big.Int { return tc.sqrt[argIdx] }
+func invWant(tc testCase, argIdx int) *big.Int  { return tc.inv[argIdx] }
 
 func add[E any, GF field.GF[E]](z GF, arg ...GF) {
 	z.Add(arg[0], arg[1])
@@ -108,6 +132,10 @@ func mul[E any, GF field.GF[E]](z GF, arg ...GF) {
 
 func sqr[E any, GF field.GF[E]](dst GF, arg ...GF) {
 	dst.Sqr(arg[0])
+}
+
+func sqrt[E any, GF field.GF[E]](dst GF, arg ...GF) {
+	dst.Sqrt(arg[0])
 }
 
 func inv[E any, GF field.GF[E]](dst GF, arg ...GF) {
@@ -132,6 +160,7 @@ func tArg[E any, GF field.GF[E]](
 	var dstInt *big.Int
 
 	testName := runtime.FuncForPC(reflect.ValueOf(fnOperation).Pointer()).Name()
+	testName = strings.TrimSuffix(testName, "[...]")
 	if idx := strings.LastIndex(testName, "."); idx >= 0 {
 		testName = testName[idx+1:]
 	}
@@ -157,7 +186,7 @@ func tArg[E any, GF field.GF[E]](
 			dstInt = dst.ToBigInt(dstInt)
 			curvetesting.RequireEqual(t,
 				want, dstInt,
-				"%d: %s[%d]: invalid result",
+				"%d: %s[%d]",
 				idx, testName, inputIdx,
 			)
 		}
@@ -175,7 +204,7 @@ func bArg[E any, GF field.GF[E]](
 	fnOperation func(z GF, x ...GF),
 ) {
 	for _, m := range modulus {
-		b.Run(fmt.Sprintf("BitSize=%d", m.BitLen()), func(b *testing.B) {
+		b.Run(m.String(), func(b *testing.B) {
 			dst := (GF)(new(E))
 			x := (GF)(new(E))
 			y := (GF)(new(E))
@@ -198,15 +227,17 @@ func bArg[E any, GF field.GF[E]](
 }
 
 var tcArgIndexes = struct {
-	add [][]int
-	mul [][]int
-	sqr [][]int
-	inv [][]int
+	add  [][]int
+	mul  [][]int
+	sqr  [][]int
+	sqrt [][]int
+	inv  [][]int
 }{
-	add: [][]int{{0, 0}, {1, 1}, {2, 2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}},
-	mul: [][]int{{0, 0}, {1, 1}, {2, 2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}},
-	sqr: [][]int{{0}, {1}, {2}},
-	inv: [][]int{{0}, {1}, {2}},
+	add:  [][]int{{0, 0}, {1, 1}, {2, 2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}},
+	mul:  [][]int{{0, 0}, {1, 1}, {2, 2}, {0, 1}, {0, 2}, {1, 2}, {0, 1, 2}},
+	sqr:  [][]int{{0}, {1}, {2}},
+	sqrt: [][]int{{0}, {1}, {2}},
+	inv:  [][]int{{0}, {1}, {2}},
 }
 
 type testCase struct {
@@ -215,5 +246,6 @@ type testCase struct {
 	add     [7]*big.Int // (a + b)
 	mul     [7]*big.Int // (a * b)
 	sqr     [3]*big.Int // (a ^ 2)
+	sqrt    [3]*big.Int // (a ^ (2^-1))
 	inv     [3]*big.Int // (a ^ -1)
 }

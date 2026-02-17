@@ -18,6 +18,9 @@ func _clmulWords(z, x, y []big.Word)
 //go:noescape
 func _expandBitsBMI2(x big.Word) (lo, hi big.Word)
 
+//go:noescape
+func _compressBitsBMI2(x big.Word) (even, odd big.Word)
+
 func init() {
 	hasPCLMULQDQ := cpu.X86.HasPCLMULQDQ
 	hasBMI2 := cpu.X86.HasBMI2
@@ -41,6 +44,9 @@ func init() {
 
 	if hasBMI2 {
 		isExpandBitsAsmMode = true
+		isCompressBitsAsmMode = true
+
 		ExpandBits = _expandBitsBMI2
+		CompressBits = _compressBitsBMI2
 	}
 }

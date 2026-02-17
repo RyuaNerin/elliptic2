@@ -16,14 +16,16 @@ const (
 )
 
 var (
-	CLMULWords func(z, x, y []big.Word)              = clmulWordsGeneric
-	CLMUL      func(a, b big.Word) (lo, hi big.Word) = clmulGeneric
-	ExpandBits func(x big.Word) (lo, hi big.Word)    = expandBitsGeneric
+	CLMULWords   func(z, x, y []big.Word)              = clmulWordsGeneric
+	CLMUL        func(a, b big.Word) (lo, hi big.Word) = clmulGeneric
+	ExpandBits   func(x big.Word) (lo, hi big.Word)    = expandBitsGeneric
+	CompressBits func(w big.Word) (e, o big.Word)      = compressBitsGeneric
 
 	// for testing
-	isCLMULWordsAsmMode bool
-	isCLMULAsmMode      bool
-	isExpandBitsAsmMode bool
+	isCLMULWordsAsmMode   bool
+	isCLMULAsmMode        bool
+	isExpandBitsAsmMode   bool
+	isCompressBitsAsmMode bool
 )
 
 func clmulWordsGeneric(z, x, y []big.Word) {
@@ -132,4 +134,25 @@ func expandBits32Generic(x uint32) (lo, hi uint32) {
 		(uint64(expandTable8[(x>>24)&0xFF]) << 48)
 
 	return uint32(expanded), uint32(expanded >> 32)
+}
+
+func compressBitsGeneric(x big.Word) (even, odd big.Word) { // 짝수 비트 압축
+	even = compressBits(x)
+	odd = compressBits(x >> 1)
+
+	return
+}
+
+func compressBits(x big.Word) big.Word {
+	xx := uint64(x) & 0x5555555555555555
+	xx = (xx | (xx >> 1)) & 0x3333333333333333
+	xx = (xx | (xx >> 2)) & 0x0F0F0F0F0F0F0F0F
+	xx = (xx | (xx >> 4)) & 0x00FF00FF00FF00FF
+	xx = (xx | (xx >> 8)) & 0x0000FFFF0000FFFF
+
+	if bits.UintSize == 64 {
+		xx = (xx | (xx >> 16)) & 0x00000000FFFFFFFF
+	}
+
+	return big.Word(xx)
 }

@@ -15,10 +15,11 @@ func init() {
 	hasPCLMULQDQ := cpu.X86.HasPCLMULQDQ
 
 	if hasPCLMULQDQ {
+		isCLMULAsmMode = true
+
 		CLMUL = func(a, b big.Word) (lo, hi big.Word) {
 			l, h := _clmul32(uint32(a), uint32(b))
 			return big.Word(l), big.Word(h)
 		}
-		isCLMULAsmMode = true
 	}
 }

@@ -10,18 +10,21 @@ import (
 
 func gf2m(_ *GF2m) {}
 
-func TestGF2mInvValidation(t *testing.T) { testInvValidation(t, gf2m, gf2mModulus) }
-func TestGF2mSqrValidation(t *testing.T) { testSqrValidation(t, gf2m, gf2mModulus) }
+func TestGF2mInvValidation(t *testing.T)  { testInvValidation(t, gf2m, gf2mModulus) }
+func TestGF2mSqrValidation(t *testing.T)  { testSqrValidation(t, gf2m, gf2mModulus) }
+func TestGF2mSqrtValidation(t *testing.T) { testSqrtValidation(t, gf2m, gf2mModulus) }
 
-func TestGF2mAdd(t *testing.T) { tArg(t, gf2m, gf2mTC, tcArgIndexes.add, add, addWant) }
-func TestGF2mMul(t *testing.T) { tArg(t, gf2m, gf2mTC, tcArgIndexes.mul, mul, mulWant) }
-func TestGF2mSqr(t *testing.T) { tArg(t, gf2m, gf2mTC, tcArgIndexes.sqr, sqr, sqrWant) }
-func TestGF2mInv(t *testing.T) { tArg(t, gf2m, gf2mTC, tcArgIndexes.inv, inv, invWant) }
+func TestGF2mAdd(t *testing.T)  { tArg(t, gf2m, gf2mTC, tcArgIndexes.add, add, addWant) }
+func TestGF2mMul(t *testing.T)  { tArg(t, gf2m, gf2mTC, tcArgIndexes.mul, mul, mulWant) }
+func TestGF2mSqr(t *testing.T)  { tArg(t, gf2m, gf2mTC, tcArgIndexes.sqr, sqr, sqrWant) }
+func TestGF2mSqrt(t *testing.T) { tArg(t, gf2m, gf2mTC, tcArgIndexes.sqrt, sqrt, sqrtWant) }
+func TestGF2mInv(t *testing.T)  { tArg(t, gf2m, gf2mTC, tcArgIndexes.inv, inv, invWant) }
 
-func BenchmarkGF2mAdd(b *testing.B) { bArg(b, gf2m, gf2mModulus, add) }
-func BenchmarkGF2mMul(b *testing.B) { bArg(b, gf2m, gf2mModulus, mul) }
-func BenchmarkGF2mSqr(b *testing.B) { bArg(b, gf2m, gf2mModulus, sqr) }
-func BenchmarkGF2mInv(b *testing.B) { bArg(b, gf2m, gf2mModulus, inv) }
+func BenchmarkGF2mAdd(b *testing.B)  { bArg(b, gf2m, gf2mModulus, add) }
+func BenchmarkGF2mMul(b *testing.B)  { bArg(b, gf2m, gf2mModulus, mul) }
+func BenchmarkGF2mSqr(b *testing.B)  { bArg(b, gf2m, gf2mModulus, sqr) }
+func BenchmarkGF2mSqrt(b *testing.B) { bArg(b, gf2m, gf2mModulus, sqrt) }
+func BenchmarkGF2mInv(b *testing.B)  { bArg(b, gf2m, gf2mModulus, inv) }
 
 var gf2mModulus = []*Modulus{
 	NewGF2mModulus(GF2mPolynomials(163, 7, 6, 3, 0)),
@@ -62,6 +65,11 @@ var gf2mTC = []testCase{
 			HI(`11111440004044011411455414401140144040101`),
 			HI(`41b0838d55a71ddc39245c539206a48099ee4b7ca`),
 		},
+		sqrt: [3]*big.Int{
+			HI(`249249249249249263c0b6db6db6db6db6da2055a`),
+			HI(`6db6db6db6db02963022db6db6db6da808f8213c3`),
+			HI(`52c600188848ab5a9e2dd42428f06e90b39009cdb`),
+		},
 		inv: [3]*big.Int{
 			HI(`3a5ffde7e979d7bd92481fd39a13b698082a0ab6e`),
 			HI(`88b0398ca3b7396244e4c7323e1a94f021a607c9`),
@@ -97,6 +105,11 @@ var gf2mTC = []testCase{
 			HI(`5505441151515054555`),
 			HI(`410004445140541404504411510415505014155`),
 			HI(`19fd4aebc90efd68ef7d1661467c4de6cc612813c`),
+		},
+		sqrt: [3]*big.Int{
+			HI(`4924924924924924a342adb6db6db6db6db647b3f`),
+			HI(`24924924924b70a1821976db6db6db64b476940a9`),
+			HI(`6f5acb5e3ab23cc113890e7bce11f500383220451`),
 		},
 		inv: [3]*big.Int{
 			HI(`2227628f137d687499bf4f70af99a2cbe3e08aea6`),
@@ -134,6 +147,11 @@ var gf2mTC = []testCase{
 			HI(`10440505440105140515440141041454411451011`),
 			HI(`1a1d42377a7c7edd644f65d8b88f246504f587749`),
 		},
+		sqrt: [3]*big.Int{
+			HI(`4924924924924924fb646db6db6db6db6db603483`),
+			HI(`33b33beac00000000001f75336d51b`),
+			HI(`7a94692faf2a80caaac02f09cbe54c56a2884f021`),
+		},
 		inv: [3]*big.Int{
 			HI(`6f8abe4f0a8b0eecb4200acf8101156f71cbb0a03`),
 			HI(`59b3d28935af674840b30c69423a7a25f8b29b3bb`),
@@ -170,6 +188,11 @@ var gf2mTC = []testCase{
 			HI(`41151551410440400540104515014451140044555`),
 			HI(`6a4f854322cb1da370dd864a8bac75f87fb1eb959`),
 		},
+		sqrt: [3]*big.Int{
+			HI(`5b6db6db6db6db6d86c736db6db6db6db6da8513f`),
+			HI(`5b6db6db6dbebe6b5f0476db6db6db4bafcf1962e`),
+			HI(`4ed5108ea05959a9ff807988271538aa8726eb733`),
+		},
 		inv: [3]*big.Int{
 			HI(`5d89b2900a5e87742f5bf65a20b34207270567df1`),
 			HI(`2afd6ea8fef35782dd8a94b87285af89a57b8e819`),
@@ -205,6 +228,11 @@ var gf2mTC = []testCase{
 			HI(`4141450055405044101`),
 			HI(`14000514555515541005155010145105410410111`),
 			HI(`1e0a1fa9a783944549e43d87cc8a86ab900f5a180`),
+		},
+		sqrt: [3]*big.Int{
+			HI(`2ee60000000000000000bf1a5`),
+			HI(`4c78148880000000000070657bf017`),
+			HI(`48cb0ce0d5a27d60c13670c05ec03e974a68811c9`),
 		},
 		inv: [3]*big.Int{
 			HI(`30830500d125333c3561fc66614d2a90a2df76c99`),
