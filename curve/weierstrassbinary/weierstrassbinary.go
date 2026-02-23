@@ -103,7 +103,7 @@ func NewCurve(params CurveParams) elliptic.Curve {
 				Poly:    modulus,
 				A2:      modulus.NewGF2mFromBigInt(params.A),
 				A6:      modulus.NewGF2mFromBigInt(params.B),
-				N:       modulus.NewGF2mFromBigInt(params.N),
+				N:       new(big.Int).Set(params.N),
 				Gx:      gx,
 				Gy:      gy,
 			},

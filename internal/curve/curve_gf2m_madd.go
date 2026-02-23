@@ -34,22 +34,13 @@ func (c *curveGF2mMadd) ScalarBaseMult(k []byte) (x, y *big.Int) {
 }
 
 func (c *curveGF2mMadd) scalarMultWithMAdd(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
-	if len(k) == 0 {
-		return new(big.Int), new(big.Int)
-	}
+	modulus := c.base.Modulus()
 
-	for len(k) > 0 && k[len(k)-1] == 0 {
-		k = k[:len(k)-1]
-	}
-	if len(k) == 0 {
-		return new(big.Int), new(big.Int)
-	}
+	k = normalizeScalar(k, c.base.N())
 
 	op := c.base.NewOperator().(GF2mMaddOperator)
 
-	modulus := c.base.Modulus()
-
-	// table[0] = P (Z=1)
+	// table[0] =  P (Z=1)
 	// table[1] = 3P (Z=1)
 	// table[2] = 5P (Z=1)
 	// ...
@@ -63,15 +54,17 @@ func (c *curveGF2mMadd) scalarMultWithMAdd(x1, y1 *big.Int, k []byte) (x, y *big
 	op.Neg(&negTable[0], &table[0])
 
 	// 2P 계산
-	var p2 GF2mCoordinate
-	p2.SetModulus(modulus)
-	op.Double(&p2, &table[0])
-	op.ScaleZ(&p2)
+	{
+		var p2 GF2mCoordinate
+		p2.SetModulus(modulus)
+		op.Double(&p2, &table[0])
+		op.ScaleZ(&p2)
 
-	for idx := 1; idx < maddTableSize; idx++ {
-		op.Madd(&table[idx], &table[idx-1], &p2)
-		op.ScaleZ(&table[idx])
-		op.Neg(&negTable[idx], &table[idx])
+		for idx := 1; idx < maddTableSize; idx++ {
+			op.Madd(&table[idx], &table[idx-1], &p2)
+			op.ScaleZ(&table[idx])
+			op.Neg(&negTable[idx], &table[idx])
+		}
 	}
 
 	// wNAF (windowed Non-Adjacent Form)
@@ -94,20 +87,20 @@ func (c *curveGF2mMadd) scalarMultWithMAdd(x1, y1 *big.Int, k []byte) (x, y *big
 		digit := naf[idx]
 		if digit > 0 {
 			// result += table[(digit-1)/2]
-			idx := (digit - 1) / 2
+			idxTable := (digit - 1) / 2
 			if op.IsInfinity(result) {
-				result.Set(&table[idx])
+				result.Set(&table[idxTable])
 			} else {
-				op.Madd(tmp, result, &table[idx])
+				op.Madd(tmp, result, &table[idxTable])
 				result, tmp = tmp, result
 			}
 		} else if digit < 0 {
 			// result -= table[(-digit-1)/2]
-			idx := (-digit - 1) / 2
+			idxTable := (-digit - 1) / 2
 			if op.IsInfinity(result) {
-				result.Set(&negTable[idx])
+				result.Set(&negTable[idxTable])
 			} else {
-				op.Madd(tmp, result, &negTable[idx])
+				op.Madd(tmp, result, &negTable[idxTable])
 				result, tmp = tmp, result
 			}
 		}

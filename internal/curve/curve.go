@@ -41,8 +41,11 @@ type (
 		RawParams() any
 
 		Modulus() *field.Modulus
+		N() *big.Int
 
 		Generator() (x, y *big.Int, ok bool)
+		IsInfinity(x, y *big.Int) bool
+		Identity() (x, y *big.Int)
 		Params() *elliptic.CurveParams   // for elliptic.Curve compatibility
 		Params2() *elliptic2.CurveParams // for CurveParamsSupplier compatibility
 
@@ -220,6 +223,7 @@ func computeWNAF(naf []int8, k []byte) []int8 {
 	const twoW int16 = 1 << w           // 2^w (예: w=4면 16)
 	const halfTwoW int16 = 1 << (w - 1) // 2^(w-1) (예: w=4면 8)
 	const mask int16 = twoW - 1         // 2^w - 1 (예: w=4면 15)
+	const extraBits = maddTableSize     // process fixed extra digits (upper bound)
 
 	// big-endian → little-endian 복사
 	// int16 사용: 빼기 연산 시 음수/오버플로우 처리 용이
@@ -234,27 +238,22 @@ func computeWNAF(naf []int8, k []byte) []int8 {
 		bytePos := i >> 3
 		bitPos := uint(i & 7)
 
-		// 현재 비트가 0이면 digit = 0
-		if buf[bytePos]&(1<<bitPos) == 0 {
-			naf = append(naf, 0)
-			continue
-		}
-
 		// w비트 윈도우 추출 (현재 위치부터 w비트)
 		var window int16
 		for j := range w {
 			bp := (i + j) >> 3
 			bt := uint((i + j) & 7)
-			if bp < len(buf) {
-				window |= ((buf[bp] >> bt) & 1) << j
-			}
+			window |= ((buf[bp] >> bt) & 1) << j
 		}
 
 		// signed 표현: window >= 2^(w-1)이면 음수로 변환
 		digit := window & mask
-		if digit >= halfTwoW {
-			digit -= twoW
-		}
+		subtractSigned := -((digit - halfTwoW) >> 15)
+		digit -= twoW & subtractSigned
+
+		isBit := window & 1
+		isBitMask := -isBit
+		digit &= isBitMask
 
 		naf = append(naf, int8(digit))
 
@@ -262,41 +261,50 @@ func computeWNAF(naf []int8, k []byte) []int8 {
 		// digit은 현재 비트 위치 기준이므로 그대로 빼면 됨
 		buf[bytePos] -= digit << bitPos
 
-		// carry/borrow 전파
-		for j := bytePos; j < len(buf)-1; j++ {
-			if buf[j] >= 0 && buf[j] < 256 {
-				break
-			}
-			if buf[j] < 0 {
-				borrow := (-buf[j] + 255) / 256
-				buf[j] += borrow * 256
-				buf[j+1] -= borrow
-			} else {
-				// carry
-				carry := buf[j] >> 8
-				buf[j] &= 0xFF
-				buf[j+1] += carry
-			}
+		// carry/borrow 전파(상수시간)
+		carry := int32(0)
+		for j := range len(buf) - 1 {
+			v := int32(buf[j]) + carry
+			isNeg := v >> 31
+			borrow := ((-v + 255) >> 8) & isNeg
+			v += borrow << 8
+
+			vCarry := v >> 8
+			vCarry &= ^isNeg
+			carry = vCarry - borrow
+
+			buf[j] = int16(v - (vCarry << 8))
 		}
+		buf[len(buf)-1] = int16(int32(buf[len(buf)-1]) + carry)
 	}
 
-	// 남은 상위 바이트 처리 (buf[len(k)]에 값이 있을 수 있음)
-	for buf[len(k)] > 0 {
-		window := buf[len(k)] & mask
-		digit := window
-		if digit >= halfTwoW {
-			digit -= twoW
-		}
+	for range extraBits {
+		window := buf[len(buf)-1] & mask
 
-		if window&1 == 0 {
-			naf = append(naf, 0)
-			buf[len(k)] >>= 1
-		} else {
-			naf = append(naf, int8(digit))
-			buf[len(k)] -= digit
-			buf[len(k)] >>= 1
-		}
+		digit := window
+		subtractSigned := -((digit - halfTwoW) >> 15)
+		digit -= twoW & subtractSigned
+
+		isBit := window & 1
+		isBitMask := -isBit
+		digit &= isBitMask
+
+		naf = append(naf, int8(digit))
+		buf[len(buf)-1] = (buf[len(buf)-1] - digit) >> 1
 	}
 
 	return naf
+}
+
+func normalizeScalar(scalar []byte, n *big.Int) []byte {
+	byteSize := (n.BitLen() + 7) / 8
+	if len(scalar) == byteSize {
+		return scalar
+	}
+	s := new(big.Int).SetBytes(scalar)
+	if len(scalar) > byteSize {
+		s.Mod(s, n)
+	}
+	out := make([]byte, byteSize)
+	return s.FillBytes(out)
 }

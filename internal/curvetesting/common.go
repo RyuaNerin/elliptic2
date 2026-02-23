@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/RyuaNerin/elliptic2"
+	"github.com/RyuaNerin/elliptic2/internal"
 	"github.com/RyuaNerin/elliptic2/internal/curve"
 	"github.com/RyuaNerin/elliptic2/internal/curve/edwards"
 	"github.com/RyuaNerin/elliptic2/internal/curve/montgomery"
@@ -83,7 +84,7 @@ func GetName(c elliptic2.Curve) string {
 	panic(fmt.Sprintf("unsupported curve: %T", c))
 }
 
-func GetRandomK(t testing.TB, c elliptic2.Curve) []byte {
+func GetN(t testing.TB, c elliptic2.Curve) *big.Int {
 	var n *big.Int
 
 	if base := curve.GetBase(c); base != nil {
@@ -95,7 +96,11 @@ func GetRandomK(t testing.TB, c elliptic2.Curve) []byte {
 	}
 	require.NotNil(t, n, "curve has no order")
 
-	k, err := rand.Int(rand.Reader, n)
+	return n
+}
+
+func GetRandomK(t testing.TB, c elliptic2.Curve) []byte {
+	k, err := rand.Int(internal.Random, GetN(t, c))
 	require.NoError(t, err)
 	return k.Bytes()
 }

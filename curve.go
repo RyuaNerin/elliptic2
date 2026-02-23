@@ -68,9 +68,11 @@ type CurveParams struct {
 	BitSize    int      // the size of the underlying field
 	A, B, C, D *big.Int // curve parameters for prime curves
 	A2, A6     *big.Int // curve parameters for binary curves
-	P          *big.Int // Prime or polynomial defining the field
+	P          *big.Int // Prime defining the field
+	Poly       []int    // Irreducible polynomial for binary fields, in ascending order of degree
 	N          *big.Int // order of the base point
 	Gx, Gy     *big.Int // coordinates of the generator point
+	InfX, InfY *big.Int // coordinates of the point at infinity
 }
 
 type CurveExtended interface {
