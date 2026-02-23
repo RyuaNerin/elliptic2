@@ -40,7 +40,7 @@ var gf2mCurves = []CurveArithmeticBase{
 		Poly:    NewGF2mModulusFromPolynomials(163, 7, 6, 3, 0),
 		A2:      ParseGF2mHex("1"),
 		A6:      ParseGF2mHex("20a601907b8c953ca1481eb10512f78744a3205fd"),
-		N:       ParseGF2mHex("40000000000000000000292fe77e70c12a4234c33"),
+		N:       HI("40000000000000000000292fe77e70c12a4234c33"),
 		Gx:      HI("3f0eba16286a2d57ea0991168d4994637e8343e36"),
 		Gy:      HI("d51fbc6c71a0094fa2cdd545b11c5c0c797324f1"),
 	}),

@@ -16,7 +16,7 @@ type (
 		BitSize int
 		P       *field.Modulus // prime
 		C, D    *field.GFp     // c, d
-		N       *field.GFp     // order
+		N       *big.Int       // order
 		Gx, Gy  *big.Int       // generator point
 	}
 	Curve struct {
@@ -56,45 +56,41 @@ func BuildOp(params *CurveParams, fnNewOp func(c *Curve) curve.GFpOperator) *Cur
 
 func (c *Curve) RawParams() any                      { return &c.CurveParams }
 func (c *Curve) Modulus() *field.Modulus             { return c.P }
-func (Curve) FieldType() curve.FieldType             { return curve.FieldTypeGFp }
+func (*Curve) FieldType() curve.FieldType            { return curve.FieldTypeGFp }
 func (c *Curve) Generator() (x, y *big.Int, ok bool) { return c.Gx, c.Gy, c.withGenerator }
+func (*Curve) IsInfinity(x, y *big.Int) bool         { return x.Sign() == 0 && y.Cmp(field.One) == 0 }
+func (*Curve) Identity() (x, y *big.Int)             { return new(big.Int), new(big.Int).SetInt64(1) }
 func (c *Curve) NewOperator() curve.GFpOperator      { return c.newOperator(c) }
+func (c *Curve) N() *big.Int                         { return c.CurveParams.N }
 
 func (c *Curve) Params() *elliptic.CurveParams {
 	p := &elliptic.CurveParams{
 		P:       c.P.ToBigInt(nil),
-		N:       c.N.ToBigInt(nil),
+		N:       new(big.Int).Set(c.CurveParams.N),
 		BitSize: c.BitSize,
 		Name:    c.Name,
 	}
 	if c.withGenerator {
-		p.Gx, p.Gy = c.Gx, c.Gy
+		p.Gx, p.Gy = new(big.Int).Set(c.Gx), new(big.Int).Set(c.Gy)
 	}
 	return p
 }
 
 func (c *Curve) Params2() *elliptic2.CurveParams {
-	var gx, gy *big.Int
-	if c.withGenerator {
-		if c.Gx != nil {
-			gx = new(big.Int).Set(c.Gx)
-		}
-		if c.Gy != nil {
-			gy = new(big.Int).Set(c.Gy)
-		}
-	}
-
-	return &elliptic2.CurveParams{
+	p := &elliptic2.CurveParams{
 		Type:    elliptic2.CurveTypeEdwards,
 		Name:    strings.Clone(c.Name),
 		BitSize: c.BitSize,
 		P:       c.P.ToBigInt(nil),
-		N:       c.N.ToBigInt(nil),
+		N:       new(big.Int).Set(c.CurveParams.N),
 		C:       c.C.ToBigInt(nil),
 		D:       c.D.ToBigInt(nil),
-		Gx:      gx,
-		Gy:      gy,
 	}
+	if c.withGenerator {
+		p.Gx, p.Gy = new(big.Int).Set(c.Gx), new(big.Int).Set(c.Gy)
+	}
+	p.InfX, p.InfY = c.Identity()
+	return p
 }
 
 func (c *Curve) IsOnCurve(x, y *big.Int) bool {

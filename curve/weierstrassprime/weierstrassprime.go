@@ -115,7 +115,7 @@ func NewCurve(params CurveParams) elliptic.Curve {
 				P:       field.NewGFpModulus(params.P),
 				A:       field.NewGFpInt(params.A),
 				B:       field.NewGFpInt(params.B),
-				N:       field.NewGFpInt(params.N),
+				N:       new(big.Int).Set(params.N),
 				Gx:      gx,
 				Gy:      gy,
 			},

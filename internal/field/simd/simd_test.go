@@ -11,7 +11,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-const preallocSize = 1024
+const (
+	preallocSize = 1024
+
+	halfWord = big.Word((uint64(1)<<(WordBitSize/2) - 1))
+	evenMask = WordMaxValue / 3 // 0x55...55
+	oddMask  = evenMask << 1    // 0xAA...AA
+)
 
 func randomWord(t testing.TB) (w big.Word) {
 	var buf [WordByteSize]byte
@@ -139,18 +145,11 @@ func TestCLMUL(t *testing.T) {
 	})
 
 	t.Run("squaring_no_odd_bits", func(t *testing.T) {
-		var oddMask uint64
-		if WordBitSize == 64 {
-			oddMask = 0xAAAAAAAAAAAAAAAA
-		} else {
-			oddMask = 0xAAAAAAAA
-		}
-
 		for range 10_000 {
 			a := randomWord(t)
 			lo, hi := clmulGeneric(a, a)
-			require.Zero(t, uint64(lo)&oddMask, "a=%#x", a)
-			require.Zero(t, uint64(hi)&oddMask, "a=%#x", a)
+			require.Zero(t, lo&oddMask, "a=%#x", a)
+			require.Zero(t, hi&oddMask, "a=%#x", a)
 		}
 	})
 
@@ -256,15 +255,9 @@ func TestExpandBitsGeneric(t *testing.T) {
 		require.Equal(t, big.Word(0b_0101_0101_0101_0101), lo)
 		require.Zero(t, hi)
 
-		var evenMask uint64
-		if WordBitSize == 64 {
-			evenMask = 0x5555555555555555
-		} else {
-			evenMask = 0x55555555
-		}
 		lo, hi = expandBitsGeneric(WordMaxValue)
-		require.Equal(t, evenMask, uint64(lo))
-		require.Equal(t, evenMask, uint64(hi))
+		require.Equal(t, evenMask, lo)
+		require.Equal(t, evenMask, hi)
 	})
 
 	t.Run("single_bit", func(t *testing.T) {
@@ -284,13 +277,6 @@ func TestExpandBitsGeneric(t *testing.T) {
 	})
 
 	t.Run("xor_homomorphism", func(t *testing.T) {
-		var oddMask uint64
-		if WordBitSize == 64 {
-			oddMask = 0xAAAAAAAAAAAAAAAA
-		} else {
-			oddMask = 0xAAAAAAAA
-		}
-
 		for range 20_000 {
 			a := randomWord(t)
 			b := randomWord(t)
@@ -302,8 +288,8 @@ func TestExpandBitsGeneric(t *testing.T) {
 			require.Equal(t, alo^blo, xlo)
 			require.Equal(t, ahi^bhi, xhi)
 
-			require.Zero(t, uint64(xlo)&oddMask)
-			require.Zero(t, uint64(xhi)&oddMask)
+			require.Zero(t, xlo&oddMask)
+			require.Zero(t, xhi&oddMask)
 
 			pcIn := bits.OnesCount(uint(a))
 			pcOut := bits.OnesCount(uint(alo)) + bits.OnesCount(uint(ahi))
@@ -330,13 +316,13 @@ func TestCompressBitsGeneric(t *testing.T) {
 		require.Equal(t, big.Word(1), e)
 		require.Equal(t, big.Word(1), o)
 
-		e, o = compressBitsGeneric(big.Word(uint64(0x5555555555555555) & uint64(WordMaxValue)))
-		require.Equal(t, big.Word(0xFFFFFFFF), e)
+		e, o = compressBitsGeneric(evenMask)
+		require.Equal(t, halfWord, e)
 		require.Zero(t, o)
 
-		e, o = compressBitsGeneric(big.Word(uint64(0xAAAAAAAAAAAAAAAA) & uint64(WordMaxValue)))
+		e, o = compressBitsGeneric(oddMask)
 		require.Zero(t, e)
-		require.Equal(t, big.Word(0xFFFFFFFF), o)
+		require.Equal(t, halfWord, o)
 	})
 
 	t.Run("single_bit", func(t *testing.T) {
@@ -358,35 +344,34 @@ func TestCompressBitsGeneric(t *testing.T) {
 
 	t.Run("round_trip_inverse", func(t *testing.T) {
 		for range 20_000 {
-			w := uint32(randomWord(t))
+			w := randomWord(t) & halfWord
 
-			expandedLo, _ := expandBitsGeneric(big.Word(w))
-			expandedVal := uint64(expandedLo)
+			expandedLo, _ := expandBitsGeneric(w)
 
-			e, o := compressBitsGeneric(big.Word(expandedVal))
-			require.Equal(t, big.Word(w), e, "Compress(Expand(x)) should be x")
+			e, o := compressBitsGeneric(expandedLo)
+			require.Equal(t, w, e, "Compress(Expand(x)) should be x")
 			require.Zero(t, o, "Odd part should be zero for expanded even bits")
 
-			e, o = compressBitsGeneric(big.Word(expandedVal << 1))
+			e, o = compressBitsGeneric(expandedLo << 1)
 			require.Zero(t, e, "Even part should be zero for expanded odd bits")
-			require.Equal(t, big.Word(w), o, "Compress(Expand(x)<<1) should match x in odd part")
+			require.Equal(t, w, o, "Compress(Expand(x)<<1) should match x in odd part")
 		}
 	})
 
 	t.Run("xor_homomorphism", func(t *testing.T) {
 		for range 20_000 {
-			a := uint64(randomWord(t)) | (uint64(randomWord(t)) << 32)
-			b := uint64(randomWord(t)) | (uint64(randomWord(t)) << 32)
+			a := randomWord(t)
+			b := randomWord(t)
 
-			ea, oa := compressBitsGeneric(big.Word(a))
-			eb, ob := compressBitsGeneric(big.Word(b))
-			ex, ox := compressBitsGeneric(big.Word(a ^ b))
+			ea, oa := compressBitsGeneric(a)
+			eb, ob := compressBitsGeneric(b)
+			ex, ox := compressBitsGeneric(a ^ b)
 
 			require.Equal(t, ea^eb, ex, "Even part linearity failed")
 			require.Equal(t, oa^ob, ox, "Odd part linearity failed")
 
-			pcWant := bits.OnesCount64(a ^ b)
-			pcGot := bits.OnesCount64(uint64(ex)) + bits.OnesCount64(uint64(ox))
+			pcWant := bits.OnesCount(uint(a ^ b))
+			pcGot := bits.OnesCount(uint(ex)) + bits.OnesCount(uint(ox))
 			require.Equal(t, pcWant, pcGot, "Population count mismatch")
 		}
 	})

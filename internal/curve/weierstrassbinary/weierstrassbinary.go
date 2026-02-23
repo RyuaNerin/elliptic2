@@ -3,6 +3,7 @@ package weierstrassbinary
 import (
 	"crypto/elliptic"
 	"math/big"
+	"slices"
 	"strings"
 
 	"github.com/RyuaNerin/elliptic2"
@@ -16,13 +17,14 @@ type (
 		BitSize int
 		Poly    *field.Modulus // Polynomials
 		A2, A6  *field.GF2m    // a, b
-		N       *field.GF2m    // order
+		N       *big.Int       // order
 		Gx, Gy  *big.Int       // generator point
 	}
 	Curve struct {
 		CurveParams
 		newOperator   NewOpFunc
 		withGenerator bool
+		nBytes        int
 	}
 	NewOpFunc func(c *Curve) curve.GF2mOperator
 )
@@ -39,11 +41,11 @@ func BuildOp(params *CurveParams, fnNewOp func(c *Curve) curve.GF2mOperator) *Cu
 	c := &Curve{
 		CurveParams: *params,
 		newOperator: fnNewOp,
+		nBytes:      (params.N.BitLen() + 7) / 8,
 	}
 
 	c.A2.SetModulus(c.Poly)
 	c.A6.SetModulus(c.Poly)
-	c.N.SetModulus(c.Poly)
 
 	if params.Gx != nil && params.Gx.Sign() != 0 && params.Gy != nil && params.Gy.Sign() != 0 {
 		if !c.IsOnCurve(params.Gx, params.Gy) {
@@ -57,44 +59,40 @@ func BuildOp(params *CurveParams, fnNewOp func(c *Curve) curve.GF2mOperator) *Cu
 
 func (c *Curve) RawParams() any                      { return &c.CurveParams }
 func (c *Curve) Modulus() *field.Modulus             { return c.Poly }
-func (Curve) FieldType() curve.FieldType             { return curve.FieldTypeGF2m }
+func (*Curve) FieldType() curve.FieldType            { return curve.FieldTypeGF2m }
 func (c *Curve) Generator() (x, y *big.Int, ok bool) { return c.Gx, c.Gy, c.withGenerator }
+func (*Curve) IsInfinity(x, y *big.Int) bool         { return x.Sign() == 0 && y.Sign() == 0 }
+func (*Curve) Identity() (x, y *big.Int)             { return new(big.Int), new(big.Int) }
 func (c *Curve) NewOperator() curve.GF2mOperator     { return c.newOperator(c) }
+func (c *Curve) N() *big.Int                         { return c.CurveParams.N }
 
 func (c *Curve) Params() *elliptic.CurveParams {
 	p := &elliptic.CurveParams{
-		Name:    c.Name,
+		N:       new(big.Int).Set(c.CurveParams.N),
 		BitSize: c.BitSize,
-		N:       c.N.ToBigInt(nil),
+		Name:    c.Name,
 	}
 	if c.withGenerator {
-		p.Gx, p.Gy = c.Gx, c.Gy
+		p.Gx, p.Gy = new(big.Int).Set(c.Gx), new(big.Int).Set(c.Gy)
 	}
 	return p
 }
 
 func (c *Curve) Params2() *elliptic2.CurveParams {
-	var gx, gy *big.Int
-	if c.withGenerator {
-		if c.Gx != nil {
-			gx = new(big.Int).Set(c.Gx)
-		}
-		if c.Gy != nil {
-			gy = new(big.Int).Set(c.Gy)
-		}
-	}
-
-	return &elliptic2.CurveParams{
+	p := &elliptic2.CurveParams{
 		Type:    elliptic2.CurveTypeWeierstrassBinary,
 		Name:    strings.Clone(c.Name),
 		BitSize: c.BitSize,
-		P:       c.Poly.ToBigInt(nil),
-		N:       c.N.ToBigInt(nil),
+		Poly:    slices.Clone(c.Poly.Poly()),
+		N:       new(big.Int).Set(c.CurveParams.N),
 		A:       c.A2.ToBigInt(nil),
 		B:       c.A6.ToBigInt(nil),
-		Gx:      gx,
-		Gy:      gy,
 	}
+	if c.withGenerator {
+		p.Gx, p.Gy = new(big.Int).Set(c.Gx), new(big.Int).Set(c.Gy)
+	}
+	p.InfX, p.InfY = c.Identity()
+	return p
 }
 
 func (c *Curve) IsOnCurve(x, y *big.Int) bool {

@@ -34,15 +34,13 @@ func (c *curveGFpMadd) ScalarBaseMult(k []byte) (x, y *big.Int) {
 }
 
 func (c *curveGFpMadd) scalarMultWithMAdd(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
-	if len(k) == 0 {
-		return new(big.Int), new(big.Int)
-	}
+	modulus := c.base.Modulus()
+
+	k = normalizeScalar(k, c.base.N())
 
 	op := c.base.NewOperator().(GFpMaddOperator)
 
-	modulus := c.base.Modulus()
-
-	// table[0] = P (Z=1)
+	// table[0] =  P (Z=1)
 	// table[1] = 3P (Z=1)
 	// table[2] = 5P (Z=1)
 	// ...
@@ -63,7 +61,7 @@ func (c *curveGFpMadd) scalarMultWithMAdd(x1, y1 *big.Int, k []byte) (x, y *big.
 		op.ScaleZ(&p2)
 
 		for idx := 1; idx < maddTableSize; idx++ {
-			op.Add(&table[idx], &table[idx-1], &p2)
+			op.Madd(&table[idx], &table[idx-1], &p2)
 			op.ScaleZ(&table[idx])
 			op.Neg(&negTable[idx], &table[idx])
 		}
@@ -75,8 +73,8 @@ func (c *curveGFpMadd) scalarMultWithMAdd(x1, y1 *big.Int, k []byte) (x, y *big.
 
 	var resultValue, tmpValue GFpCoordinate
 	result, tmp := &resultValue, &tmpValue
-	resultValue.SetModulus(c.base.Modulus())
-	tmpValue.SetModulus(c.base.Modulus())
+	resultValue.SetModulus(modulus)
+	tmpValue.SetModulus(modulus)
 
 	op.SetInfinity(result)
 

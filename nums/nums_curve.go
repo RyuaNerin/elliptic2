@@ -74,7 +74,7 @@ func initEd254Mont() {
 			P:       NewGFpModulusFromHex(`3f80ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`3f80fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe`),
 			D:       ParseGFpHex(`367b`),
-			N:       ParseGFpHex(`fe03fffffffffffffffffffffffffffeb95306c8bd62fb0eaf3d3fec46e98c7`),
+			N:       HI(`fe03fffffffffffffffffffffffffffeb95306c8bd62fb0eaf3d3fec46e98c7`),
 		}),
 	)
 }
@@ -88,7 +88,7 @@ func initEd255Mers() {
 			P:       NewGFpModulusFromHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffd03`),
 			A:       ParseGFpHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffd02`),
 			D:       ParseGFpHex(`ea97`),
-			N:       ParseGFpHex(`1fffffffffffffffffffffffffffffffdcf1a785eda6832eac49d1ed0436eb75`),
+			N:       HI(`1fffffffffffffffffffffffffffffffdcf1a785eda6832eac49d1ed0436eb75`),
 		}),
 	)
 }
@@ -102,7 +102,7 @@ func initEd256Mont() {
 			P:       NewGFpModulusFromHex(`ffa7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`ffa7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe`),
 			D:       ParseGFpHex(`350a`),
-			N:       ParseGFpHex(`3fe9ffffffffffffffffffffffffffffb154bbafb86733c966d92eded8ec7bab`),
+			N:       HI(`3fe9ffffffffffffffffffffffffffffb154bbafb86733c966d92eded8ec7bab`),
 		}),
 	)
 }
@@ -116,7 +116,7 @@ func initEd382Mont() {
 			P:       NewGFpModulusFromHex(`3ffaffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`3ffafffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe`),
 			D:       ParseGFpHex(`af381`),
-			N:       ParseGFpHex(`ffebfffffffffffffffffffffffffffffffffffffffffffd31afaa1520dc177d8c1605c481e068269880369e5f3fa61`),
+			N:       HI(`ffebfffffffffffffffffffffffffffffffffffffffffffd31afaa1520dc177d8c1605c481e068269880369e5f3fa61`),
 		}),
 	)
 }
@@ -130,7 +130,7 @@ func initEd383Mers() {
 			P:       NewGFpModulusFromHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe5b`),
 			A:       ParseGFpHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe5a`),
 			D:       ParseGFpHex(`7fed6`),
-			N:       ParseGFpHex(`1ffffffffffffffffffffffffffffffffffffffffffffffff1109704e73d9fbbbcd5687c9eaca2206ffebcec1ba7c81d`),
+			N:       HI(`1ffffffffffffffffffffffffffffffffffffffffffffffff1109704e73d9fbbbcd5687c9eaca2206ffebcec1ba7c81d`),
 		}),
 	)
 }
@@ -144,7 +144,7 @@ func initEd384Mont() {
 			P:       NewGFpModulusFromHex(`b0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`b0fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe`),
 			D:       ParseGFpHex(`6f17`),
-			N:       ParseGFpHex(`2c3ffffffffffffffffffffffffffffffffffffffffffffff56d07e24e2749cd9f6b769aec80f6fe06fe4e3a6332489b`),
+			N:       HI(`2c3ffffffffffffffffffffffffffffffffffffffffffffff56d07e24e2749cd9f6b769aec80f6fe06fe4e3a6332489b`),
 		}),
 	)
 }
@@ -158,7 +158,7 @@ func initEd510Mont() {
 			P:       NewGFpModulusFromHex(`3eddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`3eddfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe`),
 			D:       ParseGFpHex(`8da1e`),
-			N:       ParseGFpHex(`fb77fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffd7ced11e7c2f1abf716df42a6c246080b5fcc20917e59a42c85821cdf36d51b1`),
+			N:       HI(`fb77fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffd7ced11e7c2f1abf716df42a6c246080b5fcc20917e59a42c85821cdf36d51b1`),
 		}),
 	)
 }
@@ -172,7 +172,7 @@ func initEd511Mers() {
 			P:       NewGFpModulusFromHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe1f`),
 			A:       ParseGFpHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe1e`),
 			D:       ParseGFpHex(`10bf7d`),
-			N:       ParseGFpHex(`1fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffea7c34182e41e2e9baa930e478c489b72542706bec5f32194f7c2e8f8d142f11`),
+			N:       HI(`1fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffea7c34182e41e2e9baa930e478c489b72542706bec5f32194f7c2e8f8d142f11`),
 		}),
 	)
 }
@@ -186,7 +186,7 @@ func initEd512Mont() {
 			P:       NewGFpModulusFromHex(`fe14ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`fe14fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe`),
 			D:       ParseGFpHex(`12a9c`),
-			N:       ParseGFpHex(`3f853fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffcccfd59cdc33470d103060513f6def4d37d9af21b2b2701fa331487ecb8db605`),
+			N:       HI(`3f853fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffcccfd59cdc33470d103060513f6def4d37d9af21b2b2701fa331487ecb8db605`),
 		}),
 	)
 }
@@ -200,7 +200,7 @@ func initNumsp256d1() {
 			P:       NewGFpModulusFromHex(`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff43`),
 			A:       ParseGFpHex(`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff40`),
 			B:       ParseGFpHex(`25581`),
-			N:       ParseGFpHex(`ffffffffffffffffffffffffffffffffe43c8275ea265c6020ab20294751a825`),
+			N:       HI(`ffffffffffffffffffffffffffffffffe43c8275ea265c6020ab20294751a825`),
 			Gx:      HI(`1`),
 			Gy:      HI(`696f1853c1e466d7fc82c96cceeedd6bd02c2f9375894ec10bf46306c2b56c77`),
 		}),
@@ -216,7 +216,7 @@ func initNumsp256t1() {
 			P:       NewGFpModulusFromHex(`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff43`),
 			A:       ParseGFpHex(`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff42`),
 			D:       ParseGFpHex(`3bee`),
-			N:       ParseGFpHex(`3fffffffffffffffffffffffffffffffbe6aa55ad0a6bc64e5b84e6f1122b4ad`),
+			N:       HI(`3fffffffffffffffffffffffffffffffbe6aa55ad0a6bc64e5b84e6f1122b4ad`),
 			Gx:      HI(`d`),
 			Gy:      HI(`7d0ab41e2a1276dba3d330b39fa046bfbe2a6d63824d303f707f6fb5331cadba`),
 		}),
@@ -232,7 +232,7 @@ func initNumsp384d1() {
 			P:       NewGFpModulusFromHex(`fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffec3`),
 			A:       ParseGFpHex(`fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffec0`),
 			B:       ParseGFpHex(`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff77bb`),
-			N:       ParseGFpHex(`ffffffffffffffffffffffffffffffffffffffffffffffffd61eaf1eeb5d6881beda9d3d4c37e27a604d81f67b0e61b9`),
+			N:       HI(`ffffffffffffffffffffffffffffffffffffffffffffffffd61eaf1eeb5d6881beda9d3d4c37e27a604d81f67b0e61b9`),
 			Gx:      HI(`2`),
 			Gy:      HI(`3c9f82cb4b87b4dc71e763e0663e5dbd8034ed422f04f82673330dc58d15ffa2b4a3d0bad5d30f865bcbbf503ea66f43`),
 		}),
@@ -248,7 +248,7 @@ func initNumsp384t1() {
 			P:       NewGFpModulusFromHex(`fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffec3`),
 			A:       ParseGFpHex(`fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffec2`),
 			D:       ParseGFpHex(`5158a`),
-			N:       ParseGFpHex(`3fffffffffffffffffffffffffffffffffffffffffffffffecd7d11ed5a259a25a13a0458e39f4e451d6d71f70426e25`),
+			N:       HI(`3fffffffffffffffffffffffffffffffffffffffffffffffecd7d11ed5a259a25a13a0458e39f4e451d6d71f70426e25`),
 			Gx:      HI(`8`),
 			Gy:      HI(`749cdaba136ce9b65bd4471794aa619daa5c7b4c930bff8ebd798a8ae753c6d72f003860febabad534a4acf5fa7f5bee`),
 		}),
@@ -264,7 +264,7 @@ func initNumsp512d1() {
 			P:       NewGFpModulusFromHex(`fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdc7`),
 			A:       ParseGFpHex(`fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdc4`),
 			B:       ParseGFpHex(`1d99b`),
-			N:       ParseGFpHex(`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff5b3ca4fb94e7831b4fc258ed97d0bdc63b568b36607cd243ce153f390433555d`),
+			N:       HI(`ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff5b3ca4fb94e7831b4fc258ed97d0bdc63b568b36607cd243ce153f390433555d`),
 			Gx:      HI(`2`),
 			Gy:      HI(`1c282eb23327f9711952c250ea61ad53fcc13031cf6dd336e0b9328433afbdd8cc5a1c1f0c716fdc724dde537c2b0adb00bb3d08dc83755b205cc30d7f83cf28`),
 		}),
@@ -280,7 +280,7 @@ func initNumsp512t1() {
 			P:       NewGFpModulusFromHex(`fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdc7`),
 			A:       ParseGFpHex(`fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdc6`),
 			D:       ParseGFpHex(`9baa8`),
-			N:       ParseGFpHex(`3fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa7e50809efdabbb9a624784f449545f0dcea5ff0cb800f894e78d1cb0b5f0189`),
+			N:       HI(`3fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa7e50809efdabbb9a624784f449545f0dcea5ff0cb800f894e78d1cb0b5f0189`),
 			Gx:      HI(`20`),
 			Gy:      HI(`7d67e841dc4c467b605091d80869212f9ceb124bf726973f9ff048779e1d614e62ae2ece5057b5dad96b7a897c1d72799261134638750f4f0cb91027543b1c5e`),
 		}),
@@ -296,7 +296,7 @@ func initW254Mont() {
 			P:       NewGFpModulusFromHex(`3f80ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`3f80fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc`),
 			B:       ParseGFpHex(`-2f72`),
-			N:       ParseGFpHex(`3f80ffffffffffffffffffffffffffffeb818bea0da375c06fa419c4af8df83f`),
+			N:       HI(`3f80ffffffffffffffffffffffffffffeb818bea0da375c06fa419c4af8df83f`),
 		}),
 	)
 }
@@ -310,7 +310,7 @@ func initW255Mers() {
 			P:       NewGFpModulusFromHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffd03`),
 			A:       ParseGFpHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffd00`),
 			B:       ParseGFpHex(`-51bd`),
-			N:       ParseGFpHex(`7fffffffffffffffffffffffffffffff864a38283ad2b3dfab8fac983c594aeb`),
+			N:       HI(`7fffffffffffffffffffffffffffffff864a38283ad2b3dfab8fac983c594aeb`),
 		}),
 	)
 }
@@ -324,7 +324,7 @@ func initW256Mont() {
 			P:       NewGFpModulusFromHex(`ffa7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`ffa7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc`),
 			B:       ParseGFpHex(`14e6a`),
-			N:       ParseGFpHex(`ffa7fffffffffffffffffffffffffffffc517513e6e5074b9d10c5e1a79857eb`),
+			N:       HI(`ffa7fffffffffffffffffffffffffffffc517513e6e5074b9d10c5e1a79857eb`),
 		}),
 	)
 }
@@ -338,7 +338,7 @@ func initW382Mont() {
 			P:       NewGFpModulusFromHex(`3ffaffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`3ffafffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc`),
 			B:       ParseGFpHex(`-20a72`),
-			N:       ParseGFpHex(`3ffaffffffffffffffffffffffffffffffffffffffffffffa6eb1cff4bde214d73b321ffd8e82cd160ab86803ebb301d`),
+			N:       HI(`3ffaffffffffffffffffffffffffffffffffffffffffffffa6eb1cff4bde214d73b321ffd8e82cd160ab86803ebb301d`),
 		}),
 	)
 }
@@ -352,7 +352,7 @@ func initW383Mers() {
 			P:       NewGFpModulusFromHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe5b`),
 			A:       ParseGFpHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe58`),
 			B:       ParseGFpHex(`17dbc`),
-			N:       ParseGFpHex(`7fffffffffffffffffffffffffffffffffffffffffffffffa9caf814a8a116ad9fb0b4035417aaf319297fc0bb7a439f`),
+			N:       HI(`7fffffffffffffffffffffffffffffffffffffffffffffffa9caf814a8a116ad9fb0b4035417aaf319297fc0bb7a439f`),
 		}),
 	)
 }
@@ -366,7 +366,7 @@ func initW384Mont() {
 			P:       NewGFpModulusFromHex(`b0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`b0fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc`),
 			B:       ParseGFpHex(`6c96`),
-			N:       ParseGFpHex(`b0ffffffffffffffffffffffffffffffffffffffffffffffba9b7f14ca7512537a4edcd38a7c41da29be4894b298eebb`),
+			N:       HI(`b0ffffffffffffffffffffffffffffffffffffffffffffffba9b7f14ca7512537a4edcd38a7c41da29be4894b298eebb`),
 		}),
 	)
 }
@@ -380,7 +380,7 @@ func initW510Mont() {
 			P:       NewGFpModulusFromHex(`3eddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`3eddfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc`),
 			B:       ParseGFpHex(`988d`),
-			N:       ParseGFpHex(`3eddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffb9146ccde150ef33747ab29d1e6573d8d22de95e322303f3a00b200986fa9a2d`),
+			N:       HI(`3eddffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffb9146ccde150ef33747ab29d1e6573d8d22de95e322303f3a00b200986fa9a2d`),
 		}),
 	)
 }
@@ -394,7 +394,7 @@ func initW511Mers() {
 			P:       NewGFpModulusFromHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe1f`),
 			A:       ParseGFpHex(`7ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe1c`),
 			B:       ParseGFpHex(`879da`),
-			N:       ParseGFpHex(`7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8dbefa3f5ed9d839a2d4fe6ff516e87fa8d3e656a0f99fa1f0105f73b3b9d19f`),
+			N:       HI(`7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff8dbefa3f5ed9d839a2d4fe6ff516e87fa8d3e656a0f99fa1f0105f73b3b9d19f`),
 		}),
 	)
 }
@@ -408,7 +408,7 @@ func initW512Mont() {
 			P:       NewGFpModulusFromHex(`fe14ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff`),
 			A:       ParseGFpHex(`fe14fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc`),
 			B:       ParseGFpHex(`185ed`),
-			N:       ParseGFpHex(`fe14ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff638a8d792ee750298064aaf0b8498e61df3d3995064ed73b939628f17e98fdc9`),
+			N:       HI(`fe14ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff638a8d792ee750298064aaf0b8498e61df3d3995064ed73b939628f17e98fdc9`),
 		}),
 	)
 }

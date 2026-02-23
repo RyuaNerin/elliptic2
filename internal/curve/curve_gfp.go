@@ -40,10 +40,10 @@ func (c *curveGFp) Add(x1, y1, x2, y2 *big.Int) (x, y *big.Int) {
 	c.panicIfNotOnCurve(x1, y1)
 	c.panicIfNotOnCurve(x2, y2)
 
-	if x1.Sign() == 0 && y1.Sign() == 0 {
+	if c.base.IsInfinity(x1, y1) {
 		return new(big.Int).Set(x2), new(big.Int).Set(y2)
 	}
-	if x2.Sign() == 0 && y2.Sign() == 0 {
+	if c.base.IsInfinity(x2, y2) {
 		return new(big.Int).Set(x1), new(big.Int).Set(y1)
 	}
 
@@ -72,8 +72,8 @@ func (c *curveGFp) Add(x1, y1, x2, y2 *big.Int) (x, y *big.Int) {
 func (c *curveGFp) Double(x1, y1 *big.Int) (x, y *big.Int) {
 	c.panicIfNotOnCurve(x1, y1)
 
-	if x1.Sign() == 0 {
-		return new(big.Int), new(big.Int)
+	if c.base.IsInfinity(x1, y1) {
+		return c.base.Identity()
 	}
 
 	op := c.base.NewOperator()
@@ -107,13 +107,13 @@ func (c *curveGFp) ScalarBaseMult(k []byte) (x, y *big.Int) {
 
 func (c *curveGFp) scalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
 	if len(k) == 0 {
-		return new(big.Int), new(big.Int)
+		return c.base.Identity()
 	}
 
 	var num big.Int
 	num.SetBytes(k)
 	if num.Sign() == 0 {
-		return new(big.Int), new(big.Int)
+		return c.base.Identity()
 	}
 
 	op := c.base.NewOperator()

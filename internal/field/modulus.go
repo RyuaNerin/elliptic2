@@ -100,6 +100,7 @@ func (p *Modulus) Bit(n uint) uint {
 	return uint((p.words[wordIdx] >> bitIdx) & 1)
 }
 
+func (p *Modulus) Poly() []int  { return p.gf2mPoly }
 func (p *Modulus) BitLen() int  { return p.bits }
 func (p *Modulus) Degree() int  { return p.bits }
 func (p *Modulus) WordLen() int { return (p.bits + simd.WordBitSize - 1) / simd.WordBitSize }

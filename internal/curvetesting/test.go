@@ -366,6 +366,26 @@ func TestCoordinates[
 	}
 }
 
+var kSamples = [][]byte{
+	{},
+	{0x01},
+	{0x7F},
+	{0x80},
+	{0xFF},
+	{0x55, 0xAA},
+	{0x7F, 0xFF},
+	{0x80, 0x00},
+	{0x80, 0x01},
+	{0x80, 0x80, 0x80},
+	{0xAA, 0x55},
+	{0xFF, 0xFF, 0xFF},
+	{0xFF, 0xFF},
+	{0x00, 0x00, 0x00, 0x00},
+	{0x00, 0x00, 0x00, 0x01},
+	{0x01, 0x02, 0x03, 0x04},
+	{0x01, 0x00, 0x00, 0x00, 0x00},
+}
+
 func TestCurveMadd(t *testing.T, curves ...curve.CurveArithmeticBase) {
 	for _, cb := range curves {
 		cSimple := curve.NewCurveSimple(cb)
@@ -382,6 +402,28 @@ func TestCurveMadd(t *testing.T, curves ...curve.CurveArithmeticBase) {
 				// hide deprecated warning
 				cSimple := cSimple.(elliptic2.Curve)
 				cMadd := cMadd.(elliptic2.Curve)
+
+				for idx, k := range kSamples {
+					xWant, yWant := cSimple.ScalarBaseMult(k)
+					xGot, yGot := cMadd.ScalarBaseMult(k)
+
+					RequireXYEquals(t, &Point{X: xWant, Y: yWant}, &Point{X: xGot, Y: yGot}, fmt.Sprintf("kSamples[%d]", idx))
+				}
+
+				{
+					var one big.Int
+					one.SetInt64(1)
+
+					var kn big.Int
+					kn.Set(GetN(t, cSimple))
+					kn.Sub(&kn, &one)
+
+					k := kn.Bytes()
+					xWant, yWant := cSimple.ScalarBaseMult(k)
+					xGot, yGot := cMadd.ScalarBaseMult(k)
+
+					RequireXYEquals(t, &Point{X: xWant, Y: yWant}, &Point{X: xGot, Y: yGot}, "k_sub_1")
+				}
 
 				for range 100 {
 					k := GetRandomK(t, cSimple)
@@ -432,9 +474,42 @@ func TestMadd[
 
 				var gotX, gotY, wantX, wantY big.Int
 
+				for idx, k := range kSamples {
+					x2, y2 := c.ScalarBaseMult(k)
+					op.ToCoordinate(&p2, x2, y2)
+
+					op.Add(&dstAdd, &p1, &p2)
+					op.Madd(&dstMadd, &p1, &p2)
+
+					op.ToAffinePoint(&gotX, &gotY, &dstAdd)
+					op.ToAffinePoint(&wantX, &wantY, &dstMadd)
+
+					RequireXYEquals(t, &Point{X: &wantX, Y: &wantY}, &Point{X: &gotX, Y: &gotY}, fmt.Sprintf("kSamples[%d]", idx))
+				}
+
+				{
+					var one big.Int
+					one.SetInt64(1)
+
+					var kn big.Int
+					kn.Set(GetN(t, c))
+					kn.Sub(&kn, &one)
+
+					k := kn.Bytes()
+					x2, y2 := c.ScalarBaseMult(k)
+					op.ToCoordinate(&p2, x2, y2)
+
+					op.Add(&dstAdd, &p1, &p2)
+					op.Madd(&dstMadd, &p1, &p2)
+
+					op.ToAffinePoint(&gotX, &gotY, &dstAdd)
+					op.ToAffinePoint(&wantX, &wantY, &dstMadd)
+
+					RequireXYEquals(t, &Point{X: &wantX, Y: &wantY}, &Point{X: &gotX, Y: &gotY}, "k_sub_1")
+				}
+
 				for range 100 {
-					k[1] ^= k[0]
-					k[0] += 1
+					k = GetRandomK(t, c)
 
 					x2, y2 := c.ScalarBaseMult(k)
 					op.ToCoordinate(&p2, x2, y2)
