@@ -8,13 +8,13 @@ import (
 	"testing"
 
 	"github.com/RyuaNerin/elliptic2"
-	"github.com/RyuaNerin/elliptic2/internal"
 	"github.com/RyuaNerin/elliptic2/internal/curve"
 	"github.com/RyuaNerin/elliptic2/internal/curve/edwards"
 	"github.com/RyuaNerin/elliptic2/internal/curve/montgomery"
 	"github.com/RyuaNerin/elliptic2/internal/curve/twistededwards"
 	"github.com/RyuaNerin/elliptic2/internal/curve/weierstrassbinary"
 	"github.com/RyuaNerin/elliptic2/internal/curve/weierstrassprime"
+	"github.com/RyuaNerin/elliptic2/internal/curvetesting/testrand"
 	"github.com/stretchr/testify/require"
 )
 
@@ -100,7 +100,7 @@ func GetN(t testing.TB, c elliptic2.Curve) *big.Int {
 }
 
 func GetRandomK(t testing.TB, c elliptic2.Curve) []byte {
-	k, err := rand.Int(internal.Random, GetN(t, c))
+	k, err := rand.Int(testrand.Random, GetN(t, c))
 	require.NoError(t, err)
 	return k.Bytes()
 }

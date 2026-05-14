@@ -7,7 +7,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/RyuaNerin/elliptic2/internal"
+	"github.com/RyuaNerin/elliptic2/internal/curvetesting/testrand"
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,7 +21,7 @@ const (
 
 func randomWord(t testing.TB) (w big.Word) {
 	var buf [WordByteSize]byte
-	_, err := io.ReadFull(internal.Random, buf[:])
+	_, err := io.ReadFull(testrand.Random, buf[:])
 	require.NoError(t, err)
 
 	for i := range WordByteSize {
@@ -32,7 +32,7 @@ func randomWord(t testing.TB) (w big.Word) {
 
 func randomWordSlice(t testing.TB, n int) []big.Word {
 	buf := make([]byte, WordByteSize*n)
-	_, err := io.ReadFull(internal.Random, buf)
+	_, err := io.ReadFull(testrand.Random, buf)
 	require.NoError(t, err)
 
 	ws := make([]big.Word, n)

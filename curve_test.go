@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/RyuaNerin/elliptic2"
-	"github.com/RyuaNerin/elliptic2/internal"
 	. "github.com/RyuaNerin/elliptic2/internal/curvetesting"
+	"github.com/RyuaNerin/elliptic2/internal/curvetesting/testrand"
 	"github.com/RyuaNerin/elliptic2/nist"
 	"github.com/stretchr/testify/require"
 )
@@ -138,17 +138,17 @@ func test(std elliptic.Curve, lib elliptic.Curve) func(t *testing.T) {
 		t.Run("ECDSA/SignAndVerify", func(t *testing.T) {
 			data := []byte("Hello, World!")
 
-			privStd, err := ecdsa.GenerateKey(std, internal.Random)
+			privStd, err := ecdsa.GenerateKey(std, testrand.Random)
 			require.NoError(t, err)
 
 			privLib := *privStd
 			privLib.Curve = lib
 
 			for range 10 {
-				sigStd, err := ecdsa.SignASN1(internal.Random, privStd, data)
+				sigStd, err := ecdsa.SignASN1(testrand.Random, privStd, data)
 				require.NoError(t, err)
 
-				sigLib, err := ecdsa.SignASN1(internal.Random, &privLib, data)
+				sigLib, err := ecdsa.SignASN1(testrand.Random, &privLib, data)
 				require.NoError(t, err)
 
 				require.True(t, ecdsa.VerifyASN1(&privStd.PublicKey, data, sigStd), "std: verify failed")
@@ -172,20 +172,20 @@ func bench(c elliptic.Curve) func(b *testing.B) {
 			b.ReportAllocs()
 			b.ResetTimer()
 			for range b.N {
-				_, err := ecdsa.GenerateKey(c, internal.Random)
+				_, err := ecdsa.GenerateKey(c, testrand.Random)
 				require.NoError(b, err)
 			}
 		})
 		b.Run("ECDSA/Sign", func(b *testing.B) {
 			msg := []byte("Hello, World!")
 
-			priv, err := ecdsa.GenerateKey(c, internal.Random)
+			priv, err := ecdsa.GenerateKey(c, testrand.Random)
 			require.NoError(b, err)
 
 			b.ReportAllocs()
 			b.ResetTimer()
 			for range b.N {
-				sig, err := ecdsa.SignASN1(internal.Random, priv, msg)
+				sig, err := ecdsa.SignASN1(testrand.Random, priv, msg)
 				require.NoError(b, err)
 				msg[0] = sig[0]
 			}
@@ -193,10 +193,10 @@ func bench(c elliptic.Curve) func(b *testing.B) {
 		b.Run("ECDSA/Verify", func(b *testing.B) {
 			msg := []byte("Hello, World!")
 
-			priv, err := ecdsa.GenerateKey(c, internal.Random)
+			priv, err := ecdsa.GenerateKey(c, testrand.Random)
 			require.NoError(b, err)
 
-			sig, err := ecdsa.SignASN1(internal.Random, priv, msg)
+			sig, err := ecdsa.SignASN1(testrand.Random, priv, msg)
 			require.NoError(b, err)
 
 			b.ReportAllocs()
