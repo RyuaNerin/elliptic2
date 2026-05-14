@@ -80,7 +80,7 @@ func Overlaps(a, b []big.Word) bool {
 		return false
 	}
 	aStart := uintptr(unsafe.Pointer(unsafe.SliceData(a)))
-	aEnd := aStart + uintptr(len(b)*WordByteSize)
+	aEnd := aStart + uintptr(len(a)*WordByteSize)
 
 	bStart := uintptr(unsafe.Pointer(unsafe.SliceData(b)))
 	bEnd := bStart + uintptr(len(b)*WordByteSize)

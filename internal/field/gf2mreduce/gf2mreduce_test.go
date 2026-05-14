@@ -6,7 +6,7 @@ import (
 	"math/big"
 	"testing"
 
-	"github.com/RyuaNerin/elliptic2/internal"
+	"github.com/RyuaNerin/elliptic2/internal/curvetesting/testrand"
 	"github.com/RyuaNerin/elliptic2/internal/field/simd"
 	"github.com/stretchr/testify/require"
 )
@@ -99,7 +99,7 @@ func testReduceRandom(t *testing.T, test func(input []big.Word)) {
 	buf := make([]byte, len(input)*simd.WordByteSize)
 
 	for range 1_000 {
-		fill(t, internal.Random, buf, input[:])
+		fill(t, testrand.Random, buf, input[:])
 		test(input[:])
 	}
 }
@@ -111,7 +111,7 @@ func BenchmarkReduce(b *testing.B) {
 			var output [simd.Words]big.Word
 			buf := make([]byte, len(input)*simd.WordByteSize)
 
-			fill(b, internal.Random, buf, input[:])
+			fill(b, testrand.Random, buf, input[:])
 
 			b.ResetTimer()
 			for range b.N {
