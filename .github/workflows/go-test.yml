@@ -85,12 +85,6 @@ jobs:
           image: arm32v7/golang:1.25-alpine
         - platform: linux/arm/v7
           image: arm32v7/golang:1.24-alpine
-        - platform: linux/arm64/v8
-          image: arm64v8/golang:1.26-alpine
-        - platform: linux/arm64/v8
-          image: arm64v8/golang:1.25-alpine
-        - platform: linux/arm64/v8
-          image: arm64v8/golang:1.24-alpine
         - platform: linux/ppc64le
           image: ppc64le/golang:1.26-alpine
         - platform: linux/ppc64le

@@ -2,6 +2,7 @@ package field_test
 
 import (
 	"crypto/rand"
+	"fmt"
 	"math/big"
 	"reflect"
 	"runtime"
@@ -186,13 +187,12 @@ func tArg[E any, GF field.GF[E]](
 			dstInt = dst.ToBigInt(dstInt)
 			curvetesting.RequireEqual(t,
 				want, dstInt,
-				"%d: %s[%d]",
-				idx, testName, inputIdx,
+				fmt.Sprintf("%d: %s[%d]", idx, testName, inputIdx),
 			)
 		}
 
 		for aidx := range 3 {
-			curvetesting.RequireUnmodified(t, &argBackup[aidx], tc.arg[aidx], "%d: arg[%d]", idx, aidx)
+			curvetesting.RequireUnmodified(t, &argBackup[aidx], tc.arg[aidx], fmt.Sprintf("%d: arg[%d]", idx, aidx))
 		}
 	}
 }

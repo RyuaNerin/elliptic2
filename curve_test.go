@@ -149,9 +149,8 @@ func testECDSA(t *testing.T, std elliptic.Curve, lib elliptic.Curve) {
 	privStd, err := ecdsa.GenerateKey(std, testrand.Random)
 	require.NoError(t, err)
 
-	var privLib ecdsa.PrivateKey
-	privLib = *privStd
-	privLib.PublicKey.Curve = lib
+	privLib := *privStd
+	privLib.Curve = lib
 
 	t.Run("SignStd/VerifyLib", func(t *testing.T) {
 		msg := sha256.Sum256([]byte("Hello, World!"))
