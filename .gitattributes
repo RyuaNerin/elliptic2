@@ -1,0 +1,2 @@
+*.go text=auto eol=lf
+*.s text=auto eol=lf
