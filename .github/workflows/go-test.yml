@@ -25,18 +25,16 @@ jobs:
     name: Lint and Test - Go ${{ matrix.go-version }} on ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Set up Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@v7
         with:
           go-version: ${{ matrix.go-version }}
           cache-dependency-path: go.sum
           
       - name: Set up gotestfmt
-        uses: gotesttools/gotestfmt-action@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
@@ -58,7 +56,7 @@ jobs:
           (go test -json -v -tags purego ./... 2>&1 | tee "${{ runner.temp }}/gotest-purego.log" | gotestfmt) || false
 
       - name: Upload test log
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: test-log
@@ -122,22 +120,15 @@ jobs:
         - platform: linux/loong64
           image: ghcr.io/loong64/golang:1.24-alpine
 
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    runs-on: [ "self-hosted", "linux" ]
 
     steps:
-      - uses: actions/checkout@v6
-
-      - name: Set git to use LF
-        run: |
-          git config core.autocrlf false
-          git rm --cached -r .
-          git reset --hard
+      - uses: actions/checkout@v7
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Test
         run: |
           cd bin/
-          bash ./cross-arch-test.sh "${{ matrix.platform }}" "${{ matrix.image }}"
+          bash ./docker-qemu.sh "${{ matrix.platform }}" "${{ matrix.image }}"
