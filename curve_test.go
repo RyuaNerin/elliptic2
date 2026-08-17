@@ -3,6 +3,7 @@ package elliptic2_test
 import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
+	"crypto/sha256"
 	"runtime"
 	"testing"
 
@@ -18,6 +19,13 @@ func TestWithStdCurves(t *testing.T) {
 	t.Run("P-256", test(elliptic.P256(), nist.P256()))
 	t.Run("P-384", test(elliptic.P384(), nist.P384()))
 	t.Run("P-521", test(elliptic.P521(), nist.P521()))
+}
+
+func TestECDSA(t *testing.T) {
+	t.Run("P-224", func(t *testing.T) { testECDSA(t, elliptic.P224(), nist.P224()) })
+	t.Run("P-256", func(t *testing.T) { testECDSA(t, elliptic.P256(), nist.P256()) })
+	t.Run("P-384", func(t *testing.T) { testECDSA(t, elliptic.P384(), nist.P384()) })
+	t.Run("P-521", func(t *testing.T) { testECDSA(t, elliptic.P521(), nist.P521()) })
 }
 
 func BenchmarkStd(b *testing.B) {
@@ -134,31 +142,34 @@ func test(std elliptic.Curve, lib elliptic.Curve) func(t *testing.T) {
 				RequireXYEquals(t, &Point{X: xStd, Y: yStd}, &Point{X: xLib, Y: yLib}, "ScalarBaseMult result")
 			}
 		})
-
-		t.Run("ECDSA/SignAndVerify", func(t *testing.T) {
-			data := []byte("Hello, World!")
-
-			privStd, err := ecdsa.GenerateKey(std, testrand.Random)
-			require.NoError(t, err)
-
-			privLib := *privStd
-			privLib.Curve = lib
-
-			for range 10 {
-				sigStd, err := ecdsa.SignASN1(testrand.Random, privStd, data)
-				require.NoError(t, err)
-
-				sigLib, err := ecdsa.SignASN1(testrand.Random, &privLib, data)
-				require.NoError(t, err)
-
-				require.True(t, ecdsa.VerifyASN1(&privStd.PublicKey, data, sigStd), "std: verify failed")
-				require.True(t, ecdsa.VerifyASN1(&privLib.PublicKey, data, sigLib), "lib: verify failed")
-
-				// Modify data to change the signature next iteration
-				data[0] ^= sigStd[0]
-			}
-		})
 	}
+}
+
+func testECDSA(t *testing.T, std elliptic.Curve, lib elliptic.Curve) {
+	privStd, err := ecdsa.GenerateKey(std, testrand.Random)
+	require.NoError(t, err)
+
+	var privLib ecdsa.PrivateKey
+	privLib = *privStd
+	privLib.PublicKey.Curve = lib
+
+	t.Run("SignStd/VerifyLib", func(t *testing.T) {
+		msg := sha256.Sum256([]byte("Hello, World!"))
+
+		sig, err := ecdsa.SignASN1(testrand.Random, privStd, msg[:])
+		require.NoError(t, err)
+
+		require.True(t, ecdsa.VerifyASN1(&privLib.PublicKey, msg[:], sig), "VerifyLib failed")
+	})
+
+	t.Run("SignLib/VerifyStd", func(t *testing.T) {
+		msg := sha256.Sum256([]byte("Hello, World!"))
+
+		sig, err := ecdsa.SignASN1(testrand.Random, &privLib, msg[:])
+		require.NoError(t, err)
+
+		require.True(t, ecdsa.VerifyASN1(&privStd.PublicKey, msg[:], sig), "VerifyStd failed")
+	})
 }
 
 func bench(c elliptic.Curve) func(b *testing.B) {
@@ -184,7 +195,7 @@ func bench(c elliptic.Curve) func(b *testing.B) {
 
 			b.ReportAllocs()
 			b.ResetTimer()
-			for range b.N {
+			for b.Loop() {
 				sig, err := ecdsa.SignASN1(testrand.Random, priv, msg)
 				require.NoError(b, err)
 				msg[0] = sig[0]

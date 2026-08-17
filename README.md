@@ -6,7 +6,7 @@
 
 - Supports a wide range of curves including NIST, Brainpool, ANSSI, GOST, BLS, BN, MNT, NUMS, Oakley, Oscaa, Secg, and more (see the list below).
 
-- Supports go 1.22+.
+- Supports go 1.24+.
 
 - **⚠️ Warning: This library is not constant-time and is vulnerable to timing side-channel attacks when handling secret data.**
 
@@ -69,6 +69,47 @@ $ go get github.com/RyuaNerin/elliptic2/v2
 ## [LICENSE](/LICENSE)
 
 - Apache License 2.0
+
+## Performance
+
+```mermaid
+---
+config:
+  xyChart:
+    height: 200
+---
+xychart-beta horizontal
+    title "ECDSA GenerateKey (μs/op, lower is better)"
+    x-axis ["224 Std", "224 Lib", "256 Std", "256 Lib", "384 Std", "384 Lib", "521 Std", "521 Lib"]
+    y-axis "μs/op" 0 --> 2200
+    bar [26, 479, 7, 529, 74, 1223, 186, 2183]
+```
+
+```mermaid
+---
+config:
+  xyChart:
+    height: 200
+---
+xychart-beta horizontal
+    title "ECDSA Sign (μs/op, lower is better)"
+    x-axis ["224 Std", "224 Lib", "256 Std", "256 Lib", "384 Std", "384 Lib", "521 Std", "521 Lib"]
+    y-axis "μs/op" 0 --> 2200
+    bar [46, 491, 17, 537, 120, 1203, 303, 2197]
+```
+
+```mermaid
+---
+config:
+  xyChart:
+    height: 200
+---
+xychart-beta horizontal
+    title "ECDSA Verify (μs/op, lower is better)"
+    x-axis ["224 Std", "224 Lib", "256 Std", "256 Lib", "384 Std", "384 Lib", "521 Std", "521 Lib"]
+    y-axis "μs/op" 0 --> 4600
+    bar [116, 1024, 39, 1072, 347, 2418, 1020, 4483]
+```
 
 ## Supported Curve List
 
