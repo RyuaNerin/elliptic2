@@ -146,4 +146,4 @@ jobs:
       - name: Test
         run: |
           cd bin/
-          bash ./cross-arch-test.sh "${{ matric.platform }}" "${{ matrix.image }}"
+          bash ./cross-arch-test.sh "${{ matrix.platform }}" "${{ matrix.image }}"
