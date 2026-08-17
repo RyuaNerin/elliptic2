@@ -86,8 +86,8 @@ const (
 )
 
 func WithOID(oidStr string) option {
-	var oid asn1.ObjectIdentifier
-	for _, s := range strings.Split(oidStr, ".") {
+	oid := make(asn1.ObjectIdentifier, 0, strings.Count(oidStr, ".")+1)
+	for s := range strings.SplitSeq(oidStr, ".") {
 		var v int
 		_, err := fmt.Sscanf(s, "%d", &v)
 		if err != nil {

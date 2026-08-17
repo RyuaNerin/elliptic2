@@ -2,7 +2,6 @@ package curvetesting
 
 import (
 	"crypto/elliptic"
-	"fmt"
 	"math/big"
 	"testing"
 
@@ -34,9 +33,8 @@ func RequireGenerator(t testing.TB, c elliptic2.Curve) bool {
 	return false
 }
 
-func RequireIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int, msg string, args ...any) {
+func RequireIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int, prefix string) {
 	t.Helper()
-	prefix := fmt.Sprintf(msg, args...)
 	require.True(t,
 		curve.IsOnCurve(x, y),
 		"%s is not on the curve:\n  X: %s\n  Y: %s",
@@ -44,9 +42,8 @@ func RequireIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int, msg st
 	)
 }
 
-func RequireNotIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int, msg string, args ...any) {
+func RequireNotIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int, prefix string) {
 	t.Helper()
-	prefix := fmt.Sprintf(msg, args...)
 	require.False(t,
 		curve.IsOnCurve(x, y),
 		"%s is on the curve:\n  X: %s\n  Y: %s",
@@ -54,9 +51,8 @@ func RequireNotIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int, msg
 	)
 }
 
-func RequireEqual(t testing.TB, want, got *big.Int, msg string, args ...any) {
+func RequireEqual(t testing.TB, want, got *big.Int, prefix string) {
 	t.Helper()
-	prefix := fmt.Sprintf(msg, args...)
 	require.Zero(t,
 		want.Cmp(got),
 		"%s mismatch:\n  want: %s\n  got:  %s",
@@ -64,9 +60,8 @@ func RequireEqual(t testing.TB, want, got *big.Int, msg string, args ...any) {
 	)
 }
 
-func RequireXYEquals(t testing.TB, want, got *Point, msg string, args ...any) {
+func RequireXYEquals(t testing.TB, want, got *Point, prefix string) {
 	t.Helper()
-	prefix := fmt.Sprintf(msg, args...)
 	require.Zero(t,
 		want.X.Cmp(got.X),
 		"%s.X mismatch:\n  want: %s\n  got:  %s",
@@ -79,18 +74,16 @@ func RequireXYEquals(t testing.TB, want, got *Point, msg string, args ...any) {
 	)
 }
 
-func RequireUnmodified(t testing.TB, saved, current *big.Int, msg string, args ...any) {
+func RequireUnmodified(t testing.TB, saved, current *big.Int, prefix string) {
 	t.Helper()
-	prefix := fmt.Sprintf(msg, args...)
 	require.Zero(t, saved.Cmp(current),
 		"%s modified:\n  want: %s\n  got:  %s",
 		prefix, saved.String(), current.String(),
 	)
 }
 
-func RequireXYUnmodified(t testing.TB, saved, current *Point, msg string, args ...any) {
+func RequireXYUnmodified(t testing.TB, saved, current *Point, prefix string) {
 	t.Helper()
-	prefix := fmt.Sprintf(msg, args...)
 	require.Zero(t, saved.X.Cmp(current.X),
 		"%s.X modified:\n  want: %s\n  got:  %s",
 		prefix, saved.X.String(), current.X.String(),
