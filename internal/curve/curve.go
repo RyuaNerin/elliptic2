@@ -4,6 +4,8 @@ import (
 	"crypto/elliptic"
 	"encoding/asn1"
 	"fmt"
+	"hash/fnv"
+	"io"
 	"math/big"
 	"strings"
 
@@ -37,20 +39,23 @@ type (
 
 	CurveArithmeticBase interface {
 		FieldType() FieldType
+		CurveType() elliptic2.CurveType
 
 		RawParams() any
 
 		Modulus() *field.Modulus
 		N() *big.Int
 
-		Generator() (x, y *big.Int, ok bool)
-		IsInfinity(x, y *big.Int) bool
-		Identity() (x, y *big.Int)
-		Params() *elliptic.CurveParams   // for elliptic.Curve compatibility
-		Params2() *elliptic2.CurveParams // for CurveParamsSupplier compatibility
+		Generator() (x, y *big.Int, ok bool) // get the generator point and whether it exists
+		IsInfinity(x, y *big.Int) bool       // check if the point is the point at infinity
+		InfinityPoint() (x, y *big.Int)      // get the point at infinity
+		Params() *elliptic.CurveParams       // for elliptic.Curve compatibility
+		Params2() *elliptic2.CurveParams     // for CurveParamsSupplier compatibility
 
 		IsOnCurve(x, y *big.Int) bool
 		ComputeY(x *big.Int, largeY bool) *big.Int
+
+		WriteParams(w io.Writer)
 	}
 	CurveArithmetic[C any, CP Coordinate[C], OP Operator[C, CP]] interface {
 		CurveArithmeticBase
@@ -75,7 +80,9 @@ type (
 
 	option    func(*curveBase)
 	curveBase struct {
-		oid asn1.ObjectIdentifier
+		oid     asn1.ObjectIdentifier
+		hash    uint64
+		hashOID uint64
 	}
 )
 
@@ -113,12 +120,21 @@ func NewCurve(base CurveArithmeticBase, opts ...option) elliptic.Curve {
 		fn(&cb)
 	}
 
+	h := fnv.New64a()
+
 	switch base.FieldType() {
 	case FieldTypeGFp:
 		b, ok := base.(GFpCurveArithmetic)
 		if !ok {
 			panic("base is not GFpCurveBase")
 		}
+
+		h.Write([]byte{0, '\n'})
+		base.WriteParams(h)
+		cb.hash = h.Sum64()
+		fmt.Fprintln(h, cb.oid.String())
+		cb.hashOID = h.Sum64()
+
 		c := curveGFp{curveBase: cb, base: b}
 
 		op := b.NewOperator()
@@ -133,6 +149,13 @@ func NewCurve(base CurveArithmeticBase, opts ...option) elliptic.Curve {
 		if !ok {
 			panic("base is not GF2mCurveBase")
 		}
+
+		h.Write([]byte{1, '\n'})
+		base.WriteParams(h)
+		cb.hash = h.Sum64()
+		fmt.Fprintln(h, cb.oid.String())
+		cb.hashOID = h.Sum64()
+
 		c := curveGF2m{curveBase: cb, base: b}
 
 		op := b.NewOperator()

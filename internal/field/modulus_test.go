@@ -3,8 +3,9 @@ package field_test
 import (
 	"testing"
 
-	"github.com/RyuaNerin/elliptic2/internal/field"
 	"github.com/stretchr/testify/require"
+
+	"github.com/RyuaNerin/elliptic2/internal/field"
 )
 
 func TestFx(t *testing.T) {

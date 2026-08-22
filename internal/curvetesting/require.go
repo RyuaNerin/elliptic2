@@ -5,9 +5,10 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/RyuaNerin/elliptic2"
 	"github.com/RyuaNerin/elliptic2/internal/curve"
-	"github.com/stretchr/testify/require"
 )
 
 func RequireGenerator(t testing.TB, c elliptic2.Curve) bool {
@@ -35,7 +36,8 @@ func RequireGenerator(t testing.TB, c elliptic2.Curve) bool {
 
 func RequireIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int, prefix string) {
 	t.Helper()
-	require.True(t,
+	require.True(
+		t,
 		curve.IsOnCurve(x, y),
 		"%s is not on the curve:\n  X: %s\n  Y: %s",
 		prefix, x.String(), y.String(),
@@ -44,7 +46,8 @@ func RequireIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int, prefix
 
 func RequireNotIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int, prefix string) {
 	t.Helper()
-	require.False(t,
+	require.False(
+		t,
 		curve.IsOnCurve(x, y),
 		"%s is on the curve:\n  X: %s\n  Y: %s",
 		prefix, x.String(), y.String(),
@@ -53,7 +56,8 @@ func RequireNotIsOnCurve(t testing.TB, curve elliptic2.Curve, x, y *big.Int, pre
 
 func RequireEqual(t testing.TB, want, got *big.Int, prefix string) {
 	t.Helper()
-	require.Zero(t,
+	require.Zero(
+		t,
 		want.Cmp(got),
 		"%s mismatch:\n  want: %s\n  got:  %s",
 		prefix, want.String(), got.String(),
@@ -62,12 +66,14 @@ func RequireEqual(t testing.TB, want, got *big.Int, prefix string) {
 
 func RequireXYEquals(t testing.TB, want, got *Point, prefix string) {
 	t.Helper()
-	require.Zero(t,
+	require.Zero(
+		t,
 		want.X.Cmp(got.X),
 		"%s.X mismatch:\n  want: %s\n  got:  %s",
 		prefix, want.X.String(), got.X.String(),
 	)
-	require.Zero(t,
+	require.Zero(
+		t,
 		want.Y.Cmp(got.Y),
 		"%s.Y mismatch:\n  want: %s\n  got:  %s",
 		prefix, want.Y.String(), got.Y.String(),
@@ -76,7 +82,8 @@ func RequireXYEquals(t testing.TB, want, got *Point, prefix string) {
 
 func RequireUnmodified(t testing.TB, saved, current *big.Int, prefix string) {
 	t.Helper()
-	require.Zero(t, saved.Cmp(current),
+	require.Zero(
+		t, saved.Cmp(current),
 		"%s modified:\n  want: %s\n  got:  %s",
 		prefix, saved.String(), current.String(),
 	)
@@ -84,11 +91,13 @@ func RequireUnmodified(t testing.TB, saved, current *big.Int, prefix string) {
 
 func RequireXYUnmodified(t testing.TB, saved, current *Point, prefix string) {
 	t.Helper()
-	require.Zero(t, saved.X.Cmp(current.X),
+	require.Zero(
+		t, saved.X.Cmp(current.X),
 		"%s.X modified:\n  want: %s\n  got:  %s",
 		prefix, saved.X.String(), current.X.String(),
 	)
-	require.Zero(t, saved.Y.Cmp(current.Y),
+	require.Zero(
+		t, saved.Y.Cmp(current.Y),
 		"%s.Y modified:\n  want: %s\n  got:  %s",
 		prefix, saved.Y.String(), current.Y.String(),
 	)

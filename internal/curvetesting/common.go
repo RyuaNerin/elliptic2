@@ -7,6 +7,8 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/RyuaNerin/elliptic2"
 	"github.com/RyuaNerin/elliptic2/internal/curve"
 	"github.com/RyuaNerin/elliptic2/internal/curve/edwards"
@@ -15,7 +17,6 @@ import (
 	"github.com/RyuaNerin/elliptic2/internal/curve/weierstrassbinary"
 	"github.com/RyuaNerin/elliptic2/internal/curve/weierstrassprime"
 	"github.com/RyuaNerin/elliptic2/internal/curvetesting/testrand"
-	"github.com/stretchr/testify/require"
 )
 
 func W[

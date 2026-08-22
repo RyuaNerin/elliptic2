@@ -91,6 +91,9 @@ func NewGF2mModulusFromPolynomials(f ...int) *Modulus {
 }
 
 func (p *Modulus) String() string {
+	if p == nil {
+		return "<nil>"
+	}
 	return fmt.Sprintf("Modulus{bits:%d,poly:%v}", p.bits, p.gf2mPoly)
 }
 

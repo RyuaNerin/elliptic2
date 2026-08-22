@@ -5,10 +5,11 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/RyuaNerin/elliptic2"
 	"github.com/RyuaNerin/elliptic2/internal"
 	"github.com/RyuaNerin/elliptic2/internal/curve"
-	"github.com/stretchr/testify/require"
 )
 
 type Point struct {
@@ -184,7 +185,8 @@ func testComputeY(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) 
 		RequireIsOnCurve(t, curve, p.X, ySmall, fmt.Sprintf("%s.Y (small)", pointName))
 		RequireIsOnCurve(t, curve, p.X, yLarge, fmt.Sprintf("%s.Y (large)", pointName))
 
-		require.LessOrEqual(t,
+		require.LessOrEqual(
+			t,
 			ySmall.Cmp(yLarge), 0,
 			"%s: small Y is bigger than large Y\n  X:  %s\n  Y1: %s\n  Y2: %s",
 			pointName,
@@ -192,7 +194,8 @@ func testComputeY(t *testing.T, curve elliptic2.Curve, testCase CurveTestCases) 
 			ySmall.String(),
 			yLarge.String(),
 		)
-		require.True(t,
+		require.True(
+			t,
 			ySmall.Cmp(p.Y) == 0 || yLarge.Cmp(p.Y) == 0,
 			"%s: Computed Y mismatch\n  X:      %s\n  got Y1: %s\n  got Y2: %s\n  want Y: %s",
 			pointName,

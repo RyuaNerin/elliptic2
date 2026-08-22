@@ -2,10 +2,12 @@ package curve
 
 import (
 	"crypto/elliptic"
+	"encoding/asn1"
 	"fmt"
 	"math/big"
 
 	"github.com/RyuaNerin/elliptic2"
+	"github.com/RyuaNerin/elliptic2/internal/field"
 )
 
 type (
@@ -28,6 +30,94 @@ func (c *curveGFp) Params() *elliptic.CurveParams   { return c.base.Params() }
 func (c *curveGFp) Params2() *elliptic2.CurveParams { return c.base.Params2() }
 
 func (c *curveGFp) IsOnCurve(x, y *big.Int) bool { return c.base.IsOnCurve(x, y) }
+
+func (c *curveGFp) IsEquivalentCurve(other elliptic2.Curve) bool {
+	eq, _ := c.isEquivalent(other, false)
+	return eq
+}
+
+var (
+	oidNamedCurveP224 = asn1.ObjectIdentifier{1, 3, 132, 0, 33}
+	oidNamedCurveP256 = asn1.ObjectIdentifier{1, 2, 840, 10045, 3, 1, 7}
+	oidNamedCurveP384 = asn1.ObjectIdentifier{1, 3, 132, 0, 34}
+	oidNamedCurveP521 = asn1.ObjectIdentifier{1, 3, 132, 0, 35}
+)
+
+func (c *curveGFp) IsEquivalentCurveWithOID(other elliptic2.Curve) bool {
+	eq, otherIsStd := c.isEquivalent(other, true)
+	if !eq {
+		return false
+	}
+
+	if otherIsStd {
+		switch {
+		case other == elliptic.P224() && c.oid.Equal(oidNamedCurveP224):
+			return true
+		case other == elliptic.P256() && c.oid.Equal(oidNamedCurveP256):
+			return true
+		case other == elliptic.P384() && c.oid.Equal(oidNamedCurveP384):
+			return true
+		case other == elliptic.P521() && c.oid.Equal(oidNamedCurveP521):
+			return true
+		}
+
+		return false
+	}
+
+	return true
+}
+
+func (c *curveGFp) isEquivalent(other elliptic2.Curve, withOID bool) (eq bool, otherIsStd bool) {
+	if isNilCurve(c) || isNilCurve(other) {
+		return false, false
+	}
+	if isSameCurveInstance(c, other) {
+		return true, false
+	}
+
+	var C *curveGFp
+
+	if c2, ok := other.(*curveGFp); ok {
+		C = c2
+	}
+	if c2, ok := other.(*curveGFpMadd); ok {
+		C = &c2.curveGFp
+	}
+	if C == nil {
+		// compare with standard library curve
+		if c.base.CurveType() != elliptic2.CurveTypeWeierstrassPrime {
+			return false, false
+		}
+
+		// (A + 3) % P == 0  <=>  A == -3 mod P
+		params := c.base.Params2()
+		var tmp field.GFp
+		var a field.GFp
+		a.SetModulus(c.base.Modulus()).SetBigInt(params.A)
+		tmp.SetModulus(c.base.Modulus()).Add(&a, field.GFpThree).Reduce()
+		if !tmp.IsZero() {
+			return false, false
+		}
+		if C, ok := other.(elliptic.Curve); ok {
+			return isEquivalentParams(params.Params(), C.Params()), true
+		}
+		return false, false
+	}
+
+	if withOID {
+		if c.hashOID != C.hashOID {
+			return false, false
+		}
+		// full comparison of curve parameters
+		return isEquivalentParams2(c.base.Params2(), C.base.Params2()) && c.oid.Equal(C.oid), false
+	}
+
+	if c.hash != C.hash {
+		return false, false
+	}
+	// full comparison of curve parameters
+	return isEquivalentParams2(c.base.Params2(), C.base.Params2()), false
+}
 
 func (c *curveGFp) HasGenerator() bool {
 	_, _, ok := c.base.Generator()
@@ -73,7 +163,7 @@ func (c *curveGFp) Double(x1, y1 *big.Int) (x, y *big.Int) {
 	c.panicIfNotOnCurve(x1, y1)
 
 	if c.base.IsInfinity(x1, y1) {
-		return c.base.Identity()
+		return c.base.InfinityPoint()
 	}
 
 	op := c.base.NewOperator()
@@ -107,13 +197,13 @@ func (c *curveGFp) ScalarBaseMult(k []byte) (x, y *big.Int) {
 
 func (c *curveGFp) scalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
 	if len(k) == 0 {
-		return c.base.Identity()
+		return c.base.InfinityPoint()
 	}
 
 	var num big.Int
 	num.SetBytes(k)
 	if num.Sign() == 0 {
-		return c.base.Identity()
+		return c.base.InfinityPoint()
 	}
 
 	op := c.base.NewOperator()

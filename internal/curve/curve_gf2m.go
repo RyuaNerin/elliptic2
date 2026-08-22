@@ -29,6 +29,49 @@ func (c *curveGF2m) Params2() *elliptic2.CurveParams { return c.base.Params2() }
 
 func (c *curveGF2m) IsOnCurve(x, y *big.Int) bool { return c.base.IsOnCurve(x, y) }
 
+func (c *curveGF2m) IsEquivalentCurve(other elliptic2.Curve) bool {
+	return c.isEquivalent(other, false)
+}
+
+func (c *curveGF2m) IsEquivalentCurveWithOID(other elliptic2.Curve) bool {
+	return c.isEquivalent(other, true)
+}
+
+func (c *curveGF2m) isEquivalent(other elliptic2.Curve, withOID bool) bool {
+	if isNilCurve(c) || isNilCurve(other) {
+		return false
+	}
+	if isSameCurveInstance(c, other) {
+		return true
+	}
+
+	var C *curveGF2m
+
+	if c2, ok := other.(*curveGF2m); ok {
+		C = c2
+	}
+	if c2, ok := other.(*curveGF2mMadd); ok {
+		C = &c2.curveGF2m
+	}
+	if C == nil {
+		return false
+	}
+
+	if withOID {
+		if c.hashOID != C.hashOID {
+			return false
+		}
+		// full comparison of curve parameters
+		return isEquivalentParams2(c.base.Params2(), C.base.Params2()) && c.oid.Equal(C.oid)
+	}
+
+	if c.hash != C.hash {
+		return false
+	}
+	// full comparison of curve parameters
+	return isEquivalentParams2(c.base.Params2(), C.base.Params2())
+}
+
 func (c *curveGF2m) HasGenerator() bool {
 	_, _, ok := c.base.Generator()
 	return ok
@@ -74,7 +117,7 @@ func (c *curveGF2m) Double(x1, y1 *big.Int) (x, y *big.Int) {
 	c.panicIfNotOnCurve(x1, y1)
 
 	if c.base.IsInfinity(x1, y1) {
-		return c.base.Identity()
+		return c.base.InfinityPoint()
 	}
 
 	op := c.base.NewOperator()
@@ -108,13 +151,13 @@ func (c *curveGF2m) ScalarBaseMult(k []byte) (x, y *big.Int) {
 
 func (c *curveGF2m) scalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
 	if len(k) == 0 {
-		return c.base.Identity()
+		return c.base.InfinityPoint()
 	}
 
 	var num big.Int
 	num.SetBytes(k)
 	if num.Sign() == 0 {
-		return c.base.Identity()
+		return c.base.InfinityPoint()
 	}
 
 	op := c.base.NewOperator()

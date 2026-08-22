@@ -1,0 +1,16 @@
+[project]
+name = "ellipticb_generator"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13" # sage 10.9 uses python 3.12
+dependencies = [
+    "docker>=7.1.0",
+    "fnv>=0.2.0",
+    "galois>=0.4.7",
+    "gitpython>=3.1.59",
+    "jinja2>=3.1.6",
+    "num2words>=0.5.14",
+    "tqdm>=4.67.1",
+]
+
+[tool.pyright]
+stubPath = "generators/curves/typings"

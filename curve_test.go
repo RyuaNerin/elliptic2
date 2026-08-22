@@ -7,11 +7,12 @@ import (
 	"runtime"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/RyuaNerin/elliptic2"
 	. "github.com/RyuaNerin/elliptic2/internal/curvetesting"
 	"github.com/RyuaNerin/elliptic2/internal/curvetesting/testrand"
 	"github.com/RyuaNerin/elliptic2/nist"
-	"github.com/stretchr/testify/require"
 )
 
 func TestWithStdCurves(t *testing.T) {

@@ -1,0 +1,25 @@
+### [{{ name }}](https://neuromancer.sk/std/{{ namespace }}/)
+
+- {{ desc }}
+
+| Name | OID | Field Type | Generator | Function | As known |
+|:-----|:----|:----------:|:---------:|:---------|:---------|
+{%- for curve in curve_list %}
+| [`{{ curve.unified_curve.name }}`](https://neuromancer.sk/std/{{ namespace | replace(' ', '%20') }}/{{ curve.unified_curve.name | replace(' ', '%20') }}) |
+{%- if curve.unified_curve.params.oid %} `{{ curve.unified_curve.params.oid }}` {% endif -%}
+| `{{ curve.field_type }}` | 
+{%- if curve.unified_curve.params.gx and curve.unified_curve.params.gy %} O {% endif -%}
+| `{{ namespace }}.{{ curve.golang_fun }}()` |
+{%- if curve.unified_curve.aliases | length > 0 %} {{ curve.unified_curve.aliases | surround('`') | join(', ') }}{% endif %} |
+{%- endfor %}
+
+{%- if ignored_curve_list | length > 0 %}
+
+- Those curves are not avilable in this namespace:
+  | Name | Reason |
+  |:-----|:-------|
+{%- for curve in ignored_curve_list %}
+  | [`{{ curve.name }}`](https://neuromancer.sk/std/{{ namespace | replace(' ', '%20') }}/{{ curve.name | replace(' ', '%20') }}) | {{ curve.reason }} |
+{%- endfor %}
+{%- endif %}
+

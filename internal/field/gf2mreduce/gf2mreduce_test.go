@@ -6,9 +6,10 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/RyuaNerin/elliptic2/internal/curvetesting/testrand"
 	"github.com/RyuaNerin/elliptic2/internal/field/simd"
-	"github.com/stretchr/testify/require"
 )
 
 func TestHash(t *testing.T) {

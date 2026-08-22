@@ -1,0 +1,5 @@
+__pycache__/
+std-curves/
+.cache/
+
+.python-version

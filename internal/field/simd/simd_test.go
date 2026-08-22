@@ -7,8 +7,9 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/RyuaNerin/elliptic2/internal/curvetesting/testrand"
 	"github.com/stretchr/testify/require"
+
+	"github.com/RyuaNerin/elliptic2/internal/curvetesting/testrand"
 )
 
 const (

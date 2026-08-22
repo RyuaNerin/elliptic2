@@ -4,7 +4,6 @@
     // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
     "version": "0.2.0",
     "configurations": [
-
         {
             "name":"Python 디버거: 현재 파일",
             "type":"debugpy",
@@ -20,15 +19,10 @@
             "request": "launch",
             "program": "${workspaceFolder}/generators/curves/main.py",
             "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/generators/curves"
-        },
-        {
-            "name": "Python: binary",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/generators/testcases/main.py",
-            "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}/generators/testcases"
+            "cwd": "${workspaceFolder}/generators/curves",
+            "args": [
+                "--no-remove-docker-container",
+            ]
         },
         {
             "name": "Launch Package",

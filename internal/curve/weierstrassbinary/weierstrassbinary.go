@@ -2,6 +2,8 @@ package weierstrassbinary
 
 import (
 	"crypto/elliptic"
+	"fmt"
+	"io"
 	"math/big"
 	"slices"
 	"strings"
@@ -60,11 +62,28 @@ func BuildOp(params *CurveParams, fnNewOp func(c *Curve) curve.GF2mOperator) *Cu
 func (c *Curve) RawParams() any                      { return &c.CurveParams }
 func (c *Curve) Modulus() *field.Modulus             { return c.Poly }
 func (*Curve) FieldType() curve.FieldType            { return curve.FieldTypeGF2m }
+func (*Curve) CurveType() elliptic2.CurveType        { return elliptic2.CurveTypeWeierstrassBinary }
 func (c *Curve) Generator() (x, y *big.Int, ok bool) { return c.Gx, c.Gy, c.withGenerator }
 func (*Curve) IsInfinity(x, y *big.Int) bool         { return x.Sign() == 0 && y.Sign() == 0 }
-func (*Curve) Identity() (x, y *big.Int)             { return new(big.Int), new(big.Int) }
+func (*Curve) InfinityPoint() (x, y *big.Int)        { return new(big.Int), new(big.Int) }
 func (c *Curve) NewOperator() curve.GF2mOperator     { return c.newOperator(c) }
 func (c *Curve) N() *big.Int                         { return c.CurveParams.N }
+
+func (c *Curve) WriteParams(w io.Writer) {
+	fmt.Fprintln(w, "weierstrassbinary")
+	fmt.Fprintln(w, c.BitSize)
+	fmt.Fprintln(w, c.Poly.String())
+	fmt.Fprintln(w, c.A2.String())
+	fmt.Fprintln(w, c.A6.String())
+	fmt.Fprintln(w, c.CurveParams.N.Text(16))
+	if c.withGenerator {
+		fmt.Fprintln(w, c.Gx.Text(16))
+		fmt.Fprintln(w, c.Gy.Text(16))
+	} else {
+		fmt.Fprintln(w, 0)
+		fmt.Fprintln(w, 0)
+	}
+}
 
 func (c *Curve) Params() *elliptic.CurveParams {
 	p := &elliptic.CurveParams{
@@ -91,7 +110,7 @@ func (c *Curve) Params2() *elliptic2.CurveParams {
 	if c.withGenerator {
 		p.Gx, p.Gy = new(big.Int).Set(c.Gx), new(big.Int).Set(c.Gy)
 	}
-	p.InfX, p.InfY = c.Identity()
+	p.InfX, p.InfY = c.InfinityPoint()
 	return p
 }
 

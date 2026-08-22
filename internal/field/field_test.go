@@ -9,16 +9,17 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/require"
+
 	"github.com/RyuaNerin/elliptic2/internal/curvetesting"
 	"github.com/RyuaNerin/elliptic2/internal/field"
 	"github.com/RyuaNerin/elliptic2/internal/field/simd"
-	"github.com/stretchr/testify/require"
 )
 
 func testInvValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus []*field.Modulus) {
-	x := (GF)(new(E))
-	inv := (GF)(new(E))
-	one := (GF)(new(E))
+	x := GF(new(E))
+	inv := GF(new(E))
+	one := GF(new(E))
 
 	one.SetInt64(1)
 
@@ -34,7 +35,8 @@ func testInvValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus 
 			inv.Reduce()
 
 			require.Equal(t, one, inv, "x * x^(-1) != 1")
-			require.Zero(t,
+			require.Zero(
+				t,
 				inv.Cmp(one),
 				"x * x^(-1) != 1\n  x:   %s\n  inv: %s\n",
 				x.String(), inv.String(),
@@ -44,9 +46,9 @@ func testInvValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus 
 }
 
 func testSqrValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus []*field.Modulus) {
-	x := (GF)(new(E))
-	mul := (GF)(new(E))
-	sqr := (GF)(new(E))
+	x := GF(new(E))
+	mul := GF(new(E))
+	sqr := GF(new(E))
 
 	for _, m := range modulus {
 		x.SetModulus(m)
@@ -59,7 +61,8 @@ func testSqrValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus 
 			mul.Mul(x, x)
 			sqr.Sqr(x)
 
-			require.Zero(t,
+			require.Zero(
+				t,
 				mul.Cmp(sqr),
 				"x * x != x^2, x: %s\nmul: %s\nsqr: %s",
 				x.String(), mul.String(), sqr.String(),
@@ -69,9 +72,9 @@ func testSqrValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus 
 }
 
 func testSqrtValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus []*field.Modulus) {
-	x := (GF)(new(E))
-	sqr := (GF)(new(E))
-	sqrt := (GF)(new(E))
+	x := GF(new(E))
+	sqr := GF(new(E))
+	sqrt := GF(new(E))
 
 	for _, m := range modulus {
 		x.SetModulus(m)
@@ -83,7 +86,8 @@ func testSqrtValidation[E any, GF field.GF[E]](t *testing.T, _ func(GF), modulus
 			sqr.Sqr(x)
 			sqrt.Sqrt(sqr)
 
-			require.Zero(t,
+			require.Zero(
+				t,
 				x.Cmp(sqrt),
 				"sqrt(x^2) != x, x: %s\nsqr: %s\nsqrt: %s",
 				x.String(), sqr.String(), sqrt.String(),
@@ -154,9 +158,9 @@ func tArg[E any, GF field.GF[E]](
 	argBackup := make([]big.Int, 3)
 	fields := make([]GF, 5)
 	for i := range fields {
-		fields[i] = (GF)(new(E))
+		fields[i] = GF(new(E))
 	}
-	dst := (GF)(new(E))
+	dst := GF(new(E))
 
 	var dstInt *big.Int
 
@@ -185,7 +189,8 @@ func tArg[E any, GF field.GF[E]](
 			fnOperation(dst, fields[:len(args)]...)
 
 			dstInt = dst.ToBigInt(dstInt)
-			curvetesting.RequireEqual(t,
+			curvetesting.RequireEqual(
+				t,
 				want, dstInt,
 				fmt.Sprintf("%d: %s[%d]", idx, testName, inputIdx),
 			)
@@ -205,9 +210,9 @@ func bArg[E any, GF field.GF[E]](
 ) {
 	for _, m := range modulus {
 		b.Run(m.String(), func(b *testing.B) {
-			dst := (GF)(new(E))
-			x := (GF)(new(E))
-			y := (GF)(new(E))
+			dst := GF(new(E))
+			x := GF(new(E))
+			y := GF(new(E))
 
 			dst.SetModulus(m)
 			x.SetModulus(m)
