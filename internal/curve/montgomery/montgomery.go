@@ -67,18 +67,18 @@ func (c *Curve) NewOperator() curve.GFpOperator      { return c.newOperator(c) }
 func (c *Curve) N() *big.Int                         { return c.CurveParams.N }
 
 func (c *Curve) WriteParams(w io.Writer) {
-	fmt.Fprintln(w, "montgomery")
-	fmt.Fprintln(w, c.BitSize)
-	fmt.Fprintln(w, c.P.String())
-	fmt.Fprintln(w, c.A.String())
-	fmt.Fprintln(w, c.B.String())
-	fmt.Fprintln(w, c.CurveParams.N.Text(16))
+	_, _ = fmt.Fprintln(w, "montgomery")
+	_, _ = fmt.Fprintln(w, c.BitSize)
+	_, _ = fmt.Fprintln(w, c.P.String())
+	_, _ = fmt.Fprintln(w, c.A.String())
+	_, _ = fmt.Fprintln(w, c.B.String())
+	_, _ = fmt.Fprintln(w, c.CurveParams.N.Text(16))
 	if c.withGenerator {
-		fmt.Fprintln(w, c.Gx.Text(16))
-		fmt.Fprintln(w, c.Gy.Text(16))
+		_, _ = fmt.Fprintln(w, c.Gx.Text(16))
+		_, _ = fmt.Fprintln(w, c.Gy.Text(16))
 	} else {
-		fmt.Fprintln(w, 0)
-		fmt.Fprintln(w, 0)
+		_, _ = fmt.Fprintln(w, 0)
+		_, _ = fmt.Fprintln(w, 0)
 	}
 }
 

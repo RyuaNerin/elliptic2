@@ -70,18 +70,18 @@ func (c *Curve) NewOperator() curve.GF2mOperator     { return c.newOperator(c) }
 func (c *Curve) N() *big.Int                         { return c.CurveParams.N }
 
 func (c *Curve) WriteParams(w io.Writer) {
-	fmt.Fprintln(w, "weierstrassbinary")
-	fmt.Fprintln(w, c.BitSize)
-	fmt.Fprintln(w, c.Poly.String())
-	fmt.Fprintln(w, c.A2.String())
-	fmt.Fprintln(w, c.A6.String())
-	fmt.Fprintln(w, c.CurveParams.N.Text(16))
+	_, _ = fmt.Fprintln(w, "weierstrassbinary")
+	_, _ = fmt.Fprintln(w, c.BitSize)
+	_, _ = fmt.Fprintln(w, c.Poly.String())
+	_, _ = fmt.Fprintln(w, c.A2.String())
+	_, _ = fmt.Fprintln(w, c.A6.String())
+	_, _ = fmt.Fprintln(w, c.CurveParams.N.Text(16))
 	if c.withGenerator {
-		fmt.Fprintln(w, c.Gx.Text(16))
-		fmt.Fprintln(w, c.Gy.Text(16))
+		_, _ = fmt.Fprintln(w, c.Gx.Text(16))
+		_, _ = fmt.Fprintln(w, c.Gy.Text(16))
 	} else {
-		fmt.Fprintln(w, 0)
-		fmt.Fprintln(w, 0)
+		_, _ = fmt.Fprintln(w, 0)
+		_, _ = fmt.Fprintln(w, 0)
 	}
 }
 

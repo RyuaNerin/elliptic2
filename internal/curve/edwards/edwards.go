@@ -81,18 +81,18 @@ func (c *Curve) Params() *elliptic.CurveParams {
 }
 
 func (c *Curve) WriteParams(w io.Writer) {
-	fmt.Fprintln(w, "edwards")
-	fmt.Fprintln(w, c.BitSize)
-	fmt.Fprintln(w, c.P.String())
-	fmt.Fprintln(w, c.C.String())
-	fmt.Fprintln(w, c.D.String())
-	fmt.Fprintln(w, c.CurveParams.N.Text(16))
+	_, _ = fmt.Fprintln(w, "edwards")
+	_, _ = fmt.Fprintln(w, c.BitSize)
+	_, _ = fmt.Fprintln(w, c.P.String())
+	_, _ = fmt.Fprintln(w, c.C.String())
+	_, _ = fmt.Fprintln(w, c.D.String())
+	_, _ = fmt.Fprintln(w, c.CurveParams.N.Text(16))
 	if c.withGenerator {
-		fmt.Fprintln(w, c.Gx.Text(16))
-		fmt.Fprintln(w, c.Gy.Text(16))
+		_, _ = fmt.Fprintln(w, c.Gx.Text(16))
+		_, _ = fmt.Fprintln(w, c.Gy.Text(16))
 	} else {
-		fmt.Fprintln(w, 0)
-		fmt.Fprintln(w, 0)
+		_, _ = fmt.Fprintln(w, 0)
+		_, _ = fmt.Fprintln(w, 0)
 	}
 }
 

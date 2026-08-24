@@ -132,7 +132,7 @@ func NewCurve(base CurveArithmeticBase, opts ...option) elliptic.Curve {
 		h.Write([]byte{0, '\n'})
 		base.WriteParams(h)
 		cb.hash = h.Sum64()
-		fmt.Fprintln(h, cb.oid.String())
+		_, _ = fmt.Fprintln(h, cb.oid.String())
 		cb.hashOID = h.Sum64()
 
 		c := curveGFp{curveBase: cb, base: b}
@@ -153,7 +153,7 @@ func NewCurve(base CurveArithmeticBase, opts ...option) elliptic.Curve {
 		h.Write([]byte{1, '\n'})
 		base.WriteParams(h)
 		cb.hash = h.Sum64()
-		fmt.Fprintln(h, cb.oid.String())
+		_, _ = fmt.Fprintln(h, cb.oid.String())
 		cb.hashOID = h.Sum64()
 
 		c := curveGF2m{curveBase: cb, base: b}
