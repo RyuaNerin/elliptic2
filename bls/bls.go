@@ -11,74 +11,78 @@ package bls
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // BLS12_377 returns a Curve which implements bls/BLS12-377
-// https://neuromancer.sk/std/bls/
+// https://neuromancer.sk/std/bls/BLS12-377
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BLS12_377() elliptic.Curve {
-	bLS12_377Once.Do(initBLS12_377)
-	return bLS12_377Curve
+	return curves.BlsBLS12_377()
 }
 
 // BLS12_381 returns a Curve which implements bls/BLS12-381
-// https://neuromancer.sk/std/bls/
+// https://neuromancer.sk/std/bls/BLS12-381
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BLS12_381() elliptic.Curve {
-	bLS12_381Once.Do(initBLS12_381)
-	return bLS12_381Curve
+	return curves.BlsBLS12_381()
 }
 
 // BLS12_446 returns a Curve which implements bls/BLS12-446
-// https://neuromancer.sk/std/bls/
+// https://neuromancer.sk/std/bls/BLS12-446
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BLS12_446() elliptic.Curve {
-	bLS12_446Once.Do(initBLS12_446)
-	return bLS12_446Curve
+	return curves.BlsBLS12_446()
 }
 
 // BLS12_455 returns a Curve which implements bls/BLS12-455
-// https://neuromancer.sk/std/bls/
+// https://neuromancer.sk/std/bls/BLS12-455
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BLS12_455() elliptic.Curve {
-	bLS12_455Once.Do(initBLS12_455)
-	return bLS12_455Curve
+	return curves.BlsBLS12_455()
 }
 
 // BLS12_638 returns a Curve which implements bls/BLS12-638
-// https://neuromancer.sk/std/bls/
+// https://neuromancer.sk/std/bls/BLS12-638
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BLS12_638() elliptic.Curve {
-	bLS12_638Once.Do(initBLS12_638)
-	return bLS12_638Curve
+	return curves.BlsBLS12_638()
 }
 
 // BLS24_477 returns a Curve which implements bls/BLS24-477
-// https://neuromancer.sk/std/bls/
+// https://neuromancer.sk/std/bls/BLS24-477
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BLS24_477() elliptic.Curve {
-	bLS24_477Once.Do(initBLS24_477)
-	return bLS24_477Curve
+	return curves.BlsBLS24_477()
+}
+
+// BLS48_581G1 returns a Curve which implements bls/BLS48-581-G1
+// https://neuromancer.sk/std/bls/BLS48-581-G1
+//
+// Multiple invocations of this function will return the same value, so it can
+// be used for equality checks and switch statements.
+func BLS48_581G1() elliptic.Curve {
+	return curves.BlsBLS48_581G1()
 }
 
 // Bandersnatch returns a Curve which implements bls/Bandersnatch
-// https://neuromancer.sk/std/bls/
+// https://neuromancer.sk/std/bls/Bandersnatch
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Bandersnatch() elliptic.Curve {
-	bandersnatchOnce.Do(initBandersnatch)
-	return bandersnatchCurve
+	return curves.BlsBandersnatch()
 }

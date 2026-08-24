@@ -11,244 +11,222 @@ package nums
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // Ed254Mont returns a Curve which implements nums/ed-254-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/ed-254-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed254Mont() elliptic.Curve {
-	ed254MontOnce.Do(initEd254Mont)
-	return ed254MontCurve
+	return curves.NumsEd254Mont()
 }
 
 // Ed255Mers returns a Curve which implements nums/ed-255-mers
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/ed-255-mers
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed255Mers() elliptic.Curve {
-	ed255MersOnce.Do(initEd255Mers)
-	return ed255MersCurve
+	return curves.NumsEd255Mers()
 }
 
 // Ed256Mont returns a Curve which implements nums/ed-256-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/ed-256-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed256Mont() elliptic.Curve {
-	ed256MontOnce.Do(initEd256Mont)
-	return ed256MontCurve
+	return curves.NumsEd256Mont()
 }
 
 // Ed382Mont returns a Curve which implements nums/ed-382-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/ed-382-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed382Mont() elliptic.Curve {
-	ed382MontOnce.Do(initEd382Mont)
-	return ed382MontCurve
+	return curves.NumsEd382Mont()
 }
 
 // Ed383Mers returns a Curve which implements nums/ed-383-mers
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/ed-383-mers
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed383Mers() elliptic.Curve {
-	ed383MersOnce.Do(initEd383Mers)
-	return ed383MersCurve
+	return curves.NumsEd383Mers()
 }
 
 // Ed384Mont returns a Curve which implements nums/ed-384-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/ed-384-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed384Mont() elliptic.Curve {
-	ed384MontOnce.Do(initEd384Mont)
-	return ed384MontCurve
+	return curves.NumsEd384Mont()
 }
 
 // Ed510Mont returns a Curve which implements nums/ed-510-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/ed-510-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed510Mont() elliptic.Curve {
-	ed510MontOnce.Do(initEd510Mont)
-	return ed510MontCurve
+	return curves.NumsEd510Mont()
 }
 
 // Ed511Mers returns a Curve which implements nums/ed-511-mers
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/ed-511-mers
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed511Mers() elliptic.Curve {
-	ed511MersOnce.Do(initEd511Mers)
-	return ed511MersCurve
+	return curves.NumsEd511Mers()
 }
 
 // Ed512Mont returns a Curve which implements nums/ed-512-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/ed-512-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed512Mont() elliptic.Curve {
-	ed512MontOnce.Do(initEd512Mont)
-	return ed512MontCurve
+	return curves.NumsEd512Mont()
 }
 
 // Numsp256d1 returns a Curve which implements nums/numsp256d1
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/numsp256d1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Numsp256d1() elliptic.Curve {
-	numsp256d1Once.Do(initNumsp256d1)
-	return numsp256d1Curve
+	return curves.NumsNumsp256d1()
 }
 
 // Numsp256t1 returns a Curve which implements nums/numsp256t1
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/numsp256t1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Numsp256t1() elliptic.Curve {
-	numsp256t1Once.Do(initNumsp256t1)
-	return numsp256t1Curve
+	return curves.NumsNumsp256t1()
 }
 
 // Numsp384d1 returns a Curve which implements nums/numsp384d1
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/numsp384d1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Numsp384d1() elliptic.Curve {
-	numsp384d1Once.Do(initNumsp384d1)
-	return numsp384d1Curve
+	return curves.NumsNumsp384d1()
 }
 
 // Numsp384t1 returns a Curve which implements nums/numsp384t1
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/numsp384t1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Numsp384t1() elliptic.Curve {
-	numsp384t1Once.Do(initNumsp384t1)
-	return numsp384t1Curve
+	return curves.NumsNumsp384t1()
 }
 
 // Numsp512d1 returns a Curve which implements nums/numsp512d1
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/numsp512d1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Numsp512d1() elliptic.Curve {
-	numsp512d1Once.Do(initNumsp512d1)
-	return numsp512d1Curve
+	return curves.NumsNumsp512d1()
 }
 
 // Numsp512t1 returns a Curve which implements nums/numsp512t1
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/numsp512t1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Numsp512t1() elliptic.Curve {
-	numsp512t1Once.Do(initNumsp512t1)
-	return numsp512t1Curve
+	return curves.NumsNumsp512t1()
 }
 
 // W254Mont returns a Curve which implements nums/w-254-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/w-254-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func W254Mont() elliptic.Curve {
-	w254MontOnce.Do(initW254Mont)
-	return w254MontCurve
+	return curves.NumsW254Mont()
 }
 
 // W255Mers returns a Curve which implements nums/w-255-mers
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/w-255-mers
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func W255Mers() elliptic.Curve {
-	w255MersOnce.Do(initW255Mers)
-	return w255MersCurve
+	return curves.NumsW255Mers()
 }
 
 // W256Mont returns a Curve which implements nums/w-256-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/w-256-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func W256Mont() elliptic.Curve {
-	w256MontOnce.Do(initW256Mont)
-	return w256MontCurve
+	return curves.NumsW256Mont()
 }
 
 // W382Mont returns a Curve which implements nums/w-382-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/w-382-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func W382Mont() elliptic.Curve {
-	w382MontOnce.Do(initW382Mont)
-	return w382MontCurve
+	return curves.NumsW382Mont()
 }
 
 // W383Mers returns a Curve which implements nums/w-383-mers
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/w-383-mers
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func W383Mers() elliptic.Curve {
-	w383MersOnce.Do(initW383Mers)
-	return w383MersCurve
+	return curves.NumsW383Mers()
 }
 
 // W384Mont returns a Curve which implements nums/w-384-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/w-384-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func W384Mont() elliptic.Curve {
-	w384MontOnce.Do(initW384Mont)
-	return w384MontCurve
+	return curves.NumsW384Mont()
 }
 
 // W510Mont returns a Curve which implements nums/w-510-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/w-510-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func W510Mont() elliptic.Curve {
-	w510MontOnce.Do(initW510Mont)
-	return w510MontCurve
+	return curves.NumsW510Mont()
 }
 
 // W511Mers returns a Curve which implements nums/w-511-mers
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/w-511-mers
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func W511Mers() elliptic.Curve {
-	w511MersOnce.Do(initW511Mers)
-	return w511MersCurve
+	return curves.NumsW511Mers()
 }
 
 // W512Mont returns a Curve which implements nums/w-512-mont
-// https://neuromancer.sk/std/nums/
+// https://neuromancer.sk/std/nums/w-512-mont
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func W512Mont() elliptic.Curve {
-	w512MontOnce.Do(initW512Mont)
-	return w512MontCurve
+	return curves.NumsW512Mont()
 }

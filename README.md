@@ -187,14 +187,14 @@ xychart-beta horizontal
 - Those curves are not avilable in this namespace:
   | Name | Reason |
   |:-----|:-------|
-  | [`c2onb191v4`](https://neuromancer.sk/std/x962/c2onb191v4) | unsupported curve type |
-  | [`c2onb191v5`](https://neuromancer.sk/std/x962/c2onb191v5) | unsupported curve type |
-  | [`c2onb239v4`](https://neuromancer.sk/std/x962/c2onb239v4) | unsupported curve type |
-  | [`c2onb239v5`](https://neuromancer.sk/std/x962/c2onb239v5) | unsupported curve type |
+  | [`c2onb191v4`](https://neuromancer.sk/std/x962/c2onb191v4) | Unsupported curve type: form=weierstrass, field_type=binary, basis=normal |
+  | [`c2onb191v5`](https://neuromancer.sk/std/x962/c2onb191v5) | Unsupported curve type: form=weierstrass, field_type=binary, basis=normal |
+  | [`c2onb239v4`](https://neuromancer.sk/std/x962/c2onb239v4) | Unsupported curve type: form=weierstrass, field_type=binary, basis=normal |
+  | [`c2onb239v5`](https://neuromancer.sk/std/x962/c2onb239v5) | Unsupported curve type: form=weierstrass, field_type=binary, basis=normal |
 
 ### [ANSSI](https://neuromancer.sk/std/anssi/)
 
-- Agence nationale de la s챕curit챕 des syst챔mes d'information: Publication d'un param챕trage de courbe elliptique visant des applications de passeport 챕lectronique et de l'administration 챕lectronique fran챌aise. 21 November 2011
+- Agence nationale de la sécurité des systèmes d'information: Publication d'un paramétrage de courbe elliptique visant des applications de passeport électronique et de l'administration électronique française. 21 November 2011
 
 | Name | OID | Field Type | Generator | Function | As known |
 |:-----|:----|:----------:|:---------:|:---------|:---------|
@@ -212,7 +212,13 @@ xychart-beta horizontal
 | [`BLS12-455`](https://neuromancer.sk/std/bls/BLS12-455) || `prime field` | O | `bls.BLS12_455()` | |
 | [`BLS12-638`](https://neuromancer.sk/std/bls/BLS12-638) || `prime field` | O | `bls.BLS12_638()` | |
 | [`BLS24-477`](https://neuromancer.sk/std/bls/BLS24-477) || `prime field` | O | `bls.BLS24_477()` | |
+| [`BLS48-581-G1`](https://neuromancer.sk/std/bls/BLS48-581-G1) || `prime field` | O | `bls.BLS48_581G1()` | |
 | [`Bandersnatch`](https://neuromancer.sk/std/bls/Bandersnatch) || `prime field` || `bls.Bandersnatch()` | |
+
+- Those curves are not avilable in this namespace:
+  | Name | Reason |
+  |:-----|:-------|
+  | [`BLS48-581-G2`](https://neuromancer.sk/std/bls/BLS48-581-G2) | Unsupported curve type: form=weierstrass, field_type=tower |
 
 ### [Barreto-Naehrig](https://neuromancer.sk/std/bn/)
 
@@ -260,7 +266,7 @@ xychart-beta horizontal
 
 ### [GOST](https://neuromancer.sk/std/gost/)
 
-- GOST R 34.10-2001: RFC5832, GOST R 34.10-2012: RFC7836
+- GOST curves from: [RFC5832](https://datatracker.ietf.org/doc/html/rfc5832), [RFC7836](https://datatracker.ietf.org/doc/html/rfc7836), and [RFC4357](https://datatracker.ietf.org/doc/html/rfc4357).
 
 | Name | OID | Field Type | Generator | Function | As known |
 |:-----|:----|:----------:|:---------:|:---------|:---------|
@@ -480,7 +486,7 @@ xychart-beta horizontal
 - Those curves are not avilable in this namespace:
   | Name | Reason |
   |:-----|:-------|
-  | [`FourQ`](https://neuromancer.sk/std/other/FourQ) | unsupported curve type |
-  | [`Fp254n2BNa`](https://neuromancer.sk/std/other/Fp254n2BNa) | unsupported curve type |
+  | [`FourQ`](https://neuromancer.sk/std/other/FourQ) | Unsupported curve type: form=twistededwards, field_type=extension |
+  | [`Fp254n2BNa`](https://neuromancer.sk/std/other/Fp254n2BNa) | Unsupported curve type: form=weierstrass, field_type=extension |
 
 <!-- curves end -->

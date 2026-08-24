@@ -11,16 +11,17 @@ package oscaa
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // SM2 returns a Curve which implements oscaa/SM2
-// https://neuromancer.sk/std/oscaa/
+// https://neuromancer.sk/std/oscaa/SM2
 //
 // OID: 1.2.156.10197.1.301
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func SM2() elliptic.Curve {
-	sM2Once.Do(initSM2)
-	return sM2Curve
+	return curves.OscaaSM2()
 }

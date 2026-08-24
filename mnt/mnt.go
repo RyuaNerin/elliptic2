@@ -11,104 +11,96 @@ package mnt
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // Mnt1 returns a Curve which implements mnt/mnt1
-// https://neuromancer.sk/std/mnt/
+// https://neuromancer.sk/std/mnt/mnt1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Mnt1() elliptic.Curve {
-	mnt1Once.Do(initMnt1)
-	return mnt1Curve
+	return curves.MntMnt1()
 }
 
 // Mnt2_1 returns a Curve which implements mnt/mnt2/1
-// https://neuromancer.sk/std/mnt/
+// https://neuromancer.sk/std/mnt/mnt2/1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Mnt2_1() elliptic.Curve {
-	mnt2_1Once.Do(initMnt2_1)
-	return mnt2_1Curve
+	return curves.MntMnt2_1()
 }
 
 // Mnt2_2 returns a Curve which implements mnt/mnt2/2
-// https://neuromancer.sk/std/mnt/
+// https://neuromancer.sk/std/mnt/mnt2/2
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Mnt2_2() elliptic.Curve {
-	mnt2_2Once.Do(initMnt2_2)
-	return mnt2_2Curve
+	return curves.MntMnt2_2()
 }
 
 // Mnt3_1 returns a Curve which implements mnt/mnt3/1
-// https://neuromancer.sk/std/mnt/
+// https://neuromancer.sk/std/mnt/mnt3/1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Mnt3_1() elliptic.Curve {
-	mnt3_1Once.Do(initMnt3_1)
-	return mnt3_1Curve
+	return curves.MntMnt3_1()
 }
 
 // Mnt3_2 returns a Curve which implements mnt/mnt3/2
-// https://neuromancer.sk/std/mnt/
+// https://neuromancer.sk/std/mnt/mnt3/2
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Mnt3_2() elliptic.Curve {
-	mnt3_2Once.Do(initMnt3_2)
-	return mnt3_2Curve
+	return curves.MntMnt3_2()
 }
 
 // Mnt3_3 returns a Curve which implements mnt/mnt3/3
-// https://neuromancer.sk/std/mnt/
+// https://neuromancer.sk/std/mnt/mnt3/3
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Mnt3_3() elliptic.Curve {
-	mnt3_3Once.Do(initMnt3_3)
-	return mnt3_3Curve
+	return curves.MntMnt3_3()
 }
 
 // Mnt4 returns a Curve which implements mnt/mnt4
-// https://neuromancer.sk/std/mnt/
+// https://neuromancer.sk/std/mnt/mnt4
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Mnt4() elliptic.Curve {
-	mnt4Once.Do(initMnt4)
-	return mnt4Curve
+	return curves.MntMnt4()
 }
 
 // Mnt5_1 returns a Curve which implements mnt/mnt5/1
-// https://neuromancer.sk/std/mnt/
+// https://neuromancer.sk/std/mnt/mnt5/1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Mnt5_1() elliptic.Curve {
-	mnt5_1Once.Do(initMnt5_1)
-	return mnt5_1Curve
+	return curves.MntMnt5_1()
 }
 
 // Mnt5_2 returns a Curve which implements mnt/mnt5/2
-// https://neuromancer.sk/std/mnt/
+// https://neuromancer.sk/std/mnt/mnt5/2
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Mnt5_2() elliptic.Curve {
-	mnt5_2Once.Do(initMnt5_2)
-	return mnt5_2Curve
+	return curves.MntMnt5_2()
 }
 
 // Mnt5_3 returns a Curve which implements mnt/mnt5/3
-// https://neuromancer.sk/std/mnt/
+// https://neuromancer.sk/std/mnt/mnt5/3
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Mnt5_3() elliptic.Curve {
-	mnt5_3Once.Do(initMnt5_3)
-	return mnt5_3Curve
+	return curves.MntMnt5_3()
 }

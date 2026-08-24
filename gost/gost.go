@@ -3,7 +3,7 @@
 /*
 package gost is a collection of named elliptic curves.
 
-GOST R 34.10-2001: RFC5832, GOST R 34.10-2012: RFC7836
+GOST curves from: [RFC5832](https://datatracker.ietf.org/doc/html/rfc5832), [RFC7836](https://datatracker.ietf.org/doc/html/rfc7836), and [RFC4357](https://datatracker.ietf.org/doc/html/rfc4357).
 
 https://neuromancer.sk/std/gost/
 */
@@ -11,94 +11,87 @@ package gost
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // Gost256 returns a Curve which implements gost/gost256
-// https://neuromancer.sk/std/gost/
+// https://neuromancer.sk/std/gost/gost256
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Gost256() elliptic.Curve {
-	gost256Once.Do(initGost256)
-	return gost256Curve
+	return curves.GostGost256()
 }
 
 // Gost512 returns a Curve which implements gost/gost512
-// https://neuromancer.sk/std/gost/
+// https://neuromancer.sk/std/gost/gost512
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Gost512() elliptic.Curve {
-	gost512Once.Do(initGost512)
-	return gost512Curve
+	return curves.GostGost512()
 }
 
 // IdGostR3410_2001CryptoProAParamSet returns a Curve which implements gost/id-GostR3410-2001-CryptoPro-A-ParamSet
-// https://neuromancer.sk/std/gost/
+// https://neuromancer.sk/std/gost/id-GostR3410-2001-CryptoPro-A-ParamSet
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func IdGostR3410_2001CryptoProAParamSet() elliptic.Curve {
-	idGostR3410_2001CryptoProAParamSetOnce.Do(initIdGostR3410_2001CryptoProAParamSet)
-	return idGostR3410_2001CryptoProAParamSetCurve
+	return curves.GostIdGostR3410_2001CryptoProAParamSet()
 }
 
 // IdGostR3410_2001CryptoProBParamSet returns a Curve which implements gost/id-GostR3410-2001-CryptoPro-B-ParamSet
-// https://neuromancer.sk/std/gost/
+// https://neuromancer.sk/std/gost/id-GostR3410-2001-CryptoPro-B-ParamSet
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func IdGostR3410_2001CryptoProBParamSet() elliptic.Curve {
-	idGostR3410_2001CryptoProBParamSetOnce.Do(initIdGostR3410_2001CryptoProBParamSet)
-	return idGostR3410_2001CryptoProBParamSetCurve
+	return curves.GostIdGostR3410_2001CryptoProBParamSet()
 }
 
 // IdGostR3410_2001CryptoProCParamSet returns a Curve which implements gost/id-GostR3410-2001-CryptoPro-C-ParamSet
-// https://neuromancer.sk/std/gost/
+// https://neuromancer.sk/std/gost/id-GostR3410-2001-CryptoPro-C-ParamSet
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func IdGostR3410_2001CryptoProCParamSet() elliptic.Curve {
-	idGostR3410_2001CryptoProCParamSetOnce.Do(initIdGostR3410_2001CryptoProCParamSet)
-	return idGostR3410_2001CryptoProCParamSetCurve
+	return curves.GostIdGostR3410_2001CryptoProCParamSet()
 }
 
 // IdTc26Gost3410_12_512ParamSetA returns a Curve which implements gost/id-tc26-gost-3410-12-512-paramSetA
-// https://neuromancer.sk/std/gost/
+// https://neuromancer.sk/std/gost/id-tc26-gost-3410-12-512-paramSetA
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func IdTc26Gost3410_12_512ParamSetA() elliptic.Curve {
-	idTc26Gost3410_12_512ParamSetAOnce.Do(initIdTc26Gost3410_12_512ParamSetA)
-	return idTc26Gost3410_12_512ParamSetACurve
+	return curves.GostIdTc26Gost3410_12_512ParamSetA()
 }
 
 // IdTc26Gost3410_12_512ParamSetB returns a Curve which implements gost/id-tc26-gost-3410-12-512-paramSetB
-// https://neuromancer.sk/std/gost/
+// https://neuromancer.sk/std/gost/id-tc26-gost-3410-12-512-paramSetB
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func IdTc26Gost3410_12_512ParamSetB() elliptic.Curve {
-	idTc26Gost3410_12_512ParamSetBOnce.Do(initIdTc26Gost3410_12_512ParamSetB)
-	return idTc26Gost3410_12_512ParamSetBCurve
+	return curves.GostIdTc26Gost3410_12_512ParamSetB()
 }
 
 // IdTc26Gost3410_2012_256ParamSetA returns a Curve which implements gost/id-tc26-gost-3410-2012-256-paramSetA
-// https://neuromancer.sk/std/gost/
+// https://neuromancer.sk/std/gost/id-tc26-gost-3410-2012-256-paramSetA
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func IdTc26Gost3410_2012_256ParamSetA() elliptic.Curve {
-	idTc26Gost3410_2012_256ParamSetAOnce.Do(initIdTc26Gost3410_2012_256ParamSetA)
-	return idTc26Gost3410_2012_256ParamSetACurve
+	return curves.GostIdTc26Gost3410_2012_256ParamSetA()
 }
 
 // IdTc26Gost3410_2012_512ParamSetC returns a Curve which implements gost/id-tc26-gost-3410-2012-512-paramSetC
-// https://neuromancer.sk/std/gost/
+// https://neuromancer.sk/std/gost/id-tc26-gost-3410-2012-512-paramSetC
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func IdTc26Gost3410_2012_512ParamSetC() elliptic.Curve {
-	idTc26Gost3410_2012_512ParamSetCOnce.Do(initIdTc26Gost3410_2012_512ParamSetC)
-	return idTc26Gost3410_2012_512ParamSetCCurve
+	return curves.GostIdTc26Gost3410_2012_512ParamSetC()
 }

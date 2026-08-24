@@ -11,16 +11,17 @@ package anssi
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // FRP256v1 returns a Curve which implements anssi/FRP256v1
-// https://neuromancer.sk/std/anssi/
+// https://neuromancer.sk/std/anssi/FRP256v1
 //
 // OID: 1.2.250.1.223.101.256.1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func FRP256v1() elliptic.Curve {
-	fRP256v1Once.Do(initFRP256v1)
-	return fRP256v1Curve
+	return curves.AnssiFRP256v1()
 }

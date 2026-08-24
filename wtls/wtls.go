@@ -11,22 +11,23 @@ package wtls
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // WapWsgIdmEcidWtls1 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls1
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls1
 //
 // OID: 2.23.43.1.4.1
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls1() elliptic.Curve {
-	wapWsgIdmEcidWtls1Once.Do(initWapWsgIdmEcidWtls1)
-	return wapWsgIdmEcidWtls1Curve
+	return curves.WtlsWapWsgIdmEcidWtls1()
 }
 
 // WapWsgIdmEcidWtls10 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls10
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls10
 //
 // OID: 2.23.43.1.4.10
 // Aliases:
@@ -37,12 +38,11 @@ func WapWsgIdmEcidWtls1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls10() elliptic.Curve {
-	wapWsgIdmEcidWtls10Once.Do(initWapWsgIdmEcidWtls10)
-	return wapWsgIdmEcidWtls10Curve
+	return curves.WtlsWapWsgIdmEcidWtls10()
 }
 
 // WapWsgIdmEcidWtls11 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls11
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls11
 //
 // OID: 2.23.43.1.4.11
 // Aliases:
@@ -53,12 +53,11 @@ func WapWsgIdmEcidWtls10() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls11() elliptic.Curve {
-	wapWsgIdmEcidWtls11Once.Do(initWapWsgIdmEcidWtls11)
-	return wapWsgIdmEcidWtls11Curve
+	return curves.WtlsWapWsgIdmEcidWtls11()
 }
 
 // WapWsgIdmEcidWtls12 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls12
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls12
 //
 // OID: 2.23.43.1.4.12
 // Aliases:
@@ -69,12 +68,11 @@ func WapWsgIdmEcidWtls11() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls12() elliptic.Curve {
-	wapWsgIdmEcidWtls12Once.Do(initWapWsgIdmEcidWtls12)
-	return wapWsgIdmEcidWtls12Curve
+	return curves.WtlsWapWsgIdmEcidWtls12()
 }
 
 // WapWsgIdmEcidWtls3 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls3
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls3
 //
 // OID: 2.23.43.1.4.3
 // Aliases:
@@ -85,12 +83,11 @@ func WapWsgIdmEcidWtls12() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls3() elliptic.Curve {
-	wapWsgIdmEcidWtls3Once.Do(initWapWsgIdmEcidWtls3)
-	return wapWsgIdmEcidWtls3Curve
+	return curves.WtlsWapWsgIdmEcidWtls3()
 }
 
 // WapWsgIdmEcidWtls4 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls4
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls4
 //
 // OID: 2.23.43.1.4.4
 // Aliases:
@@ -99,12 +96,11 @@ func WapWsgIdmEcidWtls3() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls4() elliptic.Curve {
-	wapWsgIdmEcidWtls4Once.Do(initWapWsgIdmEcidWtls4)
-	return wapWsgIdmEcidWtls4Curve
+	return curves.WtlsWapWsgIdmEcidWtls4()
 }
 
 // WapWsgIdmEcidWtls5 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls5
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls5
 //
 // OID: 2.23.43.1.4.5
 // Aliases:
@@ -113,12 +109,11 @@ func WapWsgIdmEcidWtls4() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls5() elliptic.Curve {
-	wapWsgIdmEcidWtls5Once.Do(initWapWsgIdmEcidWtls5)
-	return wapWsgIdmEcidWtls5Curve
+	return curves.WtlsWapWsgIdmEcidWtls5()
 }
 
 // WapWsgIdmEcidWtls6 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls6
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls6
 //
 // OID: 2.23.43.1.4.6
 // Aliases:
@@ -127,12 +122,11 @@ func WapWsgIdmEcidWtls5() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls6() elliptic.Curve {
-	wapWsgIdmEcidWtls6Once.Do(initWapWsgIdmEcidWtls6)
-	return wapWsgIdmEcidWtls6Curve
+	return curves.WtlsWapWsgIdmEcidWtls6()
 }
 
 // WapWsgIdmEcidWtls7 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls7
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls7
 //
 // OID: 2.23.43.1.4.7
 // Aliases:
@@ -142,30 +136,27 @@ func WapWsgIdmEcidWtls6() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls7() elliptic.Curve {
-	wapWsgIdmEcidWtls7Once.Do(initWapWsgIdmEcidWtls7)
-	return wapWsgIdmEcidWtls7Curve
+	return curves.WtlsWapWsgIdmEcidWtls7()
 }
 
 // WapWsgIdmEcidWtls8 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls8
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls8
 //
 // OID: 2.23.43.1.4.8
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls8() elliptic.Curve {
-	wapWsgIdmEcidWtls8Once.Do(initWapWsgIdmEcidWtls8)
-	return wapWsgIdmEcidWtls8Curve
+	return curves.WtlsWapWsgIdmEcidWtls8()
 }
 
 // WapWsgIdmEcidWtls9 returns a Curve which implements wtls/wap-wsg-idm-ecid-wtls9
-// https://neuromancer.sk/std/wtls/
+// https://neuromancer.sk/std/wtls/wap-wsg-idm-ecid-wtls9
 //
 // OID: 2.23.43.1.4.9
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func WapWsgIdmEcidWtls9() elliptic.Curve {
-	wapWsgIdmEcidWtls9Once.Do(initWapWsgIdmEcidWtls9)
-	return wapWsgIdmEcidWtls9Curve
+	return curves.WtlsWapWsgIdmEcidWtls9()
 }

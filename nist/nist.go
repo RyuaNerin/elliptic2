@@ -3,7 +3,7 @@
 /*
 package nist is a collection of named elliptic curves.
 
-RECOMMENDED ELLIPTIC CURVES FOR FEDERAL GOVERNMENT USE  July 1999
+# RECOMMENDED ELLIPTIC CURVES FOR FEDERAL GOVERNMENT USE  July 1999
 
 https://neuromancer.sk/std/nist/
 */
@@ -11,10 +11,12 @@ package nist
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // B163 returns a Curve which implements nist/B-163
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/B-163
 //
 // OID: 1.3.132.0.15
 // Aliases:
@@ -24,12 +26,11 @@ import (
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func B163() elliptic.Curve {
-	b163Once.Do(initB163)
-	return b163Curve
+	return curves.NistB163()
 }
 
 // B233 returns a Curve which implements nist/B-233
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/B-233
 //
 // OID: 1.3.132.0.27
 // Aliases:
@@ -40,12 +41,11 @@ func B163() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func B233() elliptic.Curve {
-	b233Once.Do(initB233)
-	return b233Curve
+	return curves.NistB233()
 }
 
 // B283 returns a Curve which implements nist/B-283
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/B-283
 //
 // OID: 1.3.132.0.17
 // Aliases:
@@ -55,12 +55,11 @@ func B233() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func B283() elliptic.Curve {
-	b283Once.Do(initB283)
-	return b283Curve
+	return curves.NistB283()
 }
 
 // B409 returns a Curve which implements nist/B-409
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/B-409
 //
 // OID: 1.3.132.0.37
 // Aliases:
@@ -70,12 +69,11 @@ func B283() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func B409() elliptic.Curve {
-	b409Once.Do(initB409)
-	return b409Curve
+	return curves.NistB409()
 }
 
 // B571 returns a Curve which implements nist/B-571
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/B-571
 //
 // OID: 1.3.132.0.39
 // Aliases:
@@ -85,12 +83,11 @@ func B409() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func B571() elliptic.Curve {
-	b571Once.Do(initB571)
-	return b571Curve
+	return curves.NistB571()
 }
 
 // K163 returns a Curve which implements nist/K-163
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/K-163
 //
 // OID: 1.3.132.0.1
 // Aliases:
@@ -101,12 +98,11 @@ func B571() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func K163() elliptic.Curve {
-	k163Once.Do(initK163)
-	return k163Curve
+	return curves.NistK163()
 }
 
 // K233 returns a Curve which implements nist/K-233
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/K-233
 //
 // OID: 1.3.132.0.26
 // Aliases:
@@ -117,12 +113,11 @@ func K163() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func K233() elliptic.Curve {
-	k233Once.Do(initK233)
-	return k233Curve
+	return curves.NistK233()
 }
 
 // K283 returns a Curve which implements nist/K-283
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/K-283
 //
 // OID: 1.3.132.0.16
 // Aliases:
@@ -132,12 +127,11 @@ func K233() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func K283() elliptic.Curve {
-	k283Once.Do(initK283)
-	return k283Curve
+	return curves.NistK283()
 }
 
 // K409 returns a Curve which implements nist/K-409
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/K-409
 //
 // OID: 1.3.132.0.36
 // Aliases:
@@ -147,12 +141,11 @@ func K283() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func K409() elliptic.Curve {
-	k409Once.Do(initK409)
-	return k409Curve
+	return curves.NistK409()
 }
 
 // K571 returns a Curve which implements nist/K-571
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/K-571
 //
 // OID: 1.3.132.0.38
 // Aliases:
@@ -162,12 +155,11 @@ func K409() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func K571() elliptic.Curve {
-	k571Once.Do(initK571)
-	return k571Curve
+	return curves.NistK571()
 }
 
 // P192 returns a Curve which implements nist/P-192
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/P-192
 //
 // OID: 1.2.840.10045.3.1.1
 // Aliases:
@@ -177,12 +169,11 @@ func K571() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func P192() elliptic.Curve {
-	p192Once.Do(initP192)
-	return p192Curve
+	return curves.NistP192()
 }
 
 // P224 returns a Curve which implements nist/P-224
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/P-224
 //
 // OID: 1.3.132.0.33
 // Aliases:
@@ -193,12 +184,11 @@ func P192() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func P224() elliptic.Curve {
-	p224Once.Do(initP224)
-	return p224Curve
+	return curves.NistP224()
 }
 
 // P256 returns a Curve which implements nist/P-256
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/P-256
 //
 // OID: 1.2.840.10045.3.1.7
 // Aliases:
@@ -208,12 +198,11 @@ func P224() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func P256() elliptic.Curve {
-	p256Once.Do(initP256)
-	return p256Curve
+	return curves.NistP256()
 }
 
 // P384 returns a Curve which implements nist/P-384
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/P-384
 //
 // OID: 1.3.132.0.34
 // Aliases:
@@ -223,12 +212,11 @@ func P256() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func P384() elliptic.Curve {
-	p384Once.Do(initP384)
-	return p384Curve
+	return curves.NistP384()
 }
 
 // P521 returns a Curve which implements nist/P-521
-// https://neuromancer.sk/std/nist/
+// https://neuromancer.sk/std/nist/P-521
 //
 // OID: 1.3.132.0.35
 // Aliases:
@@ -238,6 +226,5 @@ func P384() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func P521() elliptic.Curve {
-	p521Once.Do(initP521)
-	return p521Curve
+	return curves.NistP521()
 }

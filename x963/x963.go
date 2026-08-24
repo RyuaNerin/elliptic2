@@ -11,10 +11,12 @@ package x963
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // Ansip160k1 returns a Curve which implements x963/ansip160k1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansip160k1
 //
 // OID: 1.3.132.0.9
 // Aliases:
@@ -23,12 +25,11 @@ import (
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansip160k1() elliptic.Curve {
-	ansip160k1Once.Do(initAnsip160k1)
-	return ansip160k1Curve
+	return curves.SecgSecp160k1()
 }
 
 // Ansip160r1 returns a Curve which implements x963/ansip160r1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansip160r1
 //
 // OID: 1.3.132.0.8
 // Aliases:
@@ -38,12 +39,11 @@ func Ansip160k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansip160r1() elliptic.Curve {
-	ansip160r1Once.Do(initAnsip160r1)
-	return ansip160r1Curve
+	return curves.SecgSecp160r1()
 }
 
 // Ansip160r2 returns a Curve which implements x963/ansip160r2
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansip160r2
 //
 // OID: 1.3.132.0.30
 // Aliases:
@@ -52,12 +52,11 @@ func Ansip160r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansip160r2() elliptic.Curve {
-	ansip160r2Once.Do(initAnsip160r2)
-	return ansip160r2Curve
+	return curves.SecgSecp160r2()
 }
 
 // Ansip192k1 returns a Curve which implements x963/ansip192k1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansip192k1
 //
 // OID: 1.3.132.0.31
 // Aliases:
@@ -66,12 +65,11 @@ func Ansip160r2() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansip192k1() elliptic.Curve {
-	ansip192k1Once.Do(initAnsip192k1)
-	return ansip192k1Curve
+	return curves.SecgSecp192k1()
 }
 
 // Ansip224k1 returns a Curve which implements x963/ansip224k1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansip224k1
 //
 // OID: 1.3.132.0.32
 // Aliases:
@@ -80,12 +78,11 @@ func Ansip192k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansip224k1() elliptic.Curve {
-	ansip224k1Once.Do(initAnsip224k1)
-	return ansip224k1Curve
+	return curves.SecgSecp224k1()
 }
 
 // Ansip224r1 returns a Curve which implements x963/ansip224r1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansip224r1
 //
 // OID: 1.3.132.0.33
 // Aliases:
@@ -96,12 +93,11 @@ func Ansip224k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansip224r1() elliptic.Curve {
-	ansip224r1Once.Do(initAnsip224r1)
-	return ansip224r1Curve
+	return curves.NistP224()
 }
 
 // Ansip256k1 returns a Curve which implements x963/ansip256k1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansip256k1
 //
 // OID: 1.3.132.0.10
 // Aliases:
@@ -110,12 +106,11 @@ func Ansip224r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansip256k1() elliptic.Curve {
-	ansip256k1Once.Do(initAnsip256k1)
-	return ansip256k1Curve
+	return curves.SecgSecp256k1()
 }
 
 // Ansip384r1 returns a Curve which implements x963/ansip384r1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansip384r1
 //
 // OID: 1.3.132.0.34
 // Aliases:
@@ -125,12 +120,11 @@ func Ansip256k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansip384r1() elliptic.Curve {
-	ansip384r1Once.Do(initAnsip384r1)
-	return ansip384r1Curve
+	return curves.NistP384()
 }
 
 // Ansip521r1 returns a Curve which implements x963/ansip521r1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansip521r1
 //
 // OID: 1.3.132.0.35
 // Aliases:
@@ -140,12 +134,11 @@ func Ansip384r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansip521r1() elliptic.Curve {
-	ansip521r1Once.Do(initAnsip521r1)
-	return ansip521r1Curve
+	return curves.NistP521()
 }
 
 // Ansit163k1 returns a Curve which implements x963/ansit163k1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit163k1
 //
 // OID: 1.3.132.0.1
 // Aliases:
@@ -156,12 +149,11 @@ func Ansip521r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit163k1() elliptic.Curve {
-	ansit163k1Once.Do(initAnsit163k1)
-	return ansit163k1Curve
+	return curves.NistK163()
 }
 
 // Ansit163r1 returns a Curve which implements x963/ansit163r1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit163r1
 //
 // OID: 1.3.132.0.2
 // Aliases:
@@ -170,12 +162,11 @@ func Ansit163k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit163r1() elliptic.Curve {
-	ansit163r1Once.Do(initAnsit163r1)
-	return ansit163r1Curve
+	return curves.SecgSect163r1()
 }
 
 // Ansit163r2 returns a Curve which implements x963/ansit163r2
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit163r2
 //
 // OID: 1.3.132.0.15
 // Aliases:
@@ -185,12 +176,11 @@ func Ansit163r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit163r2() elliptic.Curve {
-	ansit163r2Once.Do(initAnsit163r2)
-	return ansit163r2Curve
+	return curves.NistB163()
 }
 
 // Ansit193r1 returns a Curve which implements x963/ansit193r1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit193r1
 //
 // OID: 1.3.132.0.24
 // Aliases:
@@ -199,12 +189,11 @@ func Ansit163r2() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit193r1() elliptic.Curve {
-	ansit193r1Once.Do(initAnsit193r1)
-	return ansit193r1Curve
+	return curves.SecgSect193r1()
 }
 
 // Ansit193r2 returns a Curve which implements x963/ansit193r2
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit193r2
 //
 // OID: 1.3.132.0.25
 // Aliases:
@@ -213,12 +202,11 @@ func Ansit193r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit193r2() elliptic.Curve {
-	ansit193r2Once.Do(initAnsit193r2)
-	return ansit193r2Curve
+	return curves.SecgSect193r2()
 }
 
 // Ansit233k1 returns a Curve which implements x963/ansit233k1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit233k1
 //
 // OID: 1.3.132.0.26
 // Aliases:
@@ -229,12 +217,11 @@ func Ansit193r2() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit233k1() elliptic.Curve {
-	ansit233k1Once.Do(initAnsit233k1)
-	return ansit233k1Curve
+	return curves.NistK233()
 }
 
 // Ansit233r1 returns a Curve which implements x963/ansit233r1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit233r1
 //
 // OID: 1.3.132.0.27
 // Aliases:
@@ -245,12 +232,11 @@ func Ansit233k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit233r1() elliptic.Curve {
-	ansit233r1Once.Do(initAnsit233r1)
-	return ansit233r1Curve
+	return curves.NistB233()
 }
 
 // Ansit239k1 returns a Curve which implements x963/ansit239k1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit239k1
 //
 // OID: 1.3.132.0.3
 // Aliases:
@@ -259,12 +245,11 @@ func Ansit233r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit239k1() elliptic.Curve {
-	ansit239k1Once.Do(initAnsit239k1)
-	return ansit239k1Curve
+	return curves.SecgSect239k1()
 }
 
 // Ansit283k1 returns a Curve which implements x963/ansit283k1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit283k1
 //
 // OID: 1.3.132.0.16
 // Aliases:
@@ -274,12 +259,11 @@ func Ansit239k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit283k1() elliptic.Curve {
-	ansit283k1Once.Do(initAnsit283k1)
-	return ansit283k1Curve
+	return curves.NistK283()
 }
 
 // Ansit283r1 returns a Curve which implements x963/ansit283r1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit283r1
 //
 // OID: 1.3.132.0.17
 // Aliases:
@@ -289,12 +273,11 @@ func Ansit283k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit283r1() elliptic.Curve {
-	ansit283r1Once.Do(initAnsit283r1)
-	return ansit283r1Curve
+	return curves.NistB283()
 }
 
 // Ansit409k1 returns a Curve which implements x963/ansit409k1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit409k1
 //
 // OID: 1.3.132.0.36
 // Aliases:
@@ -304,12 +287,11 @@ func Ansit283r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit409k1() elliptic.Curve {
-	ansit409k1Once.Do(initAnsit409k1)
-	return ansit409k1Curve
+	return curves.NistK409()
 }
 
 // Ansit409r1 returns a Curve which implements x963/ansit409r1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit409r1
 //
 // OID: 1.3.132.0.37
 // Aliases:
@@ -319,12 +301,11 @@ func Ansit409k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit409r1() elliptic.Curve {
-	ansit409r1Once.Do(initAnsit409r1)
-	return ansit409r1Curve
+	return curves.NistB409()
 }
 
 // Ansit571k1 returns a Curve which implements x963/ansit571k1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit571k1
 //
 // OID: 1.3.132.0.38
 // Aliases:
@@ -334,12 +315,11 @@ func Ansit409r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit571k1() elliptic.Curve {
-	ansit571k1Once.Do(initAnsit571k1)
-	return ansit571k1Curve
+	return curves.NistK571()
 }
 
 // Ansit571r1 returns a Curve which implements x963/ansit571r1
-// https://neuromancer.sk/std/x963/
+// https://neuromancer.sk/std/x963/ansit571r1
 //
 // OID: 1.3.132.0.39
 // Aliases:
@@ -349,6 +329,5 @@ func Ansit571k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ansit571r1() elliptic.Curve {
-	ansit571r1Once.Do(initAnsit571r1)
-	return ansit571r1Curve
+	return curves.NistB571()
 }

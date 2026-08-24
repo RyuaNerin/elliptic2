@@ -11,74 +11,69 @@ package oakley
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // Oakley192BitRandomECPGroup returns a Curve which implements oakley/192-bit Random ECP Group
-// https://neuromancer.sk/std/oakley/
+// https://neuromancer.sk/std/oakley/192-bit%20Random%20ECP%20Group
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Oakley192BitRandomECPGroup() elliptic.Curve {
-	oakley192BitRandomECPGroupOnce.Do(initOakley192BitRandomECPGroup)
-	return oakley192BitRandomECPGroupCurve
+	return curves.OakleyOakley192BitRandomECPGroup()
 }
 
 // Oakley224BitRandomECPGroup returns a Curve which implements oakley/224-bit Random ECP Group
-// https://neuromancer.sk/std/oakley/
+// https://neuromancer.sk/std/oakley/224-bit%20Random%20ECP%20Group
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Oakley224BitRandomECPGroup() elliptic.Curve {
-	oakley224BitRandomECPGroupOnce.Do(initOakley224BitRandomECPGroup)
-	return oakley224BitRandomECPGroupCurve
+	return curves.OakleyOakley224BitRandomECPGroup()
 }
 
 // Oakley256BitRandomECPGroup returns a Curve which implements oakley/256-bit Random ECP Group
-// https://neuromancer.sk/std/oakley/
+// https://neuromancer.sk/std/oakley/256-bit%20Random%20ECP%20Group
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Oakley256BitRandomECPGroup() elliptic.Curve {
-	oakley256BitRandomECPGroupOnce.Do(initOakley256BitRandomECPGroup)
-	return oakley256BitRandomECPGroupCurve
+	return curves.OakleyOakley256BitRandomECPGroup()
 }
 
 // Oakley384BitRandomECPGroup returns a Curve which implements oakley/384-bit Random ECP Group
-// https://neuromancer.sk/std/oakley/
+// https://neuromancer.sk/std/oakley/384-bit%20Random%20ECP%20Group
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Oakley384BitRandomECPGroup() elliptic.Curve {
-	oakley384BitRandomECPGroupOnce.Do(initOakley384BitRandomECPGroup)
-	return oakley384BitRandomECPGroupCurve
+	return curves.OakleyOakley384BitRandomECPGroup()
 }
 
 // Oakley521BitRandomECPGroup returns a Curve which implements oakley/521-bit Random ECP Group
-// https://neuromancer.sk/std/oakley/
+// https://neuromancer.sk/std/oakley/521-bit%20Random%20ECP%20Group
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Oakley521BitRandomECPGroup() elliptic.Curve {
-	oakley521BitRandomECPGroupOnce.Do(initOakley521BitRandomECPGroup)
-	return oakley521BitRandomECPGroupCurve
+	return curves.OakleyOakley521BitRandomECPGroup()
 }
 
 // OakleyGroup3 returns a Curve which implements oakley/Oakley Group 3
-// https://neuromancer.sk/std/oakley/
+// https://neuromancer.sk/std/oakley/Oakley%20Group%203
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func OakleyGroup3() elliptic.Curve {
-	oakleyGroup3Once.Do(initOakleyGroup3)
-	return oakleyGroup3Curve
+	return curves.OakleyOakleyGroup3()
 }
 
 // OakleyGroup4 returns a Curve which implements oakley/Oakley Group 4
-// https://neuromancer.sk/std/oakley/
+// https://neuromancer.sk/std/oakley/Oakley%20Group%204
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func OakleyGroup4() elliptic.Curve {
-	oakleyGroup4Once.Do(initOakleyGroup4)
-	return oakleyGroup4Curve
+	return curves.OakleyOakleyGroup4()
 }

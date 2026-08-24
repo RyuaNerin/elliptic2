@@ -11,10 +11,12 @@ package secg
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // Secp112r1 returns a Curve which implements secg/secp112r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp112r1
 //
 // OID: 1.3.132.0.6
 // Aliases:
@@ -23,48 +25,44 @@ import (
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp112r1() elliptic.Curve {
-	secp112r1Once.Do(initSecp112r1)
-	return secp112r1Curve
+	return curves.SecgSecp112r1()
 }
 
 // Secp112r2 returns a Curve which implements secg/secp112r2
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp112r2
 //
 // OID: 1.3.132.0.7
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp112r2() elliptic.Curve {
-	secp112r2Once.Do(initSecp112r2)
-	return secp112r2Curve
+	return curves.SecgSecp112r2()
 }
 
 // Secp128r1 returns a Curve which implements secg/secp128r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp128r1
 //
 // OID: 1.3.132.0.28
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp128r1() elliptic.Curve {
-	secp128r1Once.Do(initSecp128r1)
-	return secp128r1Curve
+	return curves.SecgSecp128r1()
 }
 
 // Secp128r2 returns a Curve which implements secg/secp128r2
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp128r2
 //
 // OID: 1.3.132.0.29
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp128r2() elliptic.Curve {
-	secp128r2Once.Do(initSecp128r2)
-	return secp128r2Curve
+	return curves.SecgSecp128r2()
 }
 
 // Secp160k1 returns a Curve which implements secg/secp160k1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp160k1
 //
 // OID: 1.3.132.0.9
 // Aliases:
@@ -73,12 +71,11 @@ func Secp128r2() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp160k1() elliptic.Curve {
-	secp160k1Once.Do(initSecp160k1)
-	return secp160k1Curve
+	return curves.SecgSecp160k1()
 }
 
 // Secp160r1 returns a Curve which implements secg/secp160r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp160r1
 //
 // OID: 1.3.132.0.8
 // Aliases:
@@ -88,12 +85,11 @@ func Secp160k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp160r1() elliptic.Curve {
-	secp160r1Once.Do(initSecp160r1)
-	return secp160r1Curve
+	return curves.SecgSecp160r1()
 }
 
 // Secp160r2 returns a Curve which implements secg/secp160r2
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp160r2
 //
 // OID: 1.3.132.0.30
 // Aliases:
@@ -102,12 +98,11 @@ func Secp160r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp160r2() elliptic.Curve {
-	secp160r2Once.Do(initSecp160r2)
-	return secp160r2Curve
+	return curves.SecgSecp160r2()
 }
 
 // Secp192k1 returns a Curve which implements secg/secp192k1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp192k1
 //
 // OID: 1.3.132.0.31
 // Aliases:
@@ -116,12 +111,11 @@ func Secp160r2() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp192k1() elliptic.Curve {
-	secp192k1Once.Do(initSecp192k1)
-	return secp192k1Curve
+	return curves.SecgSecp192k1()
 }
 
 // Secp192r1 returns a Curve which implements secg/secp192r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp192r1
 //
 // OID: 1.2.840.10045.3.1.1
 // Aliases:
@@ -131,12 +125,11 @@ func Secp192k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp192r1() elliptic.Curve {
-	secp192r1Once.Do(initSecp192r1)
-	return secp192r1Curve
+	return curves.NistP192()
 }
 
 // Secp224k1 returns a Curve which implements secg/secp224k1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp224k1
 //
 // OID: 1.3.132.0.32
 // Aliases:
@@ -145,12 +138,11 @@ func Secp192r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp224k1() elliptic.Curve {
-	secp224k1Once.Do(initSecp224k1)
-	return secp224k1Curve
+	return curves.SecgSecp224k1()
 }
 
 // Secp224r1 returns a Curve which implements secg/secp224r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp224r1
 //
 // OID: 1.3.132.0.33
 // Aliases:
@@ -161,12 +153,11 @@ func Secp224k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp224r1() elliptic.Curve {
-	secp224r1Once.Do(initSecp224r1)
-	return secp224r1Curve
+	return curves.NistP224()
 }
 
 // Secp256k1 returns a Curve which implements secg/secp256k1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp256k1
 //
 // OID: 1.3.132.0.10
 // Aliases:
@@ -175,12 +166,11 @@ func Secp224r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp256k1() elliptic.Curve {
-	secp256k1Once.Do(initSecp256k1)
-	return secp256k1Curve
+	return curves.SecgSecp256k1()
 }
 
 // Secp256r1 returns a Curve which implements secg/secp256r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp256r1
 //
 // OID: 1.2.840.10045.3.1.7
 // Aliases:
@@ -190,12 +180,11 @@ func Secp256k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp256r1() elliptic.Curve {
-	secp256r1Once.Do(initSecp256r1)
-	return secp256r1Curve
+	return curves.NistP256()
 }
 
 // Secp384r1 returns a Curve which implements secg/secp384r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp384r1
 //
 // OID: 1.3.132.0.34
 // Aliases:
@@ -205,12 +194,11 @@ func Secp256r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp384r1() elliptic.Curve {
-	secp384r1Once.Do(initSecp384r1)
-	return secp384r1Curve
+	return curves.NistP384()
 }
 
 // Secp521r1 returns a Curve which implements secg/secp521r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/secp521r1
 //
 // OID: 1.3.132.0.35
 // Aliases:
@@ -220,12 +208,11 @@ func Secp384r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Secp521r1() elliptic.Curve {
-	secp521r1Once.Do(initSecp521r1)
-	return secp521r1Curve
+	return curves.NistP521()
 }
 
 // Sect113r1 returns a Curve which implements secg/sect113r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect113r1
 //
 // OID: 1.3.132.0.4
 // Aliases:
@@ -234,48 +221,44 @@ func Secp521r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect113r1() elliptic.Curve {
-	sect113r1Once.Do(initSect113r1)
-	return sect113r1Curve
+	return curves.SecgSect113r1()
 }
 
 // Sect113r2 returns a Curve which implements secg/sect113r2
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect113r2
 //
 // OID: 1.3.132.0.5
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect113r2() elliptic.Curve {
-	sect113r2Once.Do(initSect113r2)
-	return sect113r2Curve
+	return curves.SecgSect113r2()
 }
 
 // Sect131r1 returns a Curve which implements secg/sect131r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect131r1
 //
 // OID: 1.3.132.0.22
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect131r1() elliptic.Curve {
-	sect131r1Once.Do(initSect131r1)
-	return sect131r1Curve
+	return curves.SecgSect131r1()
 }
 
 // Sect131r2 returns a Curve which implements secg/sect131r2
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect131r2
 //
 // OID: 1.3.132.0.23
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect131r2() elliptic.Curve {
-	sect131r2Once.Do(initSect131r2)
-	return sect131r2Curve
+	return curves.SecgSect131r2()
 }
 
 // Sect163k1 returns a Curve which implements secg/sect163k1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect163k1
 //
 // OID: 1.3.132.0.1
 // Aliases:
@@ -286,12 +269,11 @@ func Sect131r2() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect163k1() elliptic.Curve {
-	sect163k1Once.Do(initSect163k1)
-	return sect163k1Curve
+	return curves.NistK163()
 }
 
 // Sect163r1 returns a Curve which implements secg/sect163r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect163r1
 //
 // OID: 1.3.132.0.2
 // Aliases:
@@ -300,12 +282,11 @@ func Sect163k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect163r1() elliptic.Curve {
-	sect163r1Once.Do(initSect163r1)
-	return sect163r1Curve
+	return curves.SecgSect163r1()
 }
 
 // Sect163r2 returns a Curve which implements secg/sect163r2
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect163r2
 //
 // OID: 1.3.132.0.15
 // Aliases:
@@ -315,12 +296,11 @@ func Sect163r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect163r2() elliptic.Curve {
-	sect163r2Once.Do(initSect163r2)
-	return sect163r2Curve
+	return curves.NistB163()
 }
 
 // Sect193r1 returns a Curve which implements secg/sect193r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect193r1
 //
 // OID: 1.3.132.0.24
 // Aliases:
@@ -329,12 +309,11 @@ func Sect163r2() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect193r1() elliptic.Curve {
-	sect193r1Once.Do(initSect193r1)
-	return sect193r1Curve
+	return curves.SecgSect193r1()
 }
 
 // Sect193r2 returns a Curve which implements secg/sect193r2
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect193r2
 //
 // OID: 1.3.132.0.25
 // Aliases:
@@ -343,12 +322,11 @@ func Sect193r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect193r2() elliptic.Curve {
-	sect193r2Once.Do(initSect193r2)
-	return sect193r2Curve
+	return curves.SecgSect193r2()
 }
 
 // Sect233k1 returns a Curve which implements secg/sect233k1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect233k1
 //
 // OID: 1.3.132.0.26
 // Aliases:
@@ -359,12 +337,11 @@ func Sect193r2() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect233k1() elliptic.Curve {
-	sect233k1Once.Do(initSect233k1)
-	return sect233k1Curve
+	return curves.NistK233()
 }
 
 // Sect233r1 returns a Curve which implements secg/sect233r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect233r1
 //
 // OID: 1.3.132.0.27
 // Aliases:
@@ -375,12 +352,11 @@ func Sect233k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect233r1() elliptic.Curve {
-	sect233r1Once.Do(initSect233r1)
-	return sect233r1Curve
+	return curves.NistB233()
 }
 
 // Sect239k1 returns a Curve which implements secg/sect239k1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect239k1
 //
 // OID: 1.3.132.0.3
 // Aliases:
@@ -389,12 +365,11 @@ func Sect233r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect239k1() elliptic.Curve {
-	sect239k1Once.Do(initSect239k1)
-	return sect239k1Curve
+	return curves.SecgSect239k1()
 }
 
 // Sect283k1 returns a Curve which implements secg/sect283k1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect283k1
 //
 // OID: 1.3.132.0.16
 // Aliases:
@@ -404,12 +379,11 @@ func Sect239k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect283k1() elliptic.Curve {
-	sect283k1Once.Do(initSect283k1)
-	return sect283k1Curve
+	return curves.NistK283()
 }
 
 // Sect283r1 returns a Curve which implements secg/sect283r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect283r1
 //
 // OID: 1.3.132.0.17
 // Aliases:
@@ -419,12 +393,11 @@ func Sect283k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect283r1() elliptic.Curve {
-	sect283r1Once.Do(initSect283r1)
-	return sect283r1Curve
+	return curves.NistB283()
 }
 
 // Sect409k1 returns a Curve which implements secg/sect409k1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect409k1
 //
 // OID: 1.3.132.0.36
 // Aliases:
@@ -434,12 +407,11 @@ func Sect283r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect409k1() elliptic.Curve {
-	sect409k1Once.Do(initSect409k1)
-	return sect409k1Curve
+	return curves.NistK409()
 }
 
 // Sect409r1 returns a Curve which implements secg/sect409r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect409r1
 //
 // OID: 1.3.132.0.37
 // Aliases:
@@ -449,12 +421,11 @@ func Sect409k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect409r1() elliptic.Curve {
-	sect409r1Once.Do(initSect409r1)
-	return sect409r1Curve
+	return curves.NistB409()
 }
 
 // Sect571k1 returns a Curve which implements secg/sect571k1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect571k1
 //
 // OID: 1.3.132.0.38
 // Aliases:
@@ -464,12 +435,11 @@ func Sect409r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect571k1() elliptic.Curve {
-	sect571k1Once.Do(initSect571k1)
-	return sect571k1Curve
+	return curves.NistK571()
 }
 
 // Sect571r1 returns a Curve which implements secg/sect571r1
-// https://neuromancer.sk/std/secg/
+// https://neuromancer.sk/std/secg/sect571r1
 //
 // OID: 1.3.132.0.39
 // Aliases:
@@ -479,6 +449,5 @@ func Sect571k1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Sect571r1() elliptic.Curve {
-	sect571r1Once.Do(initSect571r1)
-	return sect571r1Curve
+	return curves.NistB571()
 }

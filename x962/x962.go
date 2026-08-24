@@ -11,10 +11,12 @@ package x962
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // C2pnb163v1 returns a Curve which implements x962/c2pnb163v1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2pnb163v1
 //
 // OID: 1.2.840.10045.3.0.1
 // Aliases:
@@ -23,192 +25,176 @@ import (
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2pnb163v1() elliptic.Curve {
-	c2pnb163v1Once.Do(initC2pnb163v1)
-	return c2pnb163v1Curve
+	return curves.X962C2pnb163v1()
 }
 
 // C2pnb163v2 returns a Curve which implements x962/c2pnb163v2
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2pnb163v2
 //
 // OID: 1.2.840.10045.3.0.2
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2pnb163v2() elliptic.Curve {
-	c2pnb163v2Once.Do(initC2pnb163v2)
-	return c2pnb163v2Curve
+	return curves.X962C2pnb163v2()
 }
 
 // C2pnb163v3 returns a Curve which implements x962/c2pnb163v3
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2pnb163v3
 //
 // OID: 1.2.840.10045.3.0.3
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2pnb163v3() elliptic.Curve {
-	c2pnb163v3Once.Do(initC2pnb163v3)
-	return c2pnb163v3Curve
+	return curves.X962C2pnb163v3()
 }
 
 // C2pnb176w1 returns a Curve which implements x962/c2pnb176w1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2pnb176w1
 //
 // OID: 1.2.840.10045.3.0.4
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2pnb176w1() elliptic.Curve {
-	c2pnb176w1Once.Do(initC2pnb176w1)
-	return c2pnb176w1Curve
+	return curves.X962C2pnb176w1()
 }
 
 // C2pnb208w1 returns a Curve which implements x962/c2pnb208w1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2pnb208w1
 //
 // OID: 1.2.840.10045.3.0.10
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2pnb208w1() elliptic.Curve {
-	c2pnb208w1Once.Do(initC2pnb208w1)
-	return c2pnb208w1Curve
+	return curves.X962C2pnb208w1()
 }
 
 // C2pnb272w1 returns a Curve which implements x962/c2pnb272w1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2pnb272w1
 //
 // OID: 1.2.840.10045.3.0.16
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2pnb272w1() elliptic.Curve {
-	c2pnb272w1Once.Do(initC2pnb272w1)
-	return c2pnb272w1Curve
+	return curves.X962C2pnb272w1()
 }
 
 // C2pnb304w1 returns a Curve which implements x962/c2pnb304w1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2pnb304w1
 //
 // OID: 1.2.840.10045.3.0.17
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2pnb304w1() elliptic.Curve {
-	c2pnb304w1Once.Do(initC2pnb304w1)
-	return c2pnb304w1Curve
+	return curves.X962C2pnb304w1()
 }
 
 // C2pnb368w1 returns a Curve which implements x962/c2pnb368w1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2pnb368w1
 //
 // OID: 1.2.840.10045.3.0.19
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2pnb368w1() elliptic.Curve {
-	c2pnb368w1Once.Do(initC2pnb368w1)
-	return c2pnb368w1Curve
+	return curves.X962C2pnb368w1()
 }
 
 // C2tnb191v1 returns a Curve which implements x962/c2tnb191v1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2tnb191v1
 //
 // OID: 1.2.840.10045.3.0.5
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2tnb191v1() elliptic.Curve {
-	c2tnb191v1Once.Do(initC2tnb191v1)
-	return c2tnb191v1Curve
+	return curves.X962C2tnb191v1()
 }
 
 // C2tnb191v2 returns a Curve which implements x962/c2tnb191v2
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2tnb191v2
 //
 // OID: 1.2.840.10045.3.0.6
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2tnb191v2() elliptic.Curve {
-	c2tnb191v2Once.Do(initC2tnb191v2)
-	return c2tnb191v2Curve
+	return curves.X962C2tnb191v2()
 }
 
 // C2tnb191v3 returns a Curve which implements x962/c2tnb191v3
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2tnb191v3
 //
 // OID: 1.2.840.10045.3.0.7
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2tnb191v3() elliptic.Curve {
-	c2tnb191v3Once.Do(initC2tnb191v3)
-	return c2tnb191v3Curve
+	return curves.X962C2tnb191v3()
 }
 
 // C2tnb239v1 returns a Curve which implements x962/c2tnb239v1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2tnb239v1
 //
 // OID: 1.2.840.10045.3.0.11
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2tnb239v1() elliptic.Curve {
-	c2tnb239v1Once.Do(initC2tnb239v1)
-	return c2tnb239v1Curve
+	return curves.X962C2tnb239v1()
 }
 
 // C2tnb239v2 returns a Curve which implements x962/c2tnb239v2
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2tnb239v2
 //
 // OID: 1.2.840.10045.3.0.12
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2tnb239v2() elliptic.Curve {
-	c2tnb239v2Once.Do(initC2tnb239v2)
-	return c2tnb239v2Curve
+	return curves.X962C2tnb239v2()
 }
 
 // C2tnb239v3 returns a Curve which implements x962/c2tnb239v3
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2tnb239v3
 //
 // OID: 1.2.840.10045.3.0.13
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2tnb239v3() elliptic.Curve {
-	c2tnb239v3Once.Do(initC2tnb239v3)
-	return c2tnb239v3Curve
+	return curves.X962C2tnb239v3()
 }
 
 // C2tnb359v1 returns a Curve which implements x962/c2tnb359v1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2tnb359v1
 //
 // OID: 1.2.840.10045.3.0.18
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2tnb359v1() elliptic.Curve {
-	c2tnb359v1Once.Do(initC2tnb359v1)
-	return c2tnb359v1Curve
+	return curves.X962C2tnb359v1()
 }
 
 // C2tnb431r1 returns a Curve which implements x962/c2tnb431r1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/c2tnb431r1
 //
 // OID: 1.2.840.10045.3.0.20
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func C2tnb431r1() elliptic.Curve {
-	c2tnb431r1Once.Do(initC2tnb431r1)
-	return c2tnb431r1Curve
+	return curves.X962C2tnb431r1()
 }
 
 // Prime192v1 returns a Curve which implements x962/prime192v1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/prime192v1
 //
 // OID: 1.2.840.10045.3.1.1
 // Aliases:
@@ -218,72 +204,66 @@ func C2tnb431r1() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Prime192v1() elliptic.Curve {
-	prime192v1Once.Do(initPrime192v1)
-	return prime192v1Curve
+	return curves.NistP192()
 }
 
 // Prime192v2 returns a Curve which implements x962/prime192v2
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/prime192v2
 //
 // OID: 1.2.840.10045.3.1.2
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Prime192v2() elliptic.Curve {
-	prime192v2Once.Do(initPrime192v2)
-	return prime192v2Curve
+	return curves.X962Prime192v2()
 }
 
 // Prime192v3 returns a Curve which implements x962/prime192v3
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/prime192v3
 //
 // OID: 1.2.840.10045.3.1.3
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Prime192v3() elliptic.Curve {
-	prime192v3Once.Do(initPrime192v3)
-	return prime192v3Curve
+	return curves.X962Prime192v3()
 }
 
 // Prime239v1 returns a Curve which implements x962/prime239v1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/prime239v1
 //
 // OID: 1.2.840.10045.3.1.4
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Prime239v1() elliptic.Curve {
-	prime239v1Once.Do(initPrime239v1)
-	return prime239v1Curve
+	return curves.X962Prime239v1()
 }
 
 // Prime239v2 returns a Curve which implements x962/prime239v2
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/prime239v2
 //
 // OID: 1.2.840.10045.3.1.5
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Prime239v2() elliptic.Curve {
-	prime239v2Once.Do(initPrime239v2)
-	return prime239v2Curve
+	return curves.X962Prime239v2()
 }
 
 // Prime239v3 returns a Curve which implements x962/prime239v3
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/prime239v3
 //
 // OID: 1.2.840.10045.3.1.6
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Prime239v3() elliptic.Curve {
-	prime239v3Once.Do(initPrime239v3)
-	return prime239v3Curve
+	return curves.X962Prime239v3()
 }
 
 // Prime256v1 returns a Curve which implements x962/prime256v1
-// https://neuromancer.sk/std/x962/
+// https://neuromancer.sk/std/x962/prime256v1
 //
 // OID: 1.2.840.10045.3.1.7
 // Aliases:
@@ -293,6 +273,5 @@ func Prime239v3() elliptic.Curve {
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Prime256v1() elliptic.Curve {
-	prime256v1Once.Do(initPrime256v1)
-	return prime256v1Curve
+	return curves.NistP256()
 }

@@ -11,466 +11,422 @@ package other
 
 import (
 	"crypto/elliptic"
+
+	"github.com/RyuaNerin/elliptic2/internal/curves"
 )
 
 // BADA55R256 returns a Curve which implements other/BADA55-R-256
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/BADA55-R-256
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BADA55R256() elliptic.Curve {
-	bADA55R256Once.Do(initBADA55R256)
-	return bADA55R256Curve
+	return curves.OtherBADA55R256()
 }
 
 // BADA55VPR224 returns a Curve which implements other/BADA55-VPR-224
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/BADA55-VPR-224
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BADA55VPR224() elliptic.Curve {
-	bADA55VPR224Once.Do(initBADA55VPR224)
-	return bADA55VPR224Curve
+	return curves.OtherBADA55VPR224()
 }
 
 // BADA55VPR2_224 returns a Curve which implements other/BADA55-VPR2-224
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/BADA55-VPR2-224
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BADA55VPR2_224() elliptic.Curve {
-	bADA55VPR2_224Once.Do(initBADA55VPR2_224)
-	return bADA55VPR2_224Curve
+	return curves.OtherBADA55VPR2_224()
 }
 
 // BADA55VR224 returns a Curve which implements other/BADA55-VR-224
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/BADA55-VR-224
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BADA55VR224() elliptic.Curve {
-	bADA55VR224Once.Do(initBADA55VR224)
-	return bADA55VR224Curve
+	return curves.OtherBADA55VR224()
 }
 
 // BADA55VR256 returns a Curve which implements other/BADA55-VR-256
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/BADA55-VR-256
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BADA55VR256() elliptic.Curve {
-	bADA55VR256Once.Do(initBADA55VR256)
-	return bADA55VR256Curve
+	return curves.OtherBADA55VR256()
 }
 
 // BADA55VR384 returns a Curve which implements other/BADA55-VR-384
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/BADA55-VR-384
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func BADA55VR384() elliptic.Curve {
-	bADA55VR384Once.Do(initBADA55VR384)
-	return bADA55VR384Curve
+	return curves.OtherBADA55VR384()
 }
 
 // Curve1174 returns a Curve which implements other/Curve1174
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Curve1174
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Curve1174() elliptic.Curve {
-	curve1174Once.Do(initCurve1174)
-	return curve1174Curve
+	return curves.OtherCurve1174()
 }
 
 // Curve22103 returns a Curve which implements other/Curve22103
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Curve22103
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Curve22103() elliptic.Curve {
-	curve22103Once.Do(initCurve22103)
-	return curve22103Curve
+	return curves.OtherCurve22103()
 }
 
 // Curve25519 returns a Curve which implements other/Curve25519
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Curve25519
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Curve25519() elliptic.Curve {
-	curve25519Once.Do(initCurve25519)
-	return curve25519Curve
+	return curves.OtherCurve25519()
 }
 
 // Curve383187 returns a Curve which implements other/Curve383187
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Curve383187
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Curve383187() elliptic.Curve {
-	curve383187Once.Do(initCurve383187)
-	return curve383187Curve
+	return curves.OtherCurve383187()
 }
 
 // Curve41417 returns a Curve which implements other/Curve41417
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Curve41417
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Curve41417() elliptic.Curve {
-	curve41417Once.Do(initCurve41417)
-	return curve41417Curve
+	return curves.OtherCurve41417()
 }
 
 // Curve4417 returns a Curve which implements other/Curve4417
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Curve4417
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Curve4417() elliptic.Curve {
-	curve4417Once.Do(initCurve4417)
-	return curve4417Curve
+	return curves.OtherCurve4417()
 }
 
 // Curve448 returns a Curve which implements other/Curve448
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Curve448
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Curve448() elliptic.Curve {
-	curve448Once.Do(initCurve448)
-	return curve448Curve
+	return curves.OtherCurve448()
 }
 
 // Curve67254 returns a Curve which implements other/Curve67254
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Curve67254
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Curve67254() elliptic.Curve {
-	curve67254Once.Do(initCurve67254)
-	return curve67254Curve
+	return curves.OtherCurve67254()
 }
 
 // E222 returns a Curve which implements other/E-222
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/E-222
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func E222() elliptic.Curve {
-	e222Once.Do(initE222)
-	return e222Curve
+	return curves.OtherE222()
 }
 
 // E382 returns a Curve which implements other/E-382
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/E-382
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func E382() elliptic.Curve {
-	e382Once.Do(initE382)
-	return e382Curve
+	return curves.OtherE382()
 }
 
 // E521 returns a Curve which implements other/E-521
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/E-521
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func E521() elliptic.Curve {
-	e521Once.Do(initE521)
-	return e521Curve
+	return curves.OtherE521()
 }
 
 // Ed25519 returns a Curve which implements other/Ed25519
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Ed25519
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed25519() elliptic.Curve {
-	ed25519Once.Do(initEd25519)
-	return ed25519Curve
+	return curves.OtherEd25519()
 }
 
 // Ed448 returns a Curve which implements other/Ed448
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Ed448
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed448() elliptic.Curve {
-	ed448Once.Do(initEd448)
-	return ed448Curve
+	return curves.OtherEd448()
 }
 
 // Ed448Goldilocks returns a Curve which implements other/Ed448-Goldilocks
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Ed448-Goldilocks
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ed448Goldilocks() elliptic.Curve {
-	ed448GoldilocksOnce.Do(initEd448Goldilocks)
-	return ed448GoldilocksCurve
+	return curves.OtherEd448Goldilocks()
 }
 
 // Fp224BN returns a Curve which implements other/Fp224BN
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Fp224BN
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Fp224BN() elliptic.Curve {
-	fp224BNOnce.Do(initFp224BN)
-	return fp224BNCurve
+	return curves.OtherFp224BN()
 }
 
 // Fp254BNa returns a Curve which implements other/Fp254BNa
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Fp254BNa
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Fp254BNa() elliptic.Curve {
-	fp254BNaOnce.Do(initFp254BNa)
-	return fp254BNaCurve
+	return curves.OtherFp254BNa()
 }
 
 // Fp254BNb returns a Curve which implements other/Fp254BNb
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Fp254BNb
 // Aliases:
 //   - bn/bn254
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Fp254BNb() elliptic.Curve {
-	fp254BNbOnce.Do(initFp254BNb)
-	return fp254BNbCurve
+	return curves.BnBn254()
 }
 
 // Fp256BN returns a Curve which implements other/Fp256BN
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Fp256BN
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Fp256BN() elliptic.Curve {
-	fp256BNOnce.Do(initFp256BN)
-	return fp256BNCurve
+	return curves.OtherFp256BN()
 }
 
 // Fp384BN returns a Curve which implements other/Fp384BN
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Fp384BN
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Fp384BN() elliptic.Curve {
-	fp384BNOnce.Do(initFp384BN)
-	return fp384BNCurve
+	return curves.OtherFp384BN()
 }
 
 // Fp512BN returns a Curve which implements other/Fp512BN
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Fp512BN
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Fp512BN() elliptic.Curve {
-	fp512BNOnce.Do(initFp512BN)
-	return fp512BNCurve
+	return curves.OtherFp512BN()
 }
 
 // JubJub returns a Curve which implements other/JubJub
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/JubJub
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func JubJub() elliptic.Curve {
-	jubJubOnce.Do(initJubJub)
-	return jubJubCurve
+	return curves.OtherJubJub()
 }
 
 // M221 returns a Curve which implements other/M-221
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/M-221
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func M221() elliptic.Curve {
-	m221Once.Do(initM221)
-	return m221Curve
+	return curves.OtherM221()
 }
 
 // M383 returns a Curve which implements other/M-383
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/M-383
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func M383() elliptic.Curve {
-	m383Once.Do(initM383)
-	return m383Curve
+	return curves.OtherM383()
 }
 
 // M511 returns a Curve which implements other/M-511
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/M-511
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func M511() elliptic.Curve {
-	m511Once.Do(initM511)
-	return m511Curve
+	return curves.OtherM511()
 }
 
 // MDC201601 returns a Curve which implements other/MDC201601
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/MDC201601
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func MDC201601() elliptic.Curve {
-	mDC201601Once.Do(initMDC201601)
-	return mDC201601Curve
+	return curves.OtherMDC201601()
 }
 
 // Pallas returns a Curve which implements other/Pallas
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Pallas
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Pallas() elliptic.Curve {
-	pallasOnce.Do(initPallas)
-	return pallasCurve
+	return curves.OtherPallas()
 }
 
 // Tom256 returns a Curve which implements other/Tom-256
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Tom-256
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Tom256() elliptic.Curve {
-	tom256Once.Do(initTom256)
-	return tom256Curve
+	return curves.OtherTom256()
 }
 
 // Tom384 returns a Curve which implements other/Tom-384
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Tom-384
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Tom384() elliptic.Curve {
-	tom384Once.Do(initTom384)
-	return tom384Curve
+	return curves.OtherTom384()
 }
 
 // Tom521 returns a Curve which implements other/Tom-521
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Tom-521
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Tom521() elliptic.Curve {
-	tom521Once.Do(initTom521)
-	return tom521Curve
+	return curves.OtherTom521()
 }
 
 // Tweedledee returns a Curve which implements other/Tweedledee
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Tweedledee
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Tweedledee() elliptic.Curve {
-	tweedledeeOnce.Do(initTweedledee)
-	return tweedledeeCurve
+	return curves.OtherTweedledee()
 }
 
 // Tweedledum returns a Curve which implements other/Tweedledum
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Tweedledum
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Tweedledum() elliptic.Curve {
-	tweedledumOnce.Do(initTweedledum)
-	return tweedledumCurve
+	return curves.OtherTweedledum()
 }
 
 // Vesta returns a Curve which implements other/Vesta
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/Vesta
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Vesta() elliptic.Curve {
-	vestaOnce.Do(initVesta)
-	return vestaCurve
+	return curves.OtherVesta()
 }
 
 // Ssc160 returns a Curve which implements other/ssc-160
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/ssc-160
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ssc160() elliptic.Curve {
-	ssc160Once.Do(initSsc160)
-	return ssc160Curve
+	return curves.OtherSsc160()
 }
 
 // Ssc192 returns a Curve which implements other/ssc-192
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/ssc-192
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ssc192() elliptic.Curve {
-	ssc192Once.Do(initSsc192)
-	return ssc192Curve
+	return curves.OtherSsc192()
 }
 
 // Ssc224 returns a Curve which implements other/ssc-224
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/ssc-224
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ssc224() elliptic.Curve {
-	ssc224Once.Do(initSsc224)
-	return ssc224Curve
+	return curves.OtherSsc224()
 }
 
 // Ssc256 returns a Curve which implements other/ssc-256
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/ssc-256
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ssc256() elliptic.Curve {
-	ssc256Once.Do(initSsc256)
-	return ssc256Curve
+	return curves.OtherSsc256()
 }
 
 // Ssc288 returns a Curve which implements other/ssc-288
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/ssc-288
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ssc288() elliptic.Curve {
-	ssc288Once.Do(initSsc288)
-	return ssc288Curve
+	return curves.OtherSsc288()
 }
 
 // Ssc320 returns a Curve which implements other/ssc-320
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/ssc-320
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ssc320() elliptic.Curve {
-	ssc320Once.Do(initSsc320)
-	return ssc320Curve
+	return curves.OtherSsc320()
 }
 
 // Ssc384 returns a Curve which implements other/ssc-384
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/ssc-384
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ssc384() elliptic.Curve {
-	ssc384Once.Do(initSsc384)
-	return ssc384Curve
+	return curves.OtherSsc384()
 }
 
 // Ssc512 returns a Curve which implements other/ssc-512
-// https://neuromancer.sk/std/other/
+// https://neuromancer.sk/std/other/ssc-512
 //
 // Multiple invocations of this function will return the same value, so it can
 // be used for equality checks and switch statements.
 func Ssc512() elliptic.Curve {
-	ssc512Once.Do(initSsc512)
-	return ssc512Curve
+	return curves.OtherSsc512()
 }
