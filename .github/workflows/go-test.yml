@@ -3,8 +3,18 @@ name: Go Test
 on:
   push:
     branches: [ main ]
+    paths:
+      - '**/*.go'
+      - '**/*.s'
+      - go.mod
+      - go.sum
   pull_request:
     branches: [ main ]
+    paths:
+      - '**/*.go'
+      - '**/*.s'
+      - go.mod
+      - go.sum
 
 jobs:
   lint-and-test:
@@ -53,8 +63,9 @@ jobs:
 
       - name: Test
         run: |
-          (go test -json -v              ./... 2>&1 | tee "${{ runner.temp }}/gotest.log"        | gotestfmt) || false
-          (go test -json -v -tags purego ./... 2>&1 | tee "${{ runner.temp }}/gotest-purego.log" | gotestfmt) || false
+          set -euo pipefail
+          go test -json -v              ./... 2>&1 | tee "${{ runner.temp }}/gotest.log"        | gotestfmt
+          go test -json -v -tags purego ./... 2>&1 | tee "${{ runner.temp }}/gotest-purego.log" | gotestfmt
 
       - name: Upload test log
         uses: actions/upload-artifact@v7
