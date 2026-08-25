@@ -1,4 +1,4 @@
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/RyuaNerin/elliptic2/v2)](https://pkg.go.dev/github.com/RyuaNerin/elliptic2/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/RyuaNerin/elliptic2)](https://pkg.go.dev/github.com/RyuaNerin/elliptic2)
 
 # elliptic2
 
