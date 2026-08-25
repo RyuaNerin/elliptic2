@@ -104,8 +104,8 @@ jobs:
           image: s390x/golang:1.25-alpine
         - platform: linux/s390x
           image: s390x/golang:1.24-alpine
-        - platform: linux/mips64le
-          image: mips64le/golang:1.27-bookworm
+        # - platform: linux/mips64le
+        #   image: mips64le/golang:1.27-bookworm
         - platform: linux/mips64le
           image: mips64le/golang:1.26-bookworm
         - platform: linux/mips64le
@@ -128,6 +128,8 @@ jobs:
           image: i386/golang:1.25-alpine
         - platform: linux/386
           image: i386/golang:1.24-alpine
+        - platform: linux/loong64
+          image: ghcr.io/loong64/golang:1.27-alpine
         - platform: linux/loong64
           image: ghcr.io/loong64/golang:1.26-alpine
         - platform: linux/loong64
