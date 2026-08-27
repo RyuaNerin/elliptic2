@@ -107,6 +107,12 @@ func WithOID(oidStr string) option {
 	}
 }
 
+func WithOIDRaw(oid asn1.ObjectIdentifier) option {
+	return func(o *curveBase) {
+		o.oid = append(asn1.ObjectIdentifier(nil), oid...)
+	}
+}
+
 func (c *curveBase) OID() asn1.ObjectIdentifier {
 	if c.oid == nil {
 		return nil

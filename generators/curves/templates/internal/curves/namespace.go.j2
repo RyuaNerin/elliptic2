@@ -70,7 +70,7 @@
 		}),
 	{%- endif -%}
 	{%- if curve.unified_curve.params.oid %}
-		WithOID(`{{ curve.unified_curve.params.oid }}`),
+		WithOIDRaw(oids.OID{{ entry.internal_name }}),
 	{%- endif %}
 	)
 {%- endmacro %}
@@ -94,6 +94,7 @@ import (
 
 	. "github.com/RyuaNerin/elliptic2/internal"
 	. "github.com/RyuaNerin/elliptic2/internal/curve"
+	"github.com/RyuaNerin/elliptic2/internal/curves/oids"
 	e "github.com/RyuaNerin/elliptic2/internal/curve/edwards"
 	m "github.com/RyuaNerin/elliptic2/internal/curve/montgomery"
 	t "github.com/RyuaNerin/elliptic2/internal/curve/twistededwards"

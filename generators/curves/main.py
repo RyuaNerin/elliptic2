@@ -266,7 +266,7 @@ def build(
 
         readme_content_list.append(env.get_template("README.md.j2").render(context))
 
-    generate_internal_curves(catalog, env)
+    generate_curves(catalog, env)
     write_template(
         Path("..", "..", "alias_test.go"),
         env,
@@ -282,6 +282,7 @@ def build(
         for context in contexts
     )
     generated_go.extend(Path("..", "..", "internal", "curves").glob("*.go"))
+    generated_go.append(Path("..", "..", "internal", "curves", "oids", "oids.go"))
     format_generated_go(generated_go)
 
     readme_path = Path("..", "..", "README.md")
@@ -759,11 +760,13 @@ def internal_test_context(
     }
 
 
-def generate_internal_curves(
+def generate_curves(
     catalog: CurveCatalog,
     env: Environment,
 ) -> None:
-    internal_dir = Path("..", "..", "internal", "curves")
+    workspace_dir: Final = Path("..", "..")
+
+    internal_dir: Final = workspace_dir / "internal" / "curves"
     internal_dir.mkdir(parents=True, exist_ok=True)
 
     definitions_by_namespace: dict[str, list[CurveEntry]] = {}
@@ -781,7 +784,7 @@ def generate_internal_curves(
         )
 
     namespaces = sorted(set(definitions_by_namespace) | set(aliases_by_namespace))
-    expected = {"alias.go"}
+    expected = {"alias.go", "oid.go", "oid_test.go"}
     expected.update(f"{namespace}.go" for namespace in namespaces)
     expected.update(
         f"{namespace}_test.go"
@@ -791,6 +794,26 @@ def generate_internal_curves(
     for path in internal_dir.glob("*.go"):
         if path.name not in expected:
             remove_generated(path)
+
+    oid_context = internal_oid_context(catalog)
+    write_template(
+        internal_dir / "oids" / "oids.go",
+        env,
+        "internal/curves/oids/oids.go.j2",
+        oid_context,
+    )
+    write_template(
+        workspace_dir / "oids" / "oid.go",
+        env,
+        "oids/oid.go.j2",
+        oid_context,
+    )
+    write_template(
+        workspace_dir / "oids" / "oid_test.go",
+        env,
+        "oids/oid_test.go.j2",
+        oid_context,
+    )
 
     for namespace in namespaces:
         definitions = definitions_by_namespace.get(namespace, [])
@@ -808,6 +831,41 @@ def generate_internal_curves(
                 "internal/curves/namespace_test.go.j2",
                 internal_test_context(namespace, definitions),
             )
+
+
+def internal_oid_context(catalog: CurveCatalog) -> dict[str, Any]:
+    oid_entries: list[dict[str, Any]] = []
+    entries_by_oid: dict[str, CurveEntry] = {}
+
+    for entry in catalog.variants:
+        oid = cast(str | None, entry.curve["unified_curve"]["params"].get("oid"))
+        if oid is None:
+            continue
+
+        previous = entries_by_oid.get(oid)
+        if previous is not None:
+            raise ValueError(
+                f"Duplicate OID {oid}: {previous.fullname} and {entry.fullname}"
+            )
+        entries_by_oid[oid] = entry
+
+        try:
+            oid_arcs = [str(int(arc)) for arc in oid.split(".")]
+        except ValueError as ex:
+            raise ValueError(f"Invalid OID {oid}: {entry.fullname}") from ex
+
+        oid_entries.append(
+            {
+                "golang_var": f"OID{entry.internal_name}",
+                "golang_fun": entry.internal_name,
+                "oid": oid,
+                "oid_arcs": oid_arcs,
+            }
+        )
+
+    return {
+        "oid_entries": sorted(oid_entries, key=lambda item: item["golang_var"]),
+    }
 
 
 def alias_test_context(catalog: CurveCatalog) -> dict[str, Any]:
