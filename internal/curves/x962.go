@@ -10,6 +10,7 @@ import (
 	. "github.com/RyuaNerin/elliptic2/internal/curve"
 	wb "github.com/RyuaNerin/elliptic2/internal/curve/weierstrassbinary"
 	wp "github.com/RyuaNerin/elliptic2/internal/curve/weierstrassprime"
+	"github.com/RyuaNerin/elliptic2/internal/curves/oids"
 	. "github.com/RyuaNerin/elliptic2/internal/field"
 )
 
@@ -25,7 +26,7 @@ var x962C2pnb163v1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`7af69989546103d79329fcc3d74880f33bbe803cb`),
 			Gy:      HI(`1ec23211b5966adea1d3f87f7ea5848aef0b7ca9f`),
 		}),
-		WithOID(`1.2.840.10045.3.0.1`),
+		WithOIDRaw(oids.OIDX962C2pnb163v1),
 	)
 })
 
@@ -44,7 +45,7 @@ var x962C2pnb163v2 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`24266e4eb5106d0a964d92c4860e2671db9b6cc5`),
 			Gy:      HI(`79f684ddf6684c5cd258b3890021b2386dfd19fc5`),
 		}),
-		WithOID(`1.2.840.10045.3.0.2`),
+		WithOIDRaw(oids.OIDX962C2pnb163v2),
 	)
 })
 
@@ -63,7 +64,7 @@ var x962C2pnb163v3 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`2f9f87b7c574d0bdecf8a22e6524775f98cdebdcb`),
 			Gy:      HI(`5b935590c155e17ea48eb3ff3718b893df59a05d0`),
 		}),
-		WithOID(`1.2.840.10045.3.0.3`),
+		WithOIDRaw(oids.OIDX962C2pnb163v3),
 	)
 })
 
@@ -82,7 +83,7 @@ var x962C2pnb176w1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`8d16c2866798b600f9f08bb4a8e860f3298ce04a5798`),
 			Gy:      HI(`6fa4539c2dadddd6bab5167d61b436e1d92bb16a562c`),
 		}),
-		WithOID(`1.2.840.10045.3.0.4`),
+		WithOIDRaw(oids.OIDX962C2pnb176w1),
 	)
 })
 
@@ -101,7 +102,7 @@ var x962C2pnb208w1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`89fdfbe4abe193df9559ecf07ac0ce78554e2784eb8c1ed1a57a`),
 			Gy:      HI(`f55b51a06e78e9ac38a035ff520d8b01781beb1a6bb08617de3`),
 		}),
-		WithOID(`1.2.840.10045.3.0.10`),
+		WithOIDRaw(oids.OIDX962C2pnb208w1),
 	)
 })
 
@@ -120,7 +121,7 @@ var x962C2pnb272w1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`6108babb2ceebcf787058a056cbe0cfe622d7723a289e08a07ae13ef0d10d171dd8d`),
 			Gy:      HI(`10c7695716851eef6ba7f6872e6142fbd241b830ff5efcaceccab05e02005dde9d23`),
 		}),
-		WithOID(`1.2.840.10045.3.0.16`),
+		WithOIDRaw(oids.OIDX962C2pnb272w1),
 	)
 })
 
@@ -139,7 +140,7 @@ var x962C2pnb304w1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`197b07845e9be2d96adb0f5f3c7f2cffbd7a3eb8b6fec35c7fd67f26ddf6285a644f740a2614`),
 			Gy:      HI(`e19fbeb76e0da171517ecf401b50289bf014103288527a9b416a105e80260b549fdc1b92c03b`),
 		}),
-		WithOID(`1.2.840.10045.3.0.17`),
+		WithOIDRaw(oids.OIDX962C2pnb304w1),
 	)
 })
 
@@ -158,7 +159,7 @@ var x962C2pnb368w1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`1085e2755381dccce3c1557afa10c2f0c0c2825646c5b34a394cbcfa8bc16b22e7e789e927be216f02e1fb136a5f`),
 			Gy:      HI(`7b3eb1bddcba62d5d8b2059b525797fc73822c59059c623a45ff3843cee8f87cd1855adaa81e2a0750b80fda2310`),
 		}),
-		WithOID(`1.2.840.10045.3.0.19`),
+		WithOIDRaw(oids.OIDX962C2pnb368w1),
 	)
 })
 
@@ -177,7 +178,7 @@ var x962C2tnb191v1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`36b3daf8a23206f9c4f299d7b21a9c369137f2c84ae1aa0d`),
 			Gy:      HI(`765be73433b3f95e332932e70ea245ca2418ea0ef98018fb`),
 		}),
-		WithOID(`1.2.840.10045.3.0.5`),
+		WithOIDRaw(oids.OIDX962C2tnb191v1),
 	)
 })
 
@@ -196,7 +197,7 @@ var x962C2tnb191v2 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`3809b2b7cc1b28cc5a87926aad83fd28789e81e2c9e3bf10`),
 			Gy:      HI(`17434386626d14f3dbf01760d9213a3e1cf37aec437d668a`),
 		}),
-		WithOID(`1.2.840.10045.3.0.6`),
+		WithOIDRaw(oids.OIDX962C2tnb191v2),
 	)
 })
 
@@ -215,7 +216,7 @@ var x962C2tnb191v3 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`375d4ce24fde434489de8746e71786015009e66e38a926dd`),
 			Gy:      HI(`545a39176196575d985999366e6ad34ce0a77cd7127b06be`),
 		}),
-		WithOID(`1.2.840.10045.3.0.7`),
+		WithOIDRaw(oids.OIDX962C2tnb191v3),
 	)
 })
 
@@ -234,7 +235,7 @@ var x962C2tnb239v1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`57927098fa932e7c0a96d3fd5b706ef7e5f5c156e16b7e7c86038552e91d`),
 			Gy:      HI(`61d8ee5077c33fecf6f1a16b268de469c3c7744ea9a971649fc7a9616305`),
 		}),
-		WithOID(`1.2.840.10045.3.0.11`),
+		WithOIDRaw(oids.OIDX962C2tnb239v1),
 	)
 })
 
@@ -253,7 +254,7 @@ var x962C2tnb239v2 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`28f9d04e900069c8dc47a08534fe76d2b900b7d7ef31f5709f200c4ca205`),
 			Gy:      HI(`5667334c45aff3b5a03bad9dd75e2c71a99362567d5453f7fa6e227ec833`),
 		}),
-		WithOID(`1.2.840.10045.3.0.12`),
+		WithOIDRaw(oids.OIDX962C2tnb239v2),
 	)
 })
 
@@ -272,7 +273,7 @@ var x962C2tnb239v3 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`70f6e9d04d289c4e89913ce3530bfde903977d42b146d539bf1bde4e9c92`),
 			Gy:      HI(`2e5a0eaf6e5e1305b9004dce5c0ed7fe59a35608f33837c816d80b79f461`),
 		}),
-		WithOID(`1.2.840.10045.3.0.13`),
+		WithOIDRaw(oids.OIDX962C2tnb239v3),
 	)
 })
 
@@ -291,7 +292,7 @@ var x962C2tnb359v1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`3c258ef3047767e7ede0f1fdaa79daee3841366a132e163aced4ed2401df9c6bdcde98e8e707c07a2239b1b097`),
 			Gy:      HI(`53d7e08529547048121e9c95f3791dd804963948f34fae7bf44ea82365dc7868fe57e4ae2de211305a407104bd`),
 		}),
-		WithOID(`1.2.840.10045.3.0.18`),
+		WithOIDRaw(oids.OIDX962C2tnb359v1),
 	)
 })
 
@@ -310,7 +311,7 @@ var x962C2tnb431r1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`120fc05d3c67a99de161d2f4092622feca701be4f50f4758714e8a87bbf2a658ef8c21e7c5efe965361f6c2999c0c247b0dbd70ce6b7`),
 			Gy:      HI(`20d0af8903a96f8d5fa2c255745d3c451b302c9346d9b7e485e7bce41f6b591f3e8f6addcbb0bc4c2f947a7de1a89b625d6a598b3760`),
 		}),
-		WithOID(`1.2.840.10045.3.0.20`),
+		WithOIDRaw(oids.OIDX962C2tnb431r1),
 	)
 })
 
@@ -329,7 +330,7 @@ var x962Prime192v2 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`eea2bae7e1497842f2de7769cfe9c989c072ad696f48034a`),
 			Gy:      HI(`6574d11d69b6ec7a672bb82a083df2f2b0847de970b2de15`),
 		}),
-		WithOID(`1.2.840.10045.3.1.2`),
+		WithOIDRaw(oids.OIDX962Prime192v2),
 	)
 })
 
@@ -348,7 +349,7 @@ var x962Prime192v3 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`7d29778100c65a1da1783716588dce2b8b4aee8e228f1896`),
 			Gy:      HI(`38a90f22637337334b49dcb66a6dc8f9978aca7648a943b0`),
 		}),
-		WithOID(`1.2.840.10045.3.1.3`),
+		WithOIDRaw(oids.OIDX962Prime192v3),
 	)
 })
 
@@ -367,7 +368,7 @@ var x962Prime239v1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`ffa963cdca8816ccc33b8642bedf905c3d358573d3f27fbbd3b3cb9aaaf`),
 			Gy:      HI(`7debe8e4e90a5dae6e4054ca530ba04654b36818ce226b39fccb7b02f1ae`),
 		}),
-		WithOID(`1.2.840.10045.3.1.4`),
+		WithOIDRaw(oids.OIDX962Prime239v1),
 	)
 })
 
@@ -386,7 +387,7 @@ var x962Prime239v2 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`38af09d98727705120c921bb5e9e26296a3cdcf2f35757a0eafd87b830e7`),
 			Gy:      HI(`5b0125e4dbea0ec7206da0fc01d9b081329fb555de6ef460237dff8be4ba`),
 		}),
-		WithOID(`1.2.840.10045.3.1.5`),
+		WithOIDRaw(oids.OIDX962Prime239v2),
 	)
 })
 
@@ -405,7 +406,7 @@ var x962Prime239v3 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`6768ae8e18bb92cfcf005c949aa2c6d94853d0e660bbf854b1c9505fe95a`),
 			Gy:      HI(`1607e6898f390c06bc1d552bad226f3b6fcfe48b6e818499af18e3ed6cf3`),
 		}),
-		WithOID(`1.2.840.10045.3.1.6`),
+		WithOIDRaw(oids.OIDX962Prime239v3),
 	)
 })
 

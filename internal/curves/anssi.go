@@ -9,6 +9,7 @@ import (
 	. "github.com/RyuaNerin/elliptic2/internal"
 	. "github.com/RyuaNerin/elliptic2/internal/curve"
 	wp "github.com/RyuaNerin/elliptic2/internal/curve/weierstrassprime"
+	"github.com/RyuaNerin/elliptic2/internal/curves/oids"
 	. "github.com/RyuaNerin/elliptic2/internal/field"
 )
 
@@ -24,7 +25,7 @@ var anssiFRP256v1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`b6b3d4c356c139eb31183d4749d423958c27d2dcaf98b70164c97a2dd98f5cff`),
 			Gy:      HI(`6142e0f7c8b204911f9271f0f3ecef8c2701c307e8e4c9e183115a1554062cfb`),
 		}),
-		WithOID(`1.2.250.1.223.101.256.1`),
+		WithOIDRaw(oids.OIDAnssiFRP256v1),
 	)
 })
 

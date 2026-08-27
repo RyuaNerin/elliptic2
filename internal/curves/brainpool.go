@@ -9,6 +9,7 @@ import (
 	. "github.com/RyuaNerin/elliptic2/internal"
 	. "github.com/RyuaNerin/elliptic2/internal/curve"
 	wp "github.com/RyuaNerin/elliptic2/internal/curve/weierstrassprime"
+	"github.com/RyuaNerin/elliptic2/internal/curves/oids"
 	. "github.com/RyuaNerin/elliptic2/internal/field"
 )
 
@@ -24,7 +25,7 @@ var brainpoolBrainpoolP160r1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`bed5af16ea3f6a4f62938c4631eb5af7bdbcdbc3`),
 			Gy:      HI(`1667cb477a1a8ec338f94741669c976316da6321`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.1`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP160r1),
 	)
 })
 
@@ -43,7 +44,7 @@ var brainpoolBrainpoolP160t1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`b199b13b9b34efc1397e64baeb05acc265ff2378`),
 			Gy:      HI(`add6718b7c7c1961f0991b842443772152c9e0ad`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.2`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP160t1),
 	)
 })
 
@@ -62,7 +63,7 @@ var brainpoolBrainpoolP192r1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`c0a0647eaab6a48753b033c56cb0f0900a2f5c4853375fd6`),
 			Gy:      HI(`14b690866abd5bb88b5f4828c1490002e6773fa2fa299b8f`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.3`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP192r1),
 	)
 })
 
@@ -81,7 +82,7 @@ var brainpoolBrainpoolP192t1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`3ae9e58c82f63c30282e1fe7bbf43fa72c446af6f4618129`),
 			Gy:      HI(`97e2c5667c2223a902ab5ca449d0084b7e5b3de7ccc01c9`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.4`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP192t1),
 	)
 })
 
@@ -100,7 +101,7 @@ var brainpoolBrainpoolP224r1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`d9029ad2c7e5cf4340823b2a87dc68c9e4ce3174c1e6efdee12c07d`),
 			Gy:      HI(`58aa56f772c0726f24c6b89e4ecdac24354b9e99caa3f6d3761402cd`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.5`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP224r1),
 	)
 })
 
@@ -119,7 +120,7 @@ var brainpoolBrainpoolP224t1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`6ab1e344ce25ff3896424e7ffe14762ecb49f8928ac0c76029b4d580`),
 			Gy:      HI(`374e9f5143e568cd23f3f4d7c0d4b1e41c8cc0d1c6abd5f1a46db4c`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.6`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP224t1),
 	)
 })
 
@@ -138,7 +139,7 @@ var brainpoolBrainpoolP256r1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`8bd2aeb9cb7e57cb2c4b482ffc81b7afb9de27e1e3bd23c23a4453bd9ace3262`),
 			Gy:      HI(`547ef835c3dac4fd97f8461a14611dc9c27745132ded8e545c1d54c72f046997`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.7`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP256r1),
 	)
 })
 
@@ -157,7 +158,7 @@ var brainpoolBrainpoolP256t1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`a3e8eb3cc1cfe7b7732213b23a656149afa142c47aafbc2b79a191562e1305f4`),
 			Gy:      HI(`2d996c823439c56d7f7b22e14644417e69bcb6de39d027001dabe8f35b25c9be`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.8`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP256t1),
 	)
 })
 
@@ -176,7 +177,7 @@ var brainpoolBrainpoolP320r1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`43bd7e9afb53d8b85289bcc48ee5bfe6f20137d10a087eb6e7871e2a10a599c710af8d0d39e20611`),
 			Gy:      HI(`14fdd05545ec1cc8ab4093247f77275e0743ffed117182eaa9c77877aaac6ac7d35245d1692e8ee1`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.9`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP320r1),
 	)
 })
 
@@ -195,7 +196,7 @@ var brainpoolBrainpoolP320t1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`925be9fb01afc6fb4d3e7d4990010f813408ab106c4f09cb7ee07868cc136fff3357f624a21bed52`),
 			Gy:      HI(`63ba3a7a27483ebf6671dbef7abb30ebee084e58a0b077ad42a5a0989d1ee71b1b9bc0455fb0d2c3`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.10`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP320t1),
 	)
 })
 
@@ -214,7 +215,7 @@ var brainpoolBrainpoolP384r1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`1d1c64f068cf45ffa2a63a81b7c13f6b8847a3e77ef14fe3db7fcafe0cbd10e8e826e03436d646aaef87b2e247d4af1e`),
 			Gy:      HI(`8abe1d7520f9c2a45cb1eb8e95cfd55262b70b29feec5864e19c054ff99129280e4646217791811142820341263c5315`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.11`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP384r1),
 	)
 })
 
@@ -233,7 +234,7 @@ var brainpoolBrainpoolP384t1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`18de98b02db9a306f2afcd7235f72a819b80ab12ebd653172476fecd462aabffc4ff191b946a5f54d8d0aa2f418808cc`),
 			Gy:      HI(`25ab056962d30651a114afd2755ad336747f93475b7a1fca3b88f2b6a208ccfe469408584dc2b2912675bf5b9e582928`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.12`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP384t1),
 	)
 })
 
@@ -252,7 +253,7 @@ var brainpoolBrainpoolP512r1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`81aee4bdd82ed9645a21322e9c4c6a9385ed9f70b5d916c1b43b62eef4d0098eff3b1f78e2d0d48d50d1687b93b97d5f7c6d5047406a5e688b352209bcb9f822`),
 			Gy:      HI(`7dde385d566332ecc0eabfa9cf7822fdf209f70024a57b1aa000c55b881f8111b2dcde494a5f485e5bca4bd88a2763aed1ca2b2fa8f0540678cd1e0f3ad80892`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.13`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP512r1),
 	)
 })
 
@@ -271,7 +272,7 @@ var brainpoolBrainpoolP512t1 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`640ece5c12788717b9c1ba06cbc2a6feba85842458c56dde9db1758d39c0313d82ba51735cdb3ea499aa77a7d6943a64f7a3f25fe26f06b51baa2696fa9035da`),
 			Gy:      HI(`5b534bd595f5af0fa2c892376c84ace1bb4e3019b71634c01131159cae03cee9d9932184beef216bd71df2dadf86a627306ecff96dbb8bace198b61e00f8b332`),
 		}),
-		WithOID(`1.3.36.3.3.2.8.1.1.14`),
+		WithOIDRaw(oids.OIDBrainpoolBrainpoolP512t1),
 	)
 })
 

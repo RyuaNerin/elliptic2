@@ -9,6 +9,7 @@ import (
 	. "github.com/RyuaNerin/elliptic2/internal"
 	. "github.com/RyuaNerin/elliptic2/internal/curve"
 	wp "github.com/RyuaNerin/elliptic2/internal/curve/weierstrassprime"
+	"github.com/RyuaNerin/elliptic2/internal/curves/oids"
 	. "github.com/RyuaNerin/elliptic2/internal/field"
 )
 
@@ -24,7 +25,7 @@ var oscaaSM2 = sync.OnceValue(func() elliptic.Curve {
 			Gx:      HI(`32c4ae2c1f1981195f9904466a39c9948fe30bbff2660be1715a4589334c74c7`),
 			Gy:      HI(`bc3736a2f4f6779c59bdcee36b692153d0a9877cc62a474002df32e52139f0a0`),
 		}),
-		WithOID(`1.2.156.10197.1.301`),
+		WithOIDRaw(oids.OIDOscaaSM2),
 	)
 })
 
