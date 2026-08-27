@@ -31,7 +31,7 @@ jobs:
           - windows-latest
           - windows-11-arm
           - macos-latest
-            
+
     runs-on: ${{ matrix.os }}
     name: Lint and Test - Go ${{ matrix.go-version }} on ${{ matrix.os }}
 
@@ -62,6 +62,7 @@ jobs:
         run: go build -v ./...
 
       - name: Test
+        shell: bash
         run: |
           set -euo pipefail
           go test -json -v              ./... 2>&1 | tee "${{ runner.temp }}/gotest.log"        | gotestfmt
@@ -71,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: test-log
+          name: test-log-${{ matrix.os }}-go${{ matrix.go-version }}
           path: |
             ${{ runner.temp }}/gotest.log
             ${{ runner.temp }}/gotest-purego.log
