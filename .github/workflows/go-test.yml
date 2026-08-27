@@ -8,6 +8,7 @@ on:
       - '**/*.s'
       - go.mod
       - go.sum
+      - '.github/workflows/**.yml'
   pull_request:
     branches: [ main ]
     paths:
@@ -15,6 +16,7 @@ on:
       - '**/*.s'
       - go.mod
       - go.sum
+      - '.github/workflows/**.yml'
   workflow_dispatch:
 
 jobs:
