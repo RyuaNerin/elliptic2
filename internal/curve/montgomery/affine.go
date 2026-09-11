@@ -33,18 +33,45 @@ func (affineOp) SetInfinity(coords *curve.GFpCoordinate) {
 }
 
 func (affineOp) IsInfinity(coords *curve.GFpCoordinate) bool {
-	return coords[0].Sign() == 0
+	return coords[0].Sign() == 0 && coords[1].Cmp(field.GFpOne) == 0
 }
 
-func (affineOp) ToCoordinate(coords *curve.GFpCoordinate, x, y *big.Int) {
+func (op *affineOp) ToCoordinate(coords *curve.GFpCoordinate, x, y *big.Int) {
+	if x.Sign() == 0 && y.Sign() == 0 {
+		op.SetInfinity(coords)
+		return
+	}
 	coords[0].SetBigInt(x)
 	coords[1].SetBigInt(y)
 }
 
-func (affineOp) ToAffinePoint(x, y *big.Int, coords *curve.GFpCoordinate) {
+func (op *affineOp) ToAffinePoint(x, y *big.Int, coords *curve.GFpCoordinate) {
+	if op.IsInfinity(coords) {
+		x.SetInt64(0)
+		y.SetInt64(0)
+		return
+	}
 	coords[0].ToBigInt(x)
 	coords[1].ToBigInt(y)
 }
 
-func (op *affineOp) Add(dst, p1, p2 *curve.GFpCoordinate) { op.add(dst, p1, p2) }
-func (op *affineOp) Double(dst, p1 *curve.GFpCoordinate)  { op.dbl(dst, p1) }
+func (op *affineOp) Add(dst, p1, p2 *curve.GFpCoordinate) {
+	switch {
+	case p1[0].Cmp(&p2[0]) != 0:
+		op.add(dst, p1, p2)
+
+	case p1[1].Cmp(&p2[1]) == 0:
+		op.Double(dst, p1)
+
+	default:
+		op.SetInfinity(dst)
+	}
+}
+
+func (op *affineOp) Double(dst, p1 *curve.GFpCoordinate) {
+	if p1[1].IsZero() {
+		op.SetInfinity(dst)
+		return
+	}
+	op.dbl(dst, p1)
+}
