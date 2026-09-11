@@ -218,19 +218,19 @@ func (c *curveGFp) scalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
 	op.ToCoordinate(r0, x1, y1)
 
 	// Montgomery Ladder
-	op.Double(r1, r0)
+	doubleGFp(op, r1, r0)
 	for i := num.BitLen() - 2; i >= 0; i-- {
 		if num.Bit(i) == 1 {
-			op.Add(tm, r0, r1)
+			addGFp(op, tm, r0, r1)
 			r0, tm = tm, r0
 
-			op.Double(tm, r1)
+			doubleGFp(op, tm, r1)
 			r1, tm = tm, r1
 		} else {
-			op.Add(tm, r1, r0)
+			addGFp(op, tm, r1, r0)
 			r1, tm = tm, r1
 
-			op.Double(tm, r0)
+			doubleGFp(op, tm, r0)
 			r0, tm = tm, r0
 		}
 	}
@@ -238,6 +238,25 @@ func (c *curveGFp) scalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
 	x, y = new(big.Int), new(big.Int)
 	op.ToAffinePoint(x, y, r0)
 	return x, y
+}
+
+func addGFp(op GFpOperator, dst, p1, p2 *GFpCoordinate) {
+	switch {
+	case op.IsInfinity(p1):
+		dst.Set(p2)
+	case op.IsInfinity(p2):
+		dst.Set(p1)
+	default:
+		op.Add(dst, p1, p2)
+	}
+}
+
+func doubleGFp(op GFpOperator, dst, p *GFpCoordinate) {
+	if op.IsInfinity(p) {
+		op.SetInfinity(dst)
+		return
+	}
+	op.Double(dst, p)
 }
 
 func (c *curveGFp) panicIfNotOnCurve(x, y *big.Int) {
