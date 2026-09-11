@@ -69,7 +69,7 @@ func (c *Curve) NewOperator() curve.GFpOperator      { return c.newOperator(c) }
 func (c *Curve) N() *big.Int                         { return c.CurveParams.N }
 
 func (c *Curve) WriteParams(w io.Writer) {
-	_, _ = fmt.Fprintln(w, "edwards")
+	_, _ = fmt.Fprintln(w, "weierstrassprime")
 	_, _ = fmt.Fprintln(w, c.BitSize)
 	_, _ = fmt.Fprintln(w, c.P.String())
 	_, _ = fmt.Fprintln(w, c.A.String())
