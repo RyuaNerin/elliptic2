@@ -156,7 +156,7 @@ func (c *curveGF2m) scalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
 
 	var num big.Int
 	num.SetBytes(k)
-	if num.Sign() == 0 {
+	if num.Sign() == 0 || c.base.IsInfinity(x1, y1) {
 		return c.base.InfinityPoint()
 	}
 
@@ -173,6 +173,9 @@ func (c *curveGF2m) scalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
 
 	// Montgomery Ladder
 	doubleGF2m(op, r1, r0)
+	if op.IsInfinity(r1) {
+		return scalarMulOrder2Point(c.base, x1, y1, num.Bit(0) == 1)
+	}
 	for i := num.BitLen() - 2; i >= 0; i-- {
 		if num.Bit(i) == 1 {
 			addGF2m(op, tm, r0, r1)

@@ -65,8 +65,9 @@ func (op *extendedOp) SetInfinity(coords *curve.GFpCoordinate) {
 }
 
 func (op *extendedOp) IsInfinity(coords *curve.GFpCoordinate) bool {
-	// X == 0 && Y == 1
-	return coords[0].Sign() == 0 && coords[1].Cmp(field.GFpOne) == 0
+	// if P = (0, N,  N, 0) then, P is the point at infinity
+	// if P = (0, 1, -1, 0) then, P is the point of order 2. 2P = O, P != O
+	return coords[0].Sign() == 0 && coords[1].Cmp(&coords[2]) == 0
 }
 
 func (op *extendedOp) ToCoordinate(coords *curve.GFpCoordinate, x, y *big.Int) {

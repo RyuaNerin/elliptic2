@@ -327,13 +327,26 @@ func computeWNAF(naf []int8, k []byte) []int8 {
 
 func normalizeScalar(scalar []byte, n *big.Int) []byte {
 	byteSize := (n.BitLen() + 7) / 8
-	if len(scalar) == byteSize {
-		return scalar
-	}
 	s := new(big.Int).SetBytes(scalar)
-	if len(scalar) > byteSize {
+	if s.Cmp(n) >= 0 {
 		s.Mod(s, n)
+	} else if len(scalar) == byteSize {
+		return scalar
 	}
 	out := make([]byte, byteSize)
 	return s.FillBytes(out)
+}
+
+func isReducedScalar(scalar []byte, n *big.Int) bool {
+	return new(big.Int).SetBytes(scalar).Cmp(n) < 0
+}
+
+// k * P, in the subgroup of order 2
+// if k % 2 == 0 (k is even), then return the point at infinity
+// if k % 2 == 1 (k is odd ), then return the P
+func scalarMulOrder2Point(base CurveArithmeticBase, pX, pY *big.Int, kIsOdd bool) (*big.Int, *big.Int) {
+	if !kIsOdd {
+		return base.InfinityPoint() // return Inf
+	}
+	return new(big.Int).Set(pX), new(big.Int).Set(pY) // return P
 }

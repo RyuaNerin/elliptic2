@@ -22,6 +22,9 @@ var (
 func (c *curveGF2mMadd) ScalarMult(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
 	c.panicIfNotOnCurve(x1, y1)
 
+	if !isReducedScalar(k, c.base.N()) {
+		return c.scalarMult(x1, y1, k)
+	}
 	return c.scalarMultWithMAdd(x1, y1, k)
 }
 
@@ -34,6 +37,10 @@ func (c *curveGF2mMadd) ScalarBaseMult(k []byte) (x, y *big.Int) {
 }
 
 func (c *curveGF2mMadd) scalarMultWithMAdd(x1, y1 *big.Int, k []byte) (x, y *big.Int) {
+	if c.base.IsInfinity(x1, y1) {
+		return c.base.InfinityPoint()
+	}
+
 	modulus := c.base.Modulus()
 
 	k = normalizeScalar(k, c.base.N())
@@ -58,6 +65,9 @@ func (c *curveGF2mMadd) scalarMultWithMAdd(x1, y1 *big.Int, k []byte) (x, y *big
 		var p2 GF2mCoordinate
 		p2.SetModulus(modulus)
 		op.Double(&p2, &table[0])
+		if op.IsInfinity(&p2) {
+			return scalarMulOrder2Point(c.base, x1, y1, k[len(k)-1]&1 == 1)
+		}
 		op.ScaleZ(&p2)
 
 		for idx := 1; idx < maddTableSize; idx++ {
