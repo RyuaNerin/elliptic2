@@ -9,7 +9,7 @@ import (
 
 type projectiveOp struct {
 	*Curve
-	t [4]field.GFp
+	t [2]field.GFp
 }
 
 var _ curve.GFpOperator = (*projectiveOp)(nil)

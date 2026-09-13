@@ -18,6 +18,7 @@ type (
 		BitSize int
 		P       *field.Modulus // prime
 		A, D    *field.GFp     // a, d
+		K       *field.GFp     // k = 2*d
 		N       *big.Int       // order
 		Gx, Gy  *big.Int       // generator point
 	}
@@ -47,6 +48,7 @@ func BuildOp(params *CurveParams, fnNewOp func(c *Curve) curve.GFpOperator) *Cur
 
 	c.A.SetModulus(params.P)
 	c.D.SetModulus(params.P)
+	c.K = params.P.NewGFp().Add(c.D, c.D) // k =2d
 
 	if params.Gx != nil && params.Gx.Sign() != 0 && params.Gy != nil && params.Gy.Sign() != 0 {
 		if !c.IsOnCurve(params.Gx, params.Gy) {

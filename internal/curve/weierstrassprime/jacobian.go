@@ -10,7 +10,7 @@ import (
 type (
 	jacobianOp struct {
 		*Curve
-		t [4]field.GFp
+		t [3]field.GFp
 	}
 	JacobianOp    struct{ jacobianOp }
 	JacobianOpA0  struct{ jacobianOp }
@@ -96,13 +96,15 @@ func (op *jacobianOp) ToAffinePoint(x, y *big.Int, coords *curve.GFpCoordinate) 
 	}
 
 	X, Y, Z := &coords[0], &coords[1], &coords[2]
-	dstX, dstY, t0, t1 := &op.t[0], &op.t[1], &op.t[2], &op.t[3]
+	dstX, dstY, t0 := &op.t[0], &op.t[1], &op.t[2]
+	var t1 field.GFp
+	t1.SetModulus(op.P)
 
-	t1.Inv(Z)                   //     1 /   Z
-	t0.Sqr(t1).ReduceSoft()     //     1 /  ZZ
-	t1.Mul(t1, t0).ReduceSoft() //     1 / ZZZ
-	dstX.Mul(X, t0).Reduce()    // x = X /  ZZ
-	dstY.Mul(Y, t1).Reduce()    // y = Y / ZZZ
+	t1.Inv(Z)                    //     1 /   Z
+	t0.Sqr(&t1).ReduceSoft()     //     1 /  ZZ
+	t1.Mul(&t1, t0).ReduceSoft() //     1 / ZZZ
+	dstX.Mul(X, t0).Reduce()     // x = X /  ZZ
+	dstY.Mul(Y, &t1).Reduce()    // y = Y / ZZZ
 
 	dstX.ToBigInt(x)
 	dstY.ToBigInt(y)

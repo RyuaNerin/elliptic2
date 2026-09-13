@@ -11,7 +11,7 @@ type (
 	// X Y Z T
 	extendedOp struct {
 		*Curve
-		t [2]field.GFp
+		t [1]field.GFp
 	}
 	ExtendedOp struct {
 		extendedOp
@@ -86,11 +86,13 @@ func (op *extendedOp) ToAffinePoint(x, y *big.Int, coords *curve.GFpCoordinate) 
 
 	X1, Y1, Z1 := &coords[0], &coords[1], &coords[2]
 
-	X3, Y3 := &op.t[0], &op.t[1]
+	X3 := &op.t[0]
+	var Y3 field.GFp
+	Y3.SetModulus(op.P)
 
-	Y3.Inv(Z1)              // t0 = 1 / Z
-	X3.Mul(X1, Y3).Reduce() // x  = X / Z
-	Y3.Mul(Y1, Y3).Reduce() // y  = Y / Z
+	Y3.Inv(Z1)               // t0 = 1 / Z
+	X3.Mul(X1, &Y3).Reduce() // x  = X / Z
+	Y3.Mul(Y1, &Y3).Reduce() // y  = Y / Z
 
 	X3.ToBigInt(x)
 	Y3.ToBigInt(y)
@@ -118,10 +120,10 @@ func (op *extendedOp) Neg(dst, p1 *curve.GFpCoordinate) {
 	dst[3].Neg(&p1[3]).Reduce() // T = -t
 }
 
-func (op *ExtendedOp) Add(dst, p1, p2 *curve.GFpCoordinate)  { op.add2008hwcd2(dst, p1, p2) }
+func (op *ExtendedOp) Add(dst, p1, p2 *curve.GFpCoordinate)  { op.add2008hwcd(dst, p1, p2) }
 func (op *ExtendedOp) Double(dst, p1 *curve.GFpCoordinate)   { op.dbl2008hwcd(dst, p1) }
-func (op *ExtendedOp) Madd(dst, p1, p2 *curve.GFpCoordinate) { op.madd2008hwcd2(dst, p1, p2) }
+func (op *ExtendedOp) Madd(dst, p1, p2 *curve.GFpCoordinate) { op.madd2008hwcd(dst, p1, p2) }
 
-func (op *ExtendedOpAm1) Add(dst, p1, p2 *curve.GFpCoordinate)  { op.add2008hwcd2(dst, p1, p2) }
+func (op *ExtendedOpAm1) Add(dst, p1, p2 *curve.GFpCoordinate)  { op.add2008hwcd3(dst, p1, p2) }
 func (op *ExtendedOpAm1) Double(dst, p1 *curve.GFpCoordinate)   { op.dbl2008hwcd(dst, p1) }
-func (op *ExtendedOpAm1) Madd(dst, p1, p2 *curve.GFpCoordinate) { op.madd2008hwcd4(dst, p1, p2) }
+func (op *ExtendedOpAm1) Madd(dst, p1, p2 *curve.GFpCoordinate) { op.madd2008hwcd3(dst, p1, p2) }

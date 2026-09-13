@@ -9,7 +9,7 @@ import (
 
 type jacobianOp struct {
 	*Curve
-	t [4]field.GF2m
+	t [3]field.GF2m
 }
 
 var (
