@@ -3,8 +3,8 @@ package field
 import (
 	"fmt"
 	"math/big"
+	"math/bits"
 	"sync/atomic"
-	"unsafe"
 
 	"github.com/RyuaNerin/elliptic2/internal"
 	"github.com/RyuaNerin/elliptic2/internal/field/gf2mreduce"
@@ -46,8 +46,15 @@ type Modulus struct {
 	reduce gf2mreduce.ReduceFunc
 
 	gf2mPoly  []int
-	gf2mGamma unsafe.Pointer // *GF2m
-	gf2mSqrtX *GF2m          // *GF2m, sqrt(x)
+	gf2mGamma atomic.Pointer[GF2m] // *GF2m
+	gf2mSqrtX *GF2m                // *GF2m, sqrt(x)
+
+	// GFpV2 용 사전 계산 값
+	gfpWordLen int                      // (bits + WordBitSize - 1) / WordBitSize
+	gfpShift   uint                     // words[gfpWordLen-1] 의 leading zero 수 (Knuth division 정규화용)
+	gfpNorm    [1 + simd.Words]big.Word // p << gfpShift
+	gfpRecip   big.Word                 // simd.Reciprocal(gfpNorm[gfpWordLen-1])
+	gfpBig     *big.Int                 // p (느린 경로 전용)
 }
 
 func NewGFpModulus(p *big.Int) *Modulus {
@@ -60,7 +67,23 @@ func NewGFpModulus(p *big.Int) *Modulus {
 		bits: bits,
 	}
 	copy(m.words[:], p.Bits())
+	m.precomputeGFp()
 	return m
+}
+
+// precomputeGFp prepares the normalized modulus used by GFpV2 division.
+func (p *Modulus) precomputeGFp() {
+	n := p.WordLen()
+	p.gfpWordLen = n
+	if n == 0 {
+		panic("field: modulus must not be zero")
+	}
+
+	p.gfpShift = uint(bits.LeadingZeros(uint(p.words[n-1])))
+	simd.ShlVU(p.gfpNorm[:n], p.words[:n], p.gfpShift)
+	p.gfpRecip = simd.Reciprocal(p.gfpNorm[n-1])
+
+	p.gfpBig = p.toBigInt(nil)
 }
 
 func NewGFpModulusFromHex(hexStr string) *Modulus {
@@ -128,17 +151,17 @@ func (p *Modulus) precomputeSqrt() {
 }
 
 func (poly *Modulus) FindGF2mGamma() *GF2m {
-	gamma := atomic.LoadPointer(&poly.gf2mGamma)
+	gamma := poly.gf2mGamma.Load()
 	if gamma != nil {
 		return (*GF2m)(gamma)
 	}
 
 	gammaVal := poly.findGamma()
-	if atomic.CompareAndSwapPointer(&poly.gf2mGamma, nil, unsafe.Pointer(gammaVal)) {
+	if poly.gf2mGamma.CompareAndSwap(nil, gammaVal) {
 		return gammaVal
 	}
 
-	return (*GF2m)(atomic.LoadPointer(&poly.gf2mGamma))
+	return poly.gf2mGamma.Load()
 }
 
 func (poly *Modulus) findGamma() *GF2m {
