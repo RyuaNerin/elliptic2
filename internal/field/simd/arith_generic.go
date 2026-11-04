@@ -60,7 +60,7 @@ func rshVU(z, x []big.Word, s uint) (c big.Word) {
 	ŝ := WordBitSize - s
 
 	c = x[0] << ŝ
-	for i := 0; i < len(z)-1; i++ {
+	for i := range z {
 		z[i] = x[i]>>s | x[i+1]<<ŝ
 	}
 	z[len(z)-1] = x[len(z)-1] >> s
