@@ -153,7 +153,7 @@ func (p *Modulus) precomputeSqrt() {
 func (poly *Modulus) FindGF2mGamma() *GF2m {
 	gamma := poly.gf2mGamma.Load()
 	if gamma != nil {
-		return (*GF2m)(gamma)
+		return gamma
 	}
 
 	gammaVal := poly.findGamma()

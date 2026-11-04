@@ -48,6 +48,9 @@ linters:
       - path: internal/curve/(.+)/(.+)_test\.go
         linters:
           - dupl
+      - path: internal/field/simd/(.+)\.go
+        linters:
+          - unused
 
 formatters:
   enable:
