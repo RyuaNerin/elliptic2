@@ -103,6 +103,7 @@ func (c *Curve) Params2() *elliptic2.CurveParams {
 		Name:    strings.Clone(c.Name),
 		BitSize: c.BitSize,
 		Poly:    slices.Clone(c.Poly.Poly()),
+		PolyInt: c.Poly.ToBigInt(nil),
 		N:       new(big.Int).Set(c.CurveParams.N),
 		A:       c.A2.ToBigInt(nil),
 		B:       c.A6.ToBigInt(nil),

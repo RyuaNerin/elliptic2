@@ -99,6 +99,7 @@ type CurveParams struct {
 	A2, A6     *big.Int // curve parameters for binary curves
 	P          *big.Int // Prime defining the field
 	Poly       []int    // Irreducible polynomial for binary fields, in ascending order of degree
+	PolyInt    *big.Int // Degree of the irreducible polynomial for binary fields
 	N          *big.Int // order of the base point
 	Gx, Gy     *big.Int // coordinates of the generator point
 	InfX, InfY *big.Int // coordinates of the point at infinity
